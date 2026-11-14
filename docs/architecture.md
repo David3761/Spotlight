@@ -22,16 +22,16 @@ Companion documents:
 | | Dev A · screens + fix & assistant backend | Dev B · data pipeline |
 | --- | --- | --- |
 | Builds | All of `frontend/`; the backend for fix texts, the info page, the developer export and the assistant chat | The rest of `backend/`: API skeleton, places, scans, progress stream, all collectors, scoring, problem cards, demo mode |
-| Accounts | Two Gemini keys, shared with Dev B: `GEMINI_API_KEY` from a free-tier AI Studio project (no billing) and `GEMINI_GROUNDED_API_KEY` from a billed project, used only for grounded calls | Google Cloud project (Places API (New), PageSpeed Insights API), SerpApi, Meta app for Instagram |
+| Accounts (`.env` half) | Meta app for Instagram Business Discovery (`META_ACCESS_TOKEN`, `META_IG_USER_ID`); picks the demo café (`DEMO_PLACE_ID`, `DEMO_MODE`). Shared with Dev B. | Google Cloud project (Places API (New), PageSpeed Insights API), SerpApi, and the Gemini key: `GEMINI_API_KEY` from an AI Studio project with no billing (free tier). Shared with Dev A. |
 | Owns | `frontend/**`, root `package.json`, `backend/app/api/fixes.py`, `backend/app/api/chat.py`, `backend/app/fixes/**`, `backend/app/assistant/**`, `backend/app/llm/prompts/fix_*`, `backend/app/llm/prompts/assistant_*` | Everything else in `backend/**`, including `pyproject.toml`, `models.py`, `db.py`, `llm/client.py`, `services/resolution.py`, `fixtures/` |
-| Hands over | Gemini keys (hour 0); root `npm run dev` (hour 1); `api/fixes.py`, `api/chat.py`, `fixes/`, `assistant/` written against the contract (before gate 1), working end to end once Dev B's skeleton lands | Skeleton serving the fixture, with `llm/client.py`, `services/resolution.py`, `db.py`, `cache.py` usable (hour 2, gate 1); real `resolve` (hour 5); a real report (hour 14, gate 2) |
+| Hands over | Meta token, IG user ID and demo place ID (hour 0); root `npm run dev` (hour 1); `api/fixes.py`, `api/chat.py`, `fixes/`, `assistant/` written against the contract (before gate 1), working end to end once Dev B's skeleton lands | Gemini, Places, PageSpeed and SerpApi keys (hour 0); skeleton serving the fixture, with `llm/client.py`, `services/resolution.py`, `db.py`, `cache.py` usable (hour 2, gate 1); real `resolve` (hour 5); a real report (hour 14, gate 2) |
 
 Rules for working on one repo in parallel:
 
 - Both push to `main` in small commits. Run `git pull --rebase` before starting each task and before every push; the other dev pushes often. Never force-push.
 - Never edit a file the other dev owns. If you need a change there, ask; for the contract, follow the change rule in [contract.md](contract.md).
 - Dev A writes `api/fixes.py` and `api/chat.py` against the contract before gate 1; Dev B doesn't create stubs for them, only registers their routers in `main.py`.
-- Nothing may bill. Use free tiers only, check a service's free quota before calling it, and cache every response. The one exception is `GEMINI_GROUNDED_API_KEY`: grounded calls (live test, mentions) bill their tokens, so make them only for the real scans needed for gate 2 and the demo recording.
+- Nothing may bill. Use free tiers only, check a service's free quota before calling it, and cache every response. Grounded Gemini calls (live test, mentions) run on the free tier of `gemini-2.5-flash-lite`: 500 Maps-grounded and 500 Search-grounded requests a day.
 - Dev A's backend code imports only `app.models`, `app.db`, `app.llm.client`, `app.services.resolution` and `app.cache`. A new Python dependency goes through Dev B (`pyproject.toml`).
 - Frozen after this commit, changed only when both agree: `docs/architecture.md`, `docs/data-collection-algorithm.md`, `CLAUDE.md`, `README.md`, `.gitignore`.
 
@@ -55,7 +55,7 @@ flowchart TB
         PSI["PageSpeed Insights"]
         META["Instagram Graph API<br/>Business Discovery"]
         WEB["Websites & platforms<br/>httpx raw HTML · Playwright if empty"]
-        GEM["Gemini API<br/>extraction, texts, chat, live test with Maps + Search"]
+        GEM["Gemini API (free tier)<br/>extraction, texts, chat, live test with Maps grounding"]
     end
     FE -- "REST (JSON)" --> API
     BUS -- "SSE progress" --> FE
@@ -129,8 +129,10 @@ The design's mock numbers (Boema: overall 42, Gemini 2/12, chapters 65/50/35/50/
 | Only the Instagram and info-page panels are designed | A generic panel (steps + deep link + „Am rezolvat”) and a dev-export panel in the same style |
 | No self-report questions in the onboarding | Quick-reply chips inside step 5 (after the place is picked: profile claimed? description? last Google post?) and step 6 (last social post?). Still 7 steps. |
 | `[Nume aplicație]` | `APP_NAME` in `frontend/src/config.ts` until the name is chosen |
+| „Începe de aici” markers and the „Începe cu …” button | Removed: no start-here chapter anywhere (no `start_here` in the contract) |
+| Facebook in onboarding, loading, social chapter and info page | Facebook is dropped. Onboarding step 6: „Ai Instagram sau TikTok? Lipește linkurile. Poți sări peste oricare.” with two inputs; card field „Rețele sociale” lists only those. Loading step 4: „Verificăm Instagram…” / „Am verificat Instagram” (pending: „Instagram”). Social chapter intro: „Instagram și TikTok spun clar cine ești, ce servești și unde te găsesc clienții.” / „Gemini se uită și pe Instagram și TikTok ca să afle cine ești și ce servești.” No Facebook problems or solved items; „Ne găsești și pe” lists no Facebook. |
 
-Navigation: desktop sidebar (business card, Panou principal, Vizibilitate în Gemini with „2/12”, Conversații, the 8 chapters with open-problem counts and the „Începe de aici” marker); mobile tab bar (Acasă, Gemini, Capitole, Asistent).
+Navigation: desktop sidebar (business card, Panou principal, Vizibilitate în Gemini with „2/12”, Conversații, the 8 chapters with open-problem counts); mobile tab bar (Acasă, Gemini, Capitole, Asistent; „Capitole” opens the first chapter).
 
 ---
 
@@ -229,7 +231,7 @@ The LLM reads and writes; code decides. Scores never come from the LLM.
 | Onboarding chat | Scripted flow in the frontend | — |
 | Finding problems | Code checks (Dev B) | Reads messy pages into JSON, judges category and Instagram bio, classifies mentions |
 | Scoring and ranking | Code only (`scoring.py`) | — |
-| Live test | Code + Gemini with Maps + Search grounding | Answers the customer's question; nothing else is sent |
+| Live test | Code + Gemini with Maps grounding | Answers the customer's question; nothing else is sent |
 | Fix texts, info page, dev export | Dev A, `fixes/` | Writes the custom texts from the canonical profile and website facts |
 | Assistant chat | Dev A, `assistant/` | Proposes actions via function calling; the owner confirms or undoes |
 
@@ -240,11 +242,11 @@ Assistant functions (Screen 6):
 - `generate_fix_text(check_id, tone)` — same generator as the fix panel.
 - `what_next()` — the open problem with the highest impact.
 
-Model tiers, set in `backend/.env` (all marked stable on Google's models page, 14 November 2026; combining Maps and Search grounding needs Gemini 3.5 Flash or later):
+Model tiers, set in `backend/.env`, all on the free-tier `GEMINI_API_KEY` (models page and pricing page, 14 November 2026):
 
 - `GEMINI_MODEL_FAST=gemini-3.5-flash-lite` — extraction, classification, judging, prompt generation.
 - `GEMINI_MODEL_SMART=gemini-3.8-flash` — fix texts, info page, assistant chat.
-- `GEMINI_MODEL_LIVE=gemini-3.8-flash` — the live test and mention searches with grounding, called with `GEMINI_GROUNDED_API_KEY`.
+- `GEMINI_MODEL_LIVE=gemini-2.5-flash-lite` — the live test (Maps grounding) and mention searches (Search grounding). The newer models have no grounding on the free tier; 2.5 Flash-Lite does (500 Maps-grounded and 500 Search-grounded requests a day) and stays served "until further notice". It can't combine Maps and Search in one call (that needs Gemini 3.5 Flash or later), so the live test uses Maps grounding alone.
 
 Two open points for Dev B to verify before building the live test: Google's Maps grounding page says it "currently only supports English language prompts and responses", and its examples use the Interactions API (`client.interactions.create`) rather than `generateContent`.
 
@@ -269,22 +271,20 @@ Set them up before the hackathon starts; billing and key restrictions are the us
 
 | Service | Set up by | Used for | Watch out for |
 | --- | --- | --- | --- |
-| Gemini API (free tier) | Dev A | `GEMINI_API_KEY`: extraction, texts, chat, probe | Free tier: no grounding, lower rate limits |
-| Gemini API (billed) | Dev A | `GEMINI_GROUNDED_API_KEY`: live test, mentions | Grounding needs the paid tier: 5,000 free grounded requests/month, but tokens are billed. Live test = 36 grounded calls per scan |
+| Gemini API (free tier) | Dev B | `GEMINI_API_KEY`: everything (extraction, texts, chat, probe, live test, mentions) | AI Studio project with no billing. Lower rate limits; grounding only on `gemini-2.5-flash-lite`: 500 Maps-grounded and 500 Search-grounded requests a day. Live test = 36 Maps-grounded calls per scan, so about 13 scans a day: cache them |
 | Google Places API (New) | Dev B | Search, Place Details, Nearby Search | Key restricted to Places API (New) + PageSpeed Insights API; max 5 reviews, 10 photos |
 | PageSpeed Insights API | Dev B | T07 mobile speed | Same Google Cloud project; one run takes 15–30 s |
 | SerpApi | Dev B | Review dates and owner replies | Free plan ~250 searches/month: cache every response |
-| Instagram Graph API | Dev B | Bio, website, posts via Business Discovery | Needs a Meta app, your own Instagram professional account linked to a Facebook Page, and a long-lived token; only works for business/creator accounts. Do it the night before. |
+| Instagram Graph API | Dev A | Bio, website, posts via Business Discovery | Free. Needs a Meta app with Facebook Login, your own Instagram professional account linked to a Facebook Page (setup only; the product never checks Facebook), and a long-lived user token (about 60 days). Only reads business/creator accounts. |
 | Playwright for Python | Dev B | Fallback render | `uv run playwright install chromium` |
 
 `backend/.env` is shared by both devs' backend code and never committed. `backend/.env.example` holds the same names, with values only for non-secret settings. Copy it to `backend/.env` and paste the keys (shared privately):
 
 ```text
 GEMINI_API_KEY=
-GEMINI_GROUNDED_API_KEY=
 GEMINI_MODEL_FAST=gemini-3.5-flash-lite
 GEMINI_MODEL_SMART=gemini-3.8-flash
-GEMINI_MODEL_LIVE=gemini-3.8-flash
+GEMINI_MODEL_LIVE=gemini-2.5-flash-lite
 PLACES_API_KEY=
 PAGESPEED_API_KEY=
 SERPAPI_API_KEY=
@@ -303,7 +303,7 @@ FRONTEND_ORIGIN=http://localhost:3000
 
 | Hours | Dev A · screens + fixes & assistant backend | Dev B · data pipeline |
 | --- | --- | --- |
-| 0–1 | Gemini keys to Dev B; scaffold `frontend/`, root `npm run dev`, tokens, font | Accounts; FastAPI skeleton, `models.py` per contract, `db.py`, fixture |
+| 0–1 | Meta token and demo place ID to Dev B; scaffold `frontend/`, root `npm run dev`, tokens, font | Accounts, Gemini keys to Dev A; FastAPI skeleton, `models.py` per contract, `db.py`, fixture |
 | 1–2 | `ScoreRing`, `Sidebar`, `TabBar`, `Toast`, app shell (static) | Stub routes for every endpoint (incl. fixes/chat) serving the fixture; SSE replay |
 | **2** | **Gate 1:** generate API types from the stub server | **Gate 1:** push the skeleton |
 | 2–5 | Screen 1 onboarding (search, link, `Eroare`, self-report chips, business card) | Places search/resolve, canonical, normalize, `llm/client.py`, Google profile collector, `scoring.py`, `problems.py`, `resolution.py` + `resolve` |
@@ -312,7 +312,7 @@ FRONTEND_ORIGIN=http://localhost:3000
 | 9–12 | `fixes/` backend (generate, info page, dev export); Instagram text + info page + dev export panels | Website collector (httpx, Playwright fallback, robots, sitemap, JSON-LD, PageSpeed, L2 extraction) |
 | 12–14 | Gemini screen (sources + attribution, „Testează din nou”), „Analizează din nou” | Live test, competitors, `gemini-test`, `rescan` |
 | **14** | **Gate 2:** a real scan renders on every screen | **Gate 2:** `POST /api/scans` for a real café completes in under 90 s |
-| 14–18 | `assistant/` backend (conversations, function calling, actions) + Conversații and Chat screens | Training probe, mentions, social (website links, Meta, Facebook), listings |
+| 14–18 | `assistant/` backend (conversations, function calling, actions) + Conversații and Chat screens | Training probe, mentions, social (website links, Instagram), listings |
 | 18–20 | States (unknown, errors, empty), mobile pass at 390 px, animations | Demo mode, retries and backoff, record the demo scan |
 | **20** | **Gate 3:** feature freeze | **Gate 3:** demo mode works with Wi-Fi off |
 | 20–22 | Bugs, demo script | Bugs, re-record the fixture if needed |
@@ -343,7 +343,7 @@ Still to pick before recording: the real demo café (needs a website and a busin
 - Gemini only; no ChatGPT engine.
 - No Tripadvisor data, Bing Places, Apple Maps or Romanian directories.
 - Reviews: Google (Places + SerpApi) only.
-- Social: Facebook link check, Instagram via Business Discovery, TikTok link only; posts on other platforms are self-reported.
+- No Facebook anywhere in the product. Social: Instagram via Business Discovery, TikTok link only; TikTok posts are self-reported.
 - Mentions: titles and domains only, no page reading.
 - Listings: only links the owner gave or the website shows.
 - The LLM writes texts for `generate` problems (demo: Instagram bio, Google description), the info page and the developer export; other problems show template steps.

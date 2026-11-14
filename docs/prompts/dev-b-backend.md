@@ -28,14 +28,14 @@ Dev A's backend code imports only `app.models`, `app.db`, `app.llm.client`, `app
 
 - Dev A pushes to `main` often. Run `git pull --rebase` before you start and before each task, and again before every push. Never force-push.
 - Run anything that doesn't bill: local servers, tests, free API quotas, cached responses. Before calling a paid service, check its free monthly quota and stay inside it; cache every response so repeats cost nothing. Never upgrade a plan.
-- The one key that bills is `GEMINI_GROUNDED_API_KEY` (grounded Gemini calls bill their tokens). Use it only in the live test and mentions, and only for the real scans needed for gate 2 and the demo recording. Everything else uses the free-tier `GEMINI_API_KEY`.
+- Every Gemini call uses the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) use `GEMINI_MODEL_LIVE` (`gemini-2.5-flash-lite`), whose free tier allows 500 Maps-grounded and 500 Search-grounded requests a day: cache every grounded response and run real scans only when you need them.
 
 ## Before coding (I do these by hand; remind me if a key is missing)
 
 - Google Cloud project with billing (needed to enable the APIs; stay inside the free monthly quota): enable Places API (New) and PageSpeed Insights API, one key restricted to those two.
 - SerpApi account and key (free plan).
-- Meta app for Instagram Business Discovery: an Instagram professional account linked to a Facebook Page, a long-lived access token, and that account's IG user ID.
-- `cp backend/.env.example backend/.env`, then paste the keys. The two Gemini keys come from Dev A; the model IDs are already filled in.
+- One Gemini key from AI Studio, created in a project with no billing (free tier): `GEMINI_API_KEY`. Share it with Dev A privately.
+- `cp backend/.env.example backend/.env`, then paste the keys. `META_ACCESS_TOKEN`, `META_IG_USER_ID` and `DEMO_PLACE_ID` come from Dev A; the model IDs are already filled in.
 - `uv` (`powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"` on Windows); uv downloads Python 3.12 itself.
 
 ## Build order
@@ -51,14 +51,15 @@ Push after every task (`git pull --rebase` first). Check the acceptance line bef
 - `app/db.py`: SQLModel engine on `backend/app.db`; `scans` table (`id`, `created_at`, `status`, `inputs`, `internal`, `report`, `error`, JSON columns as text); `ConversationRow` and `get_session()` exactly as in the contract; `create_all` on startup.
 - `app/cache.py`: `get(parts)` / `set(parts, value)` exactly as in the contract.
 - `app/llm/client.py`, first version: `json_call`, `text_call`, `get_client`, `get_model` exactly as in the contract, on the free-tier `GEMINI_API_KEY`, with the model IDs from `.env`. Dev A's endpoints call them from gate 1.
-- `app/services/resolution.py`: `ScanNotFound` and all five functions exactly as in the contract, working on fixture-backed scans. For those, `load_facts` returns `fixtures/boema_facts.json`, a `Facts` for Cafeneaua Boema taken from `FisaInfo.dc.html` (address, hours, Instagram, "Ne găsești și pe", menu, FAQ); phone and special hours stay empty, as the artboard shows them as "de completat".
+- `app/services/resolution.py`: `ScanNotFound` and all five functions exactly as in the contract, working on fixture-backed scans. For those, `load_facts` returns `fixtures/boema_facts.json`, a `Facts` for Cafeneaua Boema taken from `FisaInfo.dc.html` (address, hours, Instagram, "Ne găsești și pe" without Facebook, menu, FAQ); phone and special hours stay empty, as the artboard shows them as "de completat".
 - `fixtures/boema_report.json`: a complete `Report` for Cafeneaua Boema built from the design's mock data:
   - overall 42 with `overall_exact` 42.2
   - chapter scores 65 / 50 / 35 / 50 / 35 / 25 / 55 / 20 in chapter order
-  - open-problem counts 5 / 3 / 6 / 4 / 5 / 4 / 3 / 0 (30 in total), `start_here: "continut"`
+  - open-problem counts 5 / 3 / 6 / 4 / 5 / 4 / 3 / 0 (30 in total)
   - `next_steps` = the three in `Panou.dc.html`
   - Gemini score 17 with 2 of 12 mentions, groups, prompts, competitors and the comparison exactly as in `Gemini.dc.html` (photo counts above 10 → 10 with `photo_count_capped: true`), each prompt with one or two plausible sources
   - problems use catalog `check_id`s and their points; titles and reasons come from the artboards where they exist (`Capitol` for `profil`, `Rezolva` for `social` with `S05` as the Instagram bio, `FisaInfo` for `site` with `T09` as the info page)
+  - no Facebook anywhere (it's dropped from the product): the three `social` problems are S05 (Instagram bio), S04 (Instagram doesn't link to the site) and S03 (no recent post); follow `docs/architecture.md` → "Where the build differs from the design" for the changed copy
   - `solved` items as in `Capitol.dc.html`
 - Stub routes for every scan-side endpoint in the contract (not the Fixes and Assistant ones: those are Dev A's routers, which you register), all returning contract-shaped data built from the fixture:
   - `POST /api/scans` returns a new ID backed by the fixture.
@@ -73,7 +74,7 @@ Push, then tell me "gate 1 ready" so I can tell Dev A. Acceptance: `uv run uvico
 
 - `app/llm/client.py`, complete:
   - All calls go through one `asyncio.Semaphore(6)` and `tenacity` exponential backoff (3 tries), and are cached with `app.cache`.
-  - `grounded_call(question, lat, lng, tools=("maps", "search"))` on `GEMINI_GROUNDED_API_KEY` with `GEMINI_MODEL_LIVE`. It sends only the question with the location and no system prompt, and returns the text plus parsed grounding chunks (maps: place ID, title, URI; web: title, URI).
+  - `grounded_call(question, tool, lat=None, lng=None)` with `GEMINI_MODEL_LIVE` (`gemini-2.5-flash-lite`) on the free-tier `GEMINI_API_KEY`, `tool` being `"maps"` (live test, with the location) or `"search"` (mentions); this model can't combine both in one call. It sends only the question and no system prompt, and returns the text plus parsed grounding chunks (maps: place ID, title, URI; web: title, URI). Keep its concurrency under the free tier's rate limit.
   - First check how to send it. Google's Maps grounding page (14 November 2026) says Maps grounding "currently only supports English language prompts and responses", and its examples use the Interactions API (`client.interactions.create`, tool `{"type": "google_maps", "latitude", "longitude"}`) rather than `generateContent` with `toolConfig.retrievalConfig`. Read the installed `google-genai` source for what it supports, then make one real Romanian call (`"cafenea în Cotroceni"`) and check that Maps chunks come back. If they don't, stop and tell me before changing the approach.
 - `app/pipeline/normalize.py`: the §4 rules (address, phone via `phonenumbers`, hours, name via `rapidfuzz`), with tests including "Str." vs "Strada" and the three phone formats.
 - Places: real `POST /api/places/search` and `POST /api/places/resolve-link` (§3 step 1), and `canonical.py` (Place Details with the step 2 field mask → `CanonicalProfile`).
@@ -128,7 +129,7 @@ Then checks C01–C08 and T01–T09, and the T-gate cap. Save the website facts 
 
 - `collectors/training_probe.py` (§3.7): two prompts × 3 runs with no tools, plus one L7 judge call.
 - `collectors/mentions.py` (§3.5): five Search-grounded queries; domains from chunk titles; follow redirects for URLs; filter; L4 classify; M01, M02, M03, M05.
-- `collectors/social.py` (§3.6): Business Discovery for the Instagram handle (personal account or no token → fallbacks), Facebook resolve check, cross-links from the website links, S01–S05.
+- `collectors/social.py` (§3.6): Business Discovery for the Instagram handle (personal account or no token → fallbacks), cross-links from the website links, S02–S05. No Facebook anywhere.
 - `collectors/listings.py` (§3.4): owner and website links only; fetch, L3 extract, normalize, compare; L01, L02 with per-field problems `L02:<source>:<field>`.
 
 ### Task 8 · Demo safety → gate 3 (hour 18–20)
@@ -145,7 +146,7 @@ Fix what the demo run shows. Re-record the fixture if the data changed.
 
 ## Rules for you
 
-- Nothing may bill, except grounded calls on `GEMINI_GROUNDED_API_KEY` for the scans named above (see "Working alongside Dev A").
+- Nothing may bill. Grounded calls stay inside the free tier's daily quotas (see "Working alongside Dev A").
 - Scores come only from `scoring.py`; LLM output is turned into booleans or extracted values before any check uses it.
 - Live-test calls: only the customer's question, no system prompt, no business context.
 - `unknown` is never a fail: excluded from the score and listed in `Chapter.unknown` with a `reason_ro`.

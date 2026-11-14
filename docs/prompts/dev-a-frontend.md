@@ -25,7 +25,7 @@ Run `git pull --rebase` now, before reading anything: Dev B pushes often. Then f
 
 Everything else belongs to Dev B. Never edit it. Your backend code may import only `app.models`, `app.db`, `app.llm.client`, `app.services.resolution` and `app.cache`, with the exact names in `docs/contract.md` → "Backend-internal interfaces". If you need a Python package that isn't in `backend/pyproject.toml`, stop and tell me so I can ask Dev B.
 
-Run `git pull --rebase` before each task and before every push. Nothing may bill: your code uses only the free-tier `GEMINI_API_KEY` (through `app.llm.client`), never the grounded key.
+Run `git pull --rebase` before each task and before every push. Nothing may bill: your code uses only the free-tier `GEMINI_API_KEY` (through `app.llm.client`).
 
 ## How to read the artboards
 
@@ -52,7 +52,7 @@ Acceptance: `npm run dev:web` serves the app with the font and tokens applied.
 Build from the artboards, with typed props:
 
 - `ScoreRing` (`ScoreRing.dc.html`): props `score`, `size`, `thick`, `showMax`, `animateFrom`. Tier colour by value (< 40, 40–69, 70+), number always inside, "din 100" when `showMax`. Animates from `animateFrom` (or the previous score) over 1.1 s with cubic ease-out and a 6% scale bump at the end when the score goes up. `aria-label="Scor N din 100"`.
-- `Sidebar` (`Sidebar.dc.html`): business card, Panou principal, Vizibilitate în Gemini with "X/12", Conversații, the 8 chapters with icon, open-problem count badge, "Începe de aici" marker and a check when a chapter has 0 problems. Business switcher, "Datele afacerii" and "Ajutor" are visible but not interactive. Active item from the route.
+- `Sidebar` (`Sidebar.dc.html`): business card, Panou principal, Vizibilitate în Gemini with "X/12", Conversații, the 8 chapters with icon, open-problem count badge and a check when a chapter has 0 problems (no „Începe de aici” marker). Business switcher, "Datele afacerii" and "Ajutor" are visible but not interactive. Active item from the route.
 - `TabBar` (`TabBar.dc.html`): Acasă, Gemini, Capitole, Asistent.
 - `AppShell`: sidebar at ≥ 1024 px, tab bar below.
 - `Toast`: rises 12 px, stays about 3 s.
@@ -75,7 +75,7 @@ A scripted chat with the business card beside it (collapsible card on mobile). S
 3. City and neighbourhood.
 4. Website: "Da" + URL, or "Nu".
 5. Google Maps: paste a link (→ `POST /api/places/resolve-link`) or „Caută-mă pe Google” (→ `POST /api/places/search`, candidate cards with „Cel mai probabil”, „Asta sunt eu”, „Nu sunt aici · lipesc eu linkul”), or "Nu am profil Google". A `422 unreadable_link` shows the `Eroare` state („Lipesc alt link”, „Caută-mă pe Google”, „Sar peste, îl adaug mai târziu”; skipping sends `place_id: null`, `no_google_profile: false`). After a place is picked, three quick-reply questions fill `self_report`: „Ai revendicat profilul Google?” (Da / Nu / Nu știu), „Ai o descriere în profilul Google?” (Da / Nu / Nu știu), „Când ai postat ultima dată pe Google?” (Luna asta / Mai demult / Niciodată / Nu știu).
-6. Social links: Facebook, Instagram, TikTok, each skippable. Then „Când ai postat ultima dată pe rețele?” with the same four answers.
+6. Social links: Instagram and TikTok, each skippable („Ai Instagram sau TikTok? Lipește linkurile. Poți sări peste oricare.”). No Facebook anywhere in the app. Then „Când ai postat ultima dată pe rețele?” with the same four answers.
 7. Other platforms: chips TripAdvisor, Glovo, Wolt, Bolt Food, Booking, Booksy, „Nu folosesc altele”. CTA „Gata, analizează afacerea (N platforme)”.
 
 On submit: `POST /api/scans` with `ScanInputs`, then `POST /api/scans/{id}/conversations` with `kind: "onboarding"`, title „Configurarea afacerii”, and the scripted transcript as `messages`, then go to `/scan/{id}/loading`. „Continui mai târziu” can be a no-op.
@@ -92,7 +92,7 @@ Subscribe to `GET /api/scans/{id}/events` with `EventSource`. Five steps in fixe
 
 Artboards: `Panou`, `MPanou`, `Capitol`, `MCapitol`, `CapitolGol`.
 
-- `/scan/[id]`: greeting, overall ring, `summary_ro`, „N de probleme de rezolvat”, „Începe cu {start_here}”, the Gemini card (mini ring, „Apari în X din 12 răspunsuri”, top 3 competitors), „Următorii pași” from `next_steps` (each „Rezolvă” goes to `/scan/{id}/{chapter}?fix={check_id}`), „Ai rezolvat ceva?” → new assistant conversation, mobile chapter list. „Analizează din nou” → `POST /rescan` → the new scan's loading route. „Ultima analiză: azi” only, with no weekly-rescan text.
+- `/scan/[id]`: greeting, overall ring, `summary_ro`, „N de probleme de rezolvat”, the Gemini card (mini ring, „Apari în X din 12 răspunsuri”, top 3 competitors), „Următorii pași” from `next_steps` (each „Rezolvă” goes to `/scan/{id}/{chapter}?fix={check_id}`), „Ai rezolvat ceva?” → new assistant conversation, mobile chapter list. „Analizează din nou” → `POST /rescan` → the new scan's loading route. „Ultima analiză: azi” only, with no weekly-rescan text.
 - `/scan/[id]/[chapter]`: ring, `intro_ro`, „+N puncte posibile”, problem cards (points, title, why, „Rezolvă”), collapsible „Rezolvate · N” from `solved`, an „Nu am putut verifica” list from `unknown`, „Dacă rezolvi tot” from `overall_gain_if_all_fixed`, „Unde se rezolvă” from `where_to_fix_ro`, „Deschide Profilul tău Google” (`business.google_maps_uri`) on `profil`. With 0 problems, show the `CapitolGol` state. `cunoaste` has no fixes: „Crește pe măsură ce rezolvi restul”.
 - `FixPanel` shell: a right side panel on desktop, a bottom sheet on mobile, sliding in over 280 ms on a backdrop `rgba(15,23,42,0.32)`, opened by `?fix=`. The generic body (`panel: "steps"`) shows the title, why, `evidence_ro`, numbered `steps_ro`, the deep link button and „Am rezolvat”.
 - „Am rezolvat”: update scores in local state first so rings animate, call `POST …/resolve`, then replace local state with `ScoreUpdate.report`. Toast „+{chapter_points_added} puncte · {chapter} a urcat la {chapter_score}”. Roll back with an error toast if the call fails.

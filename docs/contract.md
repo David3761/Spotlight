@@ -84,7 +84,6 @@ interface ScanInputs {
   place_id: string | null;              // from search or resolve-link
   maps_url: string | null;
   no_google_profile: boolean;           // owner said "nu am profil Google"
-  facebook_url: string | null;
   instagram_url: string | null;
   tiktok_url: string | null;
   platforms: Platform[] | null;         // null = question skipped, [] = "Nu folosesc altele"
@@ -112,7 +111,7 @@ type ScanEvent =
   | { type: "failed"; message_ro: string };
 ```
 
-- `detail_ro` is set on `done`, e.g. `"Am găsit Profilul tău Google"`, `"Am găsit 38 de recenzii"`, `"Am citit cafeneauaboema.ro"`, `"Am verificat Facebook și Instagram"`, `"I-am pus lui Gemini 12 întrebări"`.
+- `detail_ro` is set on `done`, e.g. `"Am găsit Profilul tău Google"`, `"Am găsit 38 de recenzii"`, `"Am citit cafeneauaboema.ro"`, `"Am verificat Instagram"`, `"I-am pus lui Gemini 12 întrebări"`.
 - Steps can finish in any order; the frontend marks each one independently.
 - Connecting after the scan finished replays every `done` event, then `complete`.
 
@@ -152,7 +151,6 @@ interface Report {
   overall_exact: number;            // unrounded
   summary_ro: string;               // line under the ring, e.g. "Gemini te recomandă rar deocamdată. Multe se rezolvă în câteva minute."
   open_problem_count: number;       // "30 de probleme de rezolvat"
-  start_here: ChapterId | null;     // chapter with the highest open impact
   next_steps: Problem[];            // top 3 open problems across chapters, by impact
   gemini: GeminiBlock;
   chapters: Chapter[];              // always 8, in chapter order
@@ -171,7 +169,6 @@ interface Business {
   phone: string | null;
   website: string | null;
   google_maps_uri: string | null;   // "Deschide Profilul tău Google"
-  facebook_url: string | null;
   instagram_url: string | null;
   instagram_handle: string | null;  // "cafeneauaboema", no @
   tiktok_url: string | null;
@@ -186,7 +183,6 @@ interface Chapter {
   weight: number;                   // 0.20 … 0.05
   possible_points: number;          // Σ open problem points ("+35 puncte posibile")
   overall_gain_if_all_fixed: number;// "Scorul general ar crește cu aproximativ 7 puncte"
-  start_here: boolean;
   has_fixes: boolean;               // false for "cunoaste" → "Crește pe măsură ce rezolvi restul"
   problems: Problem[];              // open only, by points descending
   solved: SolvedItem[];             // "Rezolvate · N"
@@ -309,7 +305,7 @@ Works for every problem with `fix_type = "generate"`; the Instagram bio (`S05`) 
 
 ```ts
 interface InfoPage {
-  suggested_url: string;            // "cafeneauaboema.ro/despre"
+  suggested_url: string | null;     // "cafeneauaboema.ro/despre"; null when there's no website
   title: string;                    // "Cafeneaua Boema"
   subtitle: string;                 // "Cafenea de specialitate în Cotroceni, București"
   description: string;
@@ -319,7 +315,7 @@ interface InfoPage {
   holiday_hours: string | null;     // null → shown as "de completat"
   phone: string | null;             // null → shown as "numărul tău"
   instagram: string | null;         // "@cafeneauaboema"
-  also_on: string[];                // ["Google Maps", "Facebook", "Glovo", "Wolt"]
+  also_on: string[];                // ["Google Maps", "Glovo", "Wolt"]
   menu: string[];
   faq: { q: string; a: string }[];
   to_fill: string[];                // field names highlighted in yellow
@@ -339,6 +335,8 @@ One Markdown document with every `dev_export` problem: what's wrong, evidence, e
 ---
 
 ## Assistant (owner: Dev A)
+
+An unknown `cid`, `action_id` or `option_id` returns `404 conversation_not_found`. After „Anulează” (status `undone`) the action's options can be answered again.
 
 ### `GET /api/scans/{scan_id}/conversations`
 
@@ -440,7 +438,6 @@ class Facts(BaseModel):                    # what fix texts and the info page ar
     special_hours_ro: list[str]            # upcoming special days as display lines; [] when none
     attributes_ro: list[str]               # true attributes as labels: ["Terasă", "Plata cu cardul", "Câini acceptați"]
     instagram_handle: str | None           # no @
-    facebook_url: str | None
     tiktok_url: str | None
     platforms_ro: list[str]                # where else it's listed: ["Glovo", "Wolt"]
     website_facts: WebsiteFacts | None     # None when there's no website or it couldn't be read
