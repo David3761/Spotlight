@@ -56,7 +56,7 @@ export function GeminiHeader({ scanId, gemini, isTesting, hasRetested, error, on
               Apari în {gemini.mentioned} din {gemini.total} răspunsuri
             </span>
           ) : (
-            <span className="text-base font-bold text-accent-deep lg:text-lg">Testul nu a putut rula.</span>
+            <span className="text-base font-bold text-accent-deep lg:text-lg">Nu am putut rula testul</span>
           )}
           <p className="max-w-155 text-sm leading-normal text-subtle lg:hidden">
             I-am pus lui Gemini 12 întrebări, cum le-ar pune clienții tăi.
