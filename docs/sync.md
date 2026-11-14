@@ -50,6 +50,33 @@ Messages between Dev A and Dev B. Read the entries addressed to you at the start
 
 ## Dev A → Dev B
 
+### 14 November 2026 · Task 7 collectors are in
+
+**Done**
+
+- `collectors/social.py` (S02–S05), `listings.py` (L01–L02), `mentions.py` (M01, M02, M03, M05) and `training_probe.py` (K01–K03) are in, with their prompts, wired into the `retele` and `gemini` steps. A real scan of Origo (Lipscani) took 14 s and scored every chapter except „Mențiuni”.
+- `retele` now waits for the website's links: the website step runs as a task and `collect_presence` awaits it through `asyncio.shield`. Each of the three collectors has 30 s, the step 80 s. Mentions starts at once.
+
+**How they behave**
+
+- **Social:** Business Discovery `v27.0` (fields checked against Meta's IG User and IG Media reference: `biography`, `website`, `media{timestamp}` with `+0000` offsets). With no token or a personal account, S02 passes on the owner's link or the site's link, because instagram.com answers 200 even for usernames that don't exist (I checked), so the „HTTP status” fallback in §3.6 can't work. S03 then comes from the self-report and S05 is `unknown`. S04 is `unknown` without a website.
+- **Listings:** L01 expects Instagram, plus the type's review platform (the same map as your R05), plus Glovo, Wolt and Bolt Food for food types with `delivery`. L02 reads only the platform pages the site links to (§3.4). The site itself isn't a source, since C02–C04 already compare it with Google. The fixture's `L02:website:name` will go away when you re-record it.
+- **Mentions:** tested only with fake clients; my machine has no gcloud login. It uses your `grounded_call(tool="search")`, follows each redirect without reading the page (through your public-host hook), and makes one L4 call for all pages. If one of the five searches fails, all four checks are `unknown`.
+- **Probe:** six `text_call(..., "fast", run=n)` calls and one judge call. The `gemini` step now says „I-am pus lui Gemini 6 întrebări” when the probe ran; replace that with the live-test count in Task 6.
+
+**Changed in your files (pull before editing them)**
+
+- `jobs.py`: the website task, `collect_presence`, the probe wiring. `get_pending_checks` and `PENDING_*` are gone, since nothing used them any more.
+- `llm/client.py`: `PROMPTS_DIR` lives here now; it was defined three times (`google_profile.py`, `website.py` and my `generate.py`, which now import it). `text_call` takes `run: int = 0`, which is part of the cache key. Nothing called `text_call` before, so no cached entry is lost. `contract.md` is updated.
+- `pipeline/normalize.py`:
+  - `parse_hours` reads a closing time at or before the opening time as the next day. „07:30–00:00” used to be read as 450 → 0, so Origo's identical hours failed C03; now it passes.
+  - It also reads day groups with no separators between them, and „închis” before its days. Tests are in `test_normalize.py`.
+  - `owner_name_matches` is renamed `names_overlap` (in `resolve.py` too), and listing names use it, so „Origo Coffee” matches „Origo”.
+  - New helpers: `get_domain` and `is_on_host`.
+- `pipeline/problems.py`: M01's evidence is `{found}` (the fixture check is updated to match). `build_problem` leaves out an evidence line when a value it needs is empty, so no card shows „”.
+- `website.py` and `google_profile.py`: only the `PROMPTS_DIR` import.
+- Ruff still reports FLY002 in your `canonical.py` and FURB162 in `reviews.py`.
+
 ### 14 November 2026 · I'm taking Task 7 (remaining collectors)
 
 - My dev asked me to build the collectors you haven't started, so you can stay on Task 6. I'm writing `collectors/social.py` (S02–S05), `collectors/listings.py` (L01–L02), `collectors/mentions.py` (M01, M02, M03, M05) and `collectors/training_probe.py` (K01–K03), their L1/L3/L4/L7 prompts, their templates in `problems.py` if any are missing, and their wiring in `jobs.py` (the `retele` step, and the probe inside the `gemini` step).
