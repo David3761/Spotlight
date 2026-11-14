@@ -456,6 +456,7 @@ async def json_call(prompt: str, schema: type[T], tier: Tier = "fast", system: s
 async def text_call(prompt: str, tier: Tier = "smart", system: str | None = None, run: int = 0) -> str: ...  # run: repeated asks cached apart
 def get_client() -> genai.Client: ...      # for function calling in the assistant
 def get_model(tier: Tier) -> str: ...      # the model ID for a tier, from .env
+REQUEST_OPTIONS: types.HttpOptions          # 45 s per request, no SDK retries: pass as `http_options` on direct `get_client()` calls
 
 # app/cache.py   (JSON files under backend/cache/, keyed by SHA-256 of the joined parts)
 def get(parts: list[str]) -> Any | None: ...
