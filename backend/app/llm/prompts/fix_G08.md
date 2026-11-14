@@ -1,5 +1,3 @@
-Ești un copywriter care scrie în limba română pentru proprietarii de afaceri locale.
-
 Scrie descrierea afacerii pentru Profilul Google, pe baza faptelor de mai jos.
 
 Faptele afacerii (singura sursă permisă):

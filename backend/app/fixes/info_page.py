@@ -40,35 +40,24 @@ async def get_info_page(scan_id: str) -> InfoPage:
         ),
         questions="\n".join(f"{number}. {question}" for number, question in enumerate(questions, 1)),
     )
-    draft = await json_call(prompt, InfoPageDraft, tier="smart")
+    draft = await json_call(prompt, InfoPageDraft, tier="smart", system=get_prompt("fix_system"))
 
     holiday_hours = "; ".join(facts.special_hours_ro) or None
-    to_fill = [
-        field
-        for field, value in (("holiday_hours", holiday_hours), ("phone", facts.phone))
-        if value is None
-    ]
+    to_fill = [field for field, value in (("holiday_hours", holiday_hours), ("phone", facts.phone)) if value is None]
     page = InfoPage(
         suggested_url=suggested_url,
         title=facts.name,
         subtitle=draft.subtitle,
         description=draft.description,
         address=facts.address,
-        area_note=(
-            f"Servim clienți din {facts.neighborhood} și din cartierele din jur"
-            if facts.neighborhood
-            else None
-        ),
+        area_note=(f"Servim clienți din {facts.neighborhood} și din cartierele din jur" if facts.neighborhood else None),
         hours=facts.hours_ro,
         holiday_hours=holiday_hours,
         phone=facts.phone,
         instagram=f"@{facts.instagram_handle}" if facts.instagram_handle else None,
         also_on=(["Google Maps"] if facts.google_maps_uri else []) + facts.platforms_ro,
         menu=facts.website_facts.menu_items_or_services if facts.website_facts else [],
-        faq=[
-            FaqItem(q=question, a=answer)
-            for question, answer in zip(questions, draft.faq_answers, strict=False)
-        ],
+        faq=[FaqItem(q=question, a=answer) for question, answer in zip(questions, draft.faq_answers, strict=False)],
         to_fill=to_fill,
         message_ro=draft.message_ro,
         html="",
@@ -106,11 +95,7 @@ def get_html(page: InfoPage) -> str:
         sections.append(("Adresă și zonă", place_lines))
 
     hours_lines = [escape(line) for line in page.hours]
-    holiday = (
-        escape(page.holiday_hours)
-        if page.holiday_hours
-        else f"<mark>{HOLIDAY_PLACEHOLDER}</mark>"
-    )
+    holiday = escape(page.holiday_hours) if page.holiday_hours else f"<mark>{HOLIDAY_PLACEHOLDER}</mark>"
     hours_lines.append(f"Sărbători: {holiday}")
     sections.append(("Program", hours_lines))
 
@@ -126,14 +111,9 @@ def get_html(page: InfoPage) -> str:
         sections.append(("Ce servim", [escape(item) for item in page.menu]))
 
     section_html = "\n".join(
-        f"<section><h2>{heading}</h2>"
-        + "".join(f"<p>{line}</p>" for line in lines)
-        + "</section>"
-        for heading, lines in sections
+        f"<section><h2>{heading}</h2>" + "".join(f"<p>{line}</p>" for line in lines) + "</section>" for heading, lines in sections
     )
-    faq_html = "".join(
-        f"<dt>{escape(item.q)}</dt><dd>{escape(item.a)}</dd>" for item in page.faq
-    )
+    faq_html = "".join(f"<dt>{escape(item.q)}</dt><dd>{escape(item.a)}</dd>" for item in page.faq)
     faq_section = f"<section><h2>Întrebări frecvente</h2><dl>{faq_html}</dl></section>" if faq_html else ""
     return f"""<!doctype html>
 <html lang="ro">

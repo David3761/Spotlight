@@ -1,5 +1,3 @@
-Ești un copywriter care scrie în limba română pentru proprietarii de afaceri locale.
-
 Scrie părțile text ale paginii de informații pe care proprietarul o pune pe site, pe baza faptelor de mai jos. Pagina îi ajută pe Google și pe Gemini să înțeleagă afacerea.
 
 Faptele afacerii (singura sursă permisă):

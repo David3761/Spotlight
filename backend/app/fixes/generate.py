@@ -14,9 +14,7 @@ TONE_INSTRUCTIONS: dict[Tone, str] = {
 """The instruction added to the prompt for each tone."""
 
 
-async def get_generated_text(
-    scan_id: str, check_id: str, tone: Tone, variant: int
-) -> GeneratedText | None:
+async def get_generated_text(scan_id: str, check_id: str, tone: Tone, variant: int) -> GeneratedText | None:
     """Returns the generated text for an open `generate` problem, or `None` when the check is not one."""
     report = load_report(scan_id)
     problem = next(
@@ -38,14 +36,14 @@ async def get_generated_text(
     inputs = load_inputs(scan_id)
     prompt = get_text_prompt(problem, tone, variant, load_facts(scan_id), inputs)
     max_chars = problem.fix.max_chars
-    draft = await json_call(prompt, GeneratedTextDraft, tier="smart")
+    draft = await json_call(prompt, GeneratedTextDraft, tier="smart", system=get_prompt("fix_system"))
     if max_chars is not None and len(draft.text) > max_chars:
         stricter_prompt = (
             f"{prompt}\n\nRăspunsul anterior a avut {len(draft.text)} de caractere, "
             f"iar limita este {max_chars}. Scrie din nou, mai scurt, "
             f"sub {max_chars} de caractere, cu aceleași fapte esențiale."
         )
-        draft = await json_call(stricter_prompt, GeneratedTextDraft, tier="smart")
+        draft = await json_call(stricter_prompt, GeneratedTextDraft, tier="smart", system=get_prompt("fix_system"))
 
     generated = GeneratedText(
         check_id=check_id,
@@ -59,14 +57,10 @@ async def get_generated_text(
     return generated
 
 
-def get_text_prompt(
-    problem: Problem, tone: Tone, variant: int, facts: Facts, inputs: ScanInputs
-) -> str:
+def get_text_prompt(problem: Problem, tone: Tone, variant: int, facts: Facts, inputs: ScanInputs) -> str:
     """Returns the filled prompt for a problem, from its own prompt file or the generic one."""
     prompt_name = f"fix_{problem.check_id}"
-    template = get_prompt(
-        prompt_name if (PROMPTS_DIR / f"{prompt_name}.md").exists() else "fix_generic"
-    )
+    template = get_prompt(prompt_name if (PROMPTS_DIR / f"{prompt_name}.md").exists() else "fix_generic")
     variant_instruction = (
         f"Aceasta e varianta {variant + 1}: folosește alte cuvinte și altă structură "
         "decât în varianta obișnuită, cu aceleași fapte."
@@ -84,9 +78,7 @@ def get_text_prompt(
         problem="\n".join(problem_lines),
         tone_instruction=TONE_INSTRUCTIONS[tone],
         variant_instruction=variant_instruction,
-        limit_instruction=(
-            f"Maximum {fix.max_chars} de caractere, spații incluse." if fix.max_chars else ""
-        ),
+        limit_instruction=(f"Maximum {fix.max_chars} de caractere, spații incluse." if fix.max_chars else ""),
     )
 
 

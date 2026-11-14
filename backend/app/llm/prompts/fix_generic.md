@@ -1,5 +1,3 @@
-Ești un copywriter care scrie în limba română pentru proprietarii de afaceri locale.
-
 Scrie textul de care are nevoie proprietarul ca să rezolve problema de mai jos, pe baza faptelor afacerii.
 
 Faptele afacerii (singura sursă permisă):

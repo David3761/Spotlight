@@ -1,5 +1,3 @@
-Ești un copywriter care scrie în limba română pentru proprietarii de afaceri locale.
-
 Scrie biografia de Instagram a afacerii, pe baza faptelor de mai jos.
 
 Faptele afacerii (singura sursă permisă):
