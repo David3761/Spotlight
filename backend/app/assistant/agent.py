@@ -6,6 +6,7 @@ from uuid import uuid4
 
 from google.genai import types
 
+from app import cache
 from app.assistant import store
 from app.assistant.schemas import (
     ActionOption,
@@ -16,9 +17,10 @@ from app.assistant.schemas import (
 )
 from app.fixes.generate import get_generated_text, get_open_problems
 from app.fixes.schemas import Tone
+from app.jobs import is_demo_scan
 from app.llm.client import PROMPTS_DIR, get_client, get_model
 from app.models import Problem, Report
-from app.services.resolution import load_report, mark_resolved, unmark_resolved
+from app.services.resolution import load_inputs, load_report, mark_resolved, unmark_resolved
 
 MAX_ROUNDS = 4
 """The most model calls one owner message may trigger."""
@@ -45,8 +47,7 @@ TOOLS = [
             types.FunctionDeclaration(
                 name="propose_mark_resolved",
                 description=(
-                    "Proposes marking open problems as solved. The owner confirms in the app; "
-                    "nothing changes until then."
+                    "Proposes marking open problems as solved. The owner confirms in the app; nothing changes until then."
                 ),
                 parameters=types.Schema(
                     type=types.Type.OBJECT,
@@ -81,9 +82,7 @@ TOOLS = [
 ]
 """The four functions the model may call."""
 
-TEXT_ONLY = types.ToolConfig(
-    function_calling_config=types.FunctionCallingConfig(mode=types.FunctionCallingConfigMode.NONE)
-)
+TEXT_ONLY = types.ToolConfig(function_calling_config=types.FunctionCallingConfig(mode=types.FunctionCallingConfigMode.NONE))
 """The tool config of the last round, which must answer in text instead of calling more functions."""
 
 
@@ -92,9 +91,7 @@ async def send_message(cid: str, text: str) -> Message | None:
     conversation = store.get_conversation(cid)
     if conversation is None:
         return None
-    user_message = Message(
-        id=uuid4().hex, role="user", text=text, created_at=datetime.now(UTC)
-    )
+    user_message = Message(id=uuid4().hex, role="user", text=text, created_at=datetime.now(UTC))
     reply = await get_reply(conversation.scan_id, conversation.messages, text)
     store.append_messages(cid, [user_message, reply])
     return reply
@@ -116,17 +113,15 @@ async def get_reply(scan_id: str, history: list[Message], text: str) -> Message:
         tools=TOOLS,
         automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
     )
-    client = get_client()
     model = get_model("smart")
+    is_demo = is_demo_scan(load_inputs(scan_id))
     proposed_actions: list[ProposedAction] = []
     reply_text = None
 
     for round_number in range(1, MAX_ROUNDS + 1):
         if round_number == MAX_ROUNDS:
             config = config.model_copy(update={"tool_config": TEXT_ONLY})
-        response = await client.aio.models.generate_content(
-            model=model, contents=contents, config=config
-        )
+        response = await get_model_response(model, contents, config, is_demo)
         function_calls = response.function_calls
         if not function_calls:
             reply_text = response.text
@@ -137,9 +132,7 @@ async def get_reply(scan_id: str, history: list[Message], text: str) -> Message:
         response_parts = []
         for call in function_calls:
             result = await run_function(scan_id, call.name, call.args or {}, proposed_actions)
-            response_parts.append(
-                types.Part.from_function_response(name=call.name, response=result)
-            )
+            response_parts.append(types.Part.from_function_response(name=call.name, response=result))
         contents.append(types.Content(role="user", parts=response_parts))
 
     return Message(
@@ -151,19 +144,41 @@ async def get_reply(scan_id: str, history: list[Message], text: str) -> Message:
     )
 
 
-async def run_function(
-    scan_id: str, name: str, args: dict[str, Any], proposed_actions: list[ProposedAction]
-) -> dict[str, Any]:
+async def get_model_response(
+    model: str, contents: list[types.Content], config: types.GenerateContentConfig, is_demo: bool
+) -> types.GenerateContentResponse:
+    """Returns the model's next turn; on a demo scan an identical conversation is answered from the cache, so a rehearsed demo
+    replays offline, while real owners always get a fresh answer.
+
+    Function results carry no IDs or timestamps, so the same messages on the same report give the same key. Only turns with
+    text or a function call are cached, so an empty or blocked answer is never replayed.
+    """
+    if not is_demo:
+        return await get_client().aio.models.generate_content(model=model, contents=contents, config=config)
+    key = [
+        "assistant_turn",
+        model,
+        config.model_dump_json(exclude_none=True),
+        *(content.model_dump_json(exclude_none=True) for content in contents),
+    ]
+    cached = cache.get(key)
+    if cached is not None:
+        return types.GenerateContentResponse(candidates=[types.Candidate(content=types.Content.model_validate(cached))])
+    response = await get_client().aio.models.generate_content(model=model, contents=contents, config=config)
+    content = response.candidates[0].content if response.candidates else None
+    if content is not None and (response.function_calls or response.text):
+        cache.set(key, content.model_dump(mode="json", exclude_none=True))
+    return response
+
+
+async def run_function(scan_id: str, name: str, args: dict[str, Any], proposed_actions: list[ProposedAction]) -> dict[str, Any]:
     """Returns the result of one function the model called; a created action is added to `proposed_actions`."""
     report = load_report(scan_id)
     if name == "get_report":
         return {
             "overall": report.overall,
             "summary": report.summary_ro,
-            "chapters": [
-                {"id": chapter.id, "name": chapter.name_ro, "score": chapter.score}
-                for chapter in report.chapters
-            ],
+            "chapters": [{"id": chapter.id, "name": chapter.name_ro, "score": chapter.score} for chapter in report.chapters],
             "open_problems": [
                 {
                     "check_id": problem.check_id,
@@ -186,9 +201,7 @@ async def run_function(
         return result
     if name == "generate_fix_text":
         tone = args.get("tone")
-        generated = await get_generated_text(
-            scan_id, str(args.get("check_id")), tone if tone in TONES else "prietenos", 0
-        )
+        generated = await get_generated_text(scan_id, str(args.get("check_id")), tone if tone in TONES else "prietenos", 0)
         if generated is None:
             return {"error": "Nu e o problemă deschisă care se rezolvă cu un text."}
         return {"text": generated.text, "included": generated.included_ro}
@@ -203,9 +216,7 @@ async def run_function(
 def get_proposed_action(report: Report, check_ids: list[str]) -> tuple[ProposedAction | None, list[str]]:
     """Returns a pending action for the open problems among the ids that share the first one's chapter, and the open ids left out."""
     open_problems = {problem.check_id: problem for problem in get_open_problems(report)}
-    candidates = [
-        open_problems[check_id] for check_id in dict.fromkeys(check_ids) if check_id in open_problems
-    ]
+    candidates = [open_problems[check_id] for check_id in dict.fromkeys(check_ids) if check_id in open_problems]
     if not candidates:
         return None, []
     chapter_id = candidates[0].chapter_id
@@ -230,12 +241,7 @@ def get_proposed_action(report: Report, check_ids: list[str]) -> tuple[ProposedA
     options.append(ActionOption(id="no", label_ro="Nu încă", check_ids=[]))
     action = ProposedAction(
         action_id=uuid4().hex,
-        items=[
-            ProposedItem(
-                check_id=problem.check_id, title_ro=problem.title_ro, points=problem.points
-            )
-            for problem in problems
-        ],
+        items=[ProposedItem(check_id=problem.check_id, title_ro=problem.title_ro, points=problem.points) for problem in problems],
         options=options,
     )
     return action, left_out
@@ -287,9 +293,7 @@ def apply_action(cid: str, action_id: str, option_id: str) -> ActionResult | Non
         (chapter.score for chapter in report_before.chapters if chapter.id == score.chapter_id),
         None,
     )
-    chapter_name = next(
-        chapter.name_ro for chapter in score.report.chapters if chapter.id == score.chapter_id
-    )
+    chapter_name = next(chapter.name_ro for chapter in score.report.chapters if chapter.id == score.chapter_id)
     next_problem = get_next_problem(score.report)
     followup = get_followup(
         get_confirmed_text(
