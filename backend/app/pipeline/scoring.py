@@ -160,6 +160,30 @@ def get_problem_points(check: CheckResult, checks: list[CheckResult]) -> int:
     return round(100 * (check.points_max - check.points_earned) / known_max)
 
 
+GEMINI_MENTION_POINTS = 70
+"""The live test's points for being named, scaled by the share of questions that named the business."""
+
+GEMINI_POSITION_POINTS = {1: 15, 2: 8, 3: 8}
+"""The live test's points for being named first, second or third in an answer; later earns nothing."""
+
+GEMINI_FACTS_POINTS = 15
+"""The live test's points for stating the business's address and hours correctly."""
+
+
+def get_gemini_score(positions: list[int | None], facts_ok: bool | None) -> int:
+    """Returns the live test's score from each answered question's position (`None` when it didn't name the business).
+
+    Mention rate is worth 70 and position 15, both averaged over every answered question; correct facts are worth 15,
+    and when they couldn't be judged (the business was never named) the score is taken over the other 85.
+    """
+    total = len(positions) or 1
+    mention = GEMINI_MENTION_POINTS * sum(1 for position in positions if position is not None) / total
+    position = sum(GEMINI_POSITION_POINTS.get(position, 0) for position in positions if position is not None) / total
+    if facts_ok is None:
+        return round(100 * (mention + position) / (GEMINI_MENTION_POINTS + max(GEMINI_POSITION_POINTS.values())))
+    return round(mention + position + (GEMINI_FACTS_POINTS if facts_ok else 0))
+
+
 def get_overall_exact(chapter_scores: dict[ChapterId, int | None], gemini_score: int | None) -> float:
     """Returns the weighted mean of the known chapter scores and the Gemini score, renormalized over the known weights."""
     weighted = [(CHAPTER_WEIGHTS[chapter_id], score) for chapter_id, score in chapter_scores.items() if score is not None]

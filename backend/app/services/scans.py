@@ -7,6 +7,7 @@ from datetime import UTC, datetime
 
 from app import jobs
 from app.db import ScanRow, get_session
+from app.errors import ApiError
 from app.models import (
     CompleteEvent,
     FailedEvent,
@@ -16,6 +17,8 @@ from app.models import (
     ScanInputs,
     StepEvent,
 )
+from app.pipeline.collectors.live_test import collect_live_test
+from app.pipeline.collectors.rivals import get_comparison, get_rival_rows
 from app.pipeline.types import ScanInternal
 from app.services.resolution import (
     edit_report,
@@ -24,8 +27,8 @@ from app.services.resolution import (
     load_inputs,
 )
 
-GEMINI_TEST_STUB_SECONDS = 2.0
-"""How long the stubbed Gemini re-test waits before answering."""
+DEMO_GEMINI_TEST_SECONDS = 2.0
+"""How long „Testează din nou” pauses on a demo scan, so the button's busy state shows."""
 
 
 def create_scan(inputs: ScanInputs) -> str:
@@ -82,10 +85,28 @@ async def get_stored_events(scan_id: str, report: Report | None, error: str | No
 
 
 async def run_gemini_test(scan_id: str) -> Report:
-    """Reruns the live Gemini test and returns the updated report."""
+    """Reruns only the live Gemini test, numbered by the current time so no answer comes from the cache, and returns the report.
+
+    A demo scan keeps the demo's Gemini block and only refreshes its time, after a short pause.
+    """
     with get_session() as session:
-        get_row_report(get_scan_row(session, scan_id))
-    await asyncio.sleep(GEMINI_TEST_STUB_SECONDS)
-    with edit_report(scan_id) as (report, _):
-        report.gemini.last_checked = datetime.now(UTC).isoformat()
+        row = get_scan_row(session, scan_id)
+        get_row_report(row)
+        inputs = ScanInputs.model_validate_json(row.inputs)
+        internal = ScanInternal.model_validate_json(row.internal)
+    if internal.source == "fixture":
+        await asyncio.sleep(DEMO_GEMINI_TEST_SECONDS)
+        with edit_report(scan_id) as (report, _):
+            report.gemini.last_checked = datetime.now(UTC).isoformat()
+        return report
+    round_number = int(datetime.now(UTC).timestamp())
+    live = await jobs.run_collector(
+        collect_live_test(inputs, internal.canonical, round_number), jobs.LIVE_TEST_TIMEOUT_SECONDS, None
+    )
+    if live is None:
+        raise ApiError("upstream_error", "Nu am putut întreba Gemini acum. Încearcă din nou peste un minut.")
+    rival_rows = await jobs.run_collector(get_rival_rows(live.rivals), jobs.RIVALS_TIMEOUT_SECONDS, [])
+    with edit_report(scan_id) as (report, internal):
+        report.gemini = live.block
+        report.comparison = get_comparison(report.comparison.me, rival_rows, internal.checks)
     return report

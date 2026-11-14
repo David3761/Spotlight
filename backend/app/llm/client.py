@@ -2,6 +2,7 @@
 
 import asyncio
 import json
+from datetime import UTC, datetime
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
@@ -31,7 +32,13 @@ REQUEST_OPTIONS = types.HttpOptions(timeout=45_000, retry_options=types.HttpRetr
 """Per-request limits: a 45 s timeout and no SDK retries, so `generate`'s own three tries are the only ones."""
 
 gemini_slots = asyncio.Semaphore(6)
-"""The limit on concurrent Gemini calls across the whole backend."""
+"""The limit on concurrent calls on the free-tier key, shared by every JSON and text call in the backend."""
+
+grounded_slots: dict[str, asyncio.Semaphore] = {"maps": asyncio.Semaphore(6), "search": asyncio.Semaphore(6)}
+"""The limits on concurrent grounded calls on Google Cloud, one per tool, so the live test starves neither mentions nor the rest."""
+
+REVIEW_TITLE_PREFIX = "Review of "
+"""The prefix Google adds to Maps sources that are a review of a place rather than the place itself."""
 
 
 @lru_cache
@@ -69,11 +76,11 @@ def is_retryable(error: BaseException) -> bool:
     reraise=True,
 )
 async def generate(
-    client: genai.Client, model: str, prompt: str, config: types.GenerateContentConfig
+    client: genai.Client, model: str, prompt: str, config: types.GenerateContentConfig, slots: asyncio.Semaphore
 ) -> types.GenerateContentResponse:
-    """Returns one generation with text, within the concurrency limit and with exponential backoff."""
+    """Returns one generation with text, within its service's concurrency limit and with exponential backoff."""
     request_config = config.model_copy(update={"http_options": REQUEST_OPTIONS})
-    async with gemini_slots:
+    async with slots:
         response = await client.aio.models.generate_content(model=model, contents=prompt, config=request_config)
     if not response.text:
         raise ValueError(f"Gemini returned no text (model {model})")
@@ -93,7 +100,7 @@ async def json_call[T: BaseModel](prompt: str, schema: type[T], tier: Tier = "fa
         response_mime_type="application/json",
         response_json_schema=json_schema,
     )
-    response = await generate(get_client(), model, prompt, config)
+    response = await generate(get_client(), model, prompt, config, gemini_slots)
     value = schema.model_validate_json(response.text or "")
     cache.set(key, value.model_dump(mode="json"))
     return value
@@ -110,7 +117,7 @@ async def text_call(prompt: str, tier: Tier = "smart", system: str | None = None
     if cached is not None:
         return cached
     config = types.GenerateContentConfig(system_instruction=system)
-    text = (await generate(get_client(), model, prompt, config)).text or ""
+    text = (await generate(get_client(), model, prompt, config, gemini_slots)).text or ""
     cache.set(key, text)
     return text
 
@@ -136,10 +143,11 @@ async def grounded_call(
 ) -> GroundedAnswer:
     """Returns Gemini's grounded answer to a customer's question, sent alone: no system prompt, no business context.
 
-    `run` tells repeated asks of the same question apart, so each run is cached separately.
+    `run` tells repeated asks of the same question apart, so each run is cached separately; answers are cached per day.
     """
     model = get_settings().gemini_model_live
-    key = ["grounded_call", model, tool, question, str(lat), str(lng), str(run)]
+    today = datetime.now(UTC).date().isoformat()
+    key = ["grounded_call", today, model, tool, question, str(lat), str(lng), str(run)]
     cached = cache.get(key)
     if cached is not None:
         return GroundedAnswer.model_validate(cached)
@@ -150,7 +158,7 @@ async def grounded_call(
             retrieval_config=types.RetrievalConfig(lat_lng=types.LatLng(latitude=lat, longitude=lng), language_code="ro-RO")
         )
     config = types.GenerateContentConfig(tools=[grounding], tool_config=location)
-    response = await generate(get_grounded_client(), model, question, config)
+    response = await generate(get_grounded_client(), model, question, config, grounded_slots[tool])
     answer = GroundedAnswer(text=response.text or "", sources=get_sources(response))
     cache.set(key, answer.model_dump(mode="json"))
     return answer
@@ -162,7 +170,7 @@ def get_sources(response: types.GenerateContentResponse) -> list[GroundingSource
     sources: list[GroundingSource] = []
     for chunk in (metadata.grounding_chunks or []) if metadata else []:
         if chunk.maps and chunk.maps.uri:
-            title = (chunk.maps.title or "").removesuffix(MAPS_TITLE_SUFFIX)
+            title = (chunk.maps.title or "").removesuffix(MAPS_TITLE_SUFFIX).removeprefix(REVIEW_TITLE_PREFIX)
             place_id = (chunk.maps.place_id or "").removeprefix("places/") or None
             sources.append(GroundingSource(kind="maps", title=title, uri=chunk.maps.uri, place_id=place_id))
         elif chunk.web and chunk.web.uri:

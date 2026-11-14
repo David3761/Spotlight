@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import urlparse
 
-from pydantic import TypeAdapter
+from pydantic import BaseModel, TypeAdapter
 from sqlmodel import select
 
 from app.config import get_settings
@@ -15,7 +15,6 @@ from app.db import ScanRow, get_session
 from app.models import (
     ChapterId,
     CompareRow,
-    Comparison,
     CompleteEvent,
     FailedEvent,
     Report,
@@ -33,8 +32,10 @@ from app.pipeline.canonical import CanonicalProfile, get_canonical
 from app.pipeline.collectors.competitors import NearbyCompetitor, get_nearby_competitors
 from app.pipeline.collectors.google_profile import collect_google_profile
 from app.pipeline.collectors.listings import LISTING_CHECK_IDS, collect_listings
+from app.pipeline.collectors.live_test import LiveTestResult, collect_live_test
 from app.pipeline.collectors.mentions import MENTION_CHECK_IDS, collect_mentions
 from app.pipeline.collectors.reviews import collect_reviews
+from app.pipeline.collectors.rivals import get_comparison, get_rival_rows
 from app.pipeline.collectors.social import SOCIAL_CHECK_IDS, collect_social
 from app.pipeline.collectors.training_probe import PROBE_CHECK_IDS, PROBE_QUESTION_COUNT, collect_training_probe
 from app.pipeline.collectors.website import (
@@ -84,6 +85,15 @@ PRESENCE_TIMEOUT_SECONDS = 80
 
 PROBE_TIMEOUT_SECONDS = 30
 """The time limit of the training-data probe (3.7)."""
+
+LIVE_TEST_TIMEOUT_SECONDS = 75
+"""The time limit of the live Gemini test (3.8), which starts right after the Google profile."""
+
+RIVALS_TIMEOUT_SECONDS = 15
+"""The time limit of the rivals' Place Details (3.9b)."""
+
+GEMINI_STEP_TIMEOUT_SECONDS = 95
+"""The time limit of the whole `gemini` step: the probe and live test side by side, then the rivals."""
 
 COLLECTOR_ERROR_RO = "Nu am putut verifica acum. Încearcă din nou mai târziu."
 """Why a check couldn't run when its collector failed or took too long."""
@@ -248,6 +258,7 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
         save_failure(scan_id, PROFILE_ERROR_RO)
         await progress.publish(FailedEvent(type="failed", message_ro=PROFILE_ERROR_RO))
         return
+    live_task = asyncio.create_task(run_collector(collect_live_test(inputs, canonical), LIVE_TEST_TIMEOUT_SECONDS, None))
     try:
         nearby = await get_nearby(inputs, canonical)
         google_checks = await run_collector(
@@ -272,7 +283,7 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
                 lambda scan: get_website_detail(website, has_known(scan.checks, "C")),
             )
         )
-        review_checks, website_scan, presence_checks, probe_checks = await asyncio.gather(
+        review_checks, website_scan, presence_checks, gemini_step = await asyncio.gather(
             run_step(
                 progress,
                 "recenzii",
@@ -293,13 +304,13 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
             run_step(
                 progress,
                 "gemini",
-                collect_training_probe(inputs, canonical),
-                PROBE_TIMEOUT_SECONDS,
-                get_unknown_results(PROBE_CHECK_IDS, COLLECTOR_ERROR_RO),
-                lambda checks: get_gemini_detail(PROBE_QUESTION_COUNT if has_known(checks) else 0),
+                collect_gemini(inputs, canonical, live_task),
+                GEMINI_STEP_TIMEOUT_SECONDS,
+                GeminiStep(probe_checks=get_unknown_results(PROBE_CHECK_IDS, COLLECTOR_ERROR_RO), live=None, rival_rows=[]),
+                get_gemini_step_detail,
             ),
         )
-        all_checks = google_checks + review_checks + website_scan.checks + presence_checks + probe_checks
+        all_checks = google_checks + review_checks + website_scan.checks + presence_checks + gemini_step.probe_checks
         me = (
             get_compare_row(canonical)
             if canonical
@@ -313,8 +324,9 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
                 hours_complete=None,
             )
         )
-        comparison = Comparison(me=me, rivals=[], insights_ro=[], actions=[])
-        report = build_report(scan_id, inputs, canonical, all_checks, get_unknown_gemini_block(), comparison)
+        comparison = get_comparison(me, gemini_step.rival_rows, all_checks)
+        gemini = gemini_step.live.block if gemini_step.live else get_unknown_gemini_block()
+        report = build_report(scan_id, inputs, canonical, all_checks, gemini, comparison)
         internal = ScanInternal(
             source="pipeline",
             checks=all_checks,
@@ -325,9 +337,41 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
         save_report(scan_id, report, internal)
         await progress.publish(CompleteEvent(type="complete", scan_id=scan_id))
     except Exception:
+        live_task.cancel()
         logger.exception("Pipeline failed for scan %s", scan_id)
         save_failure(scan_id, PIPELINE_ERROR_RO)
         await progress.publish(FailedEvent(type="failed", message_ro=PIPELINE_ERROR_RO))
+
+
+class GeminiStep(BaseModel):
+    """What the `gemini` step produced: the training-probe checks, the live test and the rivals' comparison rows."""
+
+    probe_checks: list[CheckResult]
+    live: LiveTestResult | None
+    rival_rows: list[CompareRow]
+
+
+async def collect_gemini(
+    inputs: ScanInputs, canonical: CanonicalProfile | None, live_task: asyncio.Task[LiveTestResult | None]
+) -> GeminiStep:
+    """Runs the training probe while the live test finishes, then fetches the rivals the live test found."""
+    probe_checks, live = await asyncio.gather(
+        run_collector(
+            collect_training_probe(inputs, canonical),
+            PROBE_TIMEOUT_SECONDS,
+            get_unknown_results(PROBE_CHECK_IDS, COLLECTOR_ERROR_RO),
+        ),
+        live_task,
+    )
+    rival_rows = await run_collector(get_rival_rows(live.rivals), RIVALS_TIMEOUT_SECONDS, []) if live else []
+    return GeminiStep(probe_checks=probe_checks, live=live, rival_rows=rival_rows)
+
+
+def get_gemini_step_detail(step: GeminiStep) -> str:
+    """Returns the `gemini` step's done text: the live test's questions, or the probe's when the live test didn't run."""
+    if step.live:
+        return get_gemini_detail(step.live.block.total)
+    return get_gemini_detail(PROBE_QUESTION_COUNT if has_known(step.probe_checks) else 0)
 
 
 async def get_scan_canonical(inputs: ScanInputs) -> CanonicalProfile | None:
