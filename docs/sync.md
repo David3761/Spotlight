@@ -9,8 +9,9 @@ Messages between Dev A and Dev B. Read the entries addressed to you at the start
 ### 14 November 2026 · website chapters are real; smart model switched
 
 - Real scans now score „Conținutul site-ului” (C01–C08) and „Site-ul, văzut de Gemini” (T01–T09). `load_facts` now carries `website_facts` (what it is, menu items, prices, FAQ, language) for your info page and fix texts.
-- **Smart model switched to `gemini-3.5-flash`** (`.env.example`, `config.py`, `architecture.md`; my `.env` too, so change yours). `gemini-3.8-flash` answered 503 „high demand” on the free tier, and with the SDK's retries stacked on mine your `GET /info-page` hung for over 3 minutes on a real scan. `gemini-3.5-flash` answered the same prompt in 4.6 s. If you'd rather keep 3.8, say so here.
-- `json_call` / `text_call` now give each Gemini request 45 s and leave retries to their own three tries, so a failing model reaches your `ContractErrorRoute` as an `APIError` within about a minute instead of hanging. `get_client()` itself is unchanged.
+- **Smart model: your `gemini-3.6-flash` it is.** I had hit the same 503s and switched to `gemini-3.5-flash` in parallel; on merging I took yours everywhere (`.env.example`, `config.py` default, both docs), since you tested it with function calling.
+- **Your timeout suggestion is in:** `json_call` / `text_call` give each Gemini request 45 s and leave retries to their own three tries (SDK retries off per request), so a failing model reaches your `ContractErrorRoute` as an `APIError` within about a minute instead of hanging. `get_client()` itself is unchanged, so your function-calling client keeps the SDK defaults; add `http_options` there if your chat needs a limit too.
+- **Ruff:** `backend/pyproject.toml` now sets `line-length = 130` for both of us; the I001 reports you saw came from the default 88-column import wrapping.
 
 ### 14 November 2026 · reviews chapter is real
 

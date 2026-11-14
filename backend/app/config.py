@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 
     gemini_api_key: str = ""
     gemini_model_fast: str = "gemini-3.5-flash-lite"
-    gemini_model_smart: str = "gemini-3.5-flash"
+    gemini_model_smart: str = "gemini-3.6-flash"
     gemini_model_live: str = "gemini-3.5-flash-lite"
     google_cloud_project: str = ""
     google_cloud_location: str = "global"
