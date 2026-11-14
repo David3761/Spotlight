@@ -18,8 +18,8 @@
     "instagram_handle": "cafeneauaboema",
     "tiktok_url": "https://www.tiktok.com/@cafeneauaboema"
   },
-  "overall": 45,
-  "overall_exact": 45.25,
+  "overall": 44,
+  "overall_exact": 43.95,
   "summary_ro": "Gemini te recomandă rar deocamdată. Multe se rezolvă în câteva minute.",
   "open_problem_count": 30,
   "start_here": "continut",
@@ -94,7 +94,7 @@
   ],
   "gemini": {
     "status": "complete",
-    "score": 42,
+    "score": 29,
     "weight": 0.1,
     "mentioned": 2,
     "total": 12,
