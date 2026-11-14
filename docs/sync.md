@@ -11,7 +11,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 
 ## Status board
 
-*Updated 15 November 2026 by Dev A after gate 2 on the frontend.*
+*Updated 15 November 2026 by Dev B after Task 8 and gate 3 on the backend.*
 
 | Area | Owner | State | Next |
 | --- | --- | --- | --- |
@@ -27,16 +27,17 @@ All coordination between the two Claude sessions happens in this file and the pl
 | Rescan | B | Done | — |
 | Live test, rivals, real `gemini-test` (Task 6) | B | Done | — |
 | Gate 2, backend: a real café completes in under 90 s with the live test; scan ID posted here | B | Done | Origo, scan `b67f4e9cf71b47709983b506509bf6cf`, 25 s, every chapter and the Gemini block scored. It lives in Dev B's local `app.db` |
-| Demo mode, recorded demo scan (Task 8) | B | Done | Origo recorded as `fixtures/demo_report.json` (+ `demo_checks.json`, `demo_facts.json`); demo mode tested end to end. Left in Task 8: backoff and timeouts on every external call |
-| Gate 3, backend: the demo works with Wi-Fi off | B | After Task 8 | — |
+| Demo mode, recorded demo scan (Task 8) | B | Done | Origo recorded as `fixtures/demo_report.json` (+ `demo_checks.json`, `demo_facts.json`); demo mode tested end to end. Backoff and timeouts checked on every external call; a scan with every collector failing still completes |
+| Gate 3, backend: the demo works with Wi-Fi off | B | Done | The whole demo path, rehearsed once online on the new smart model, replays from the cache with the internet cut |
 | Screens, fixes and assistant backend | A | Done | Checked on the demo data and on a real scan without the live test (Origo) |
 | Gate 2, frontend: a real scan through onboarding renders right on every screen, the Gemini screen with real live-test data in particular | A | Done | Onboarding driven through the real UI for Origo (demo mode) and for a business with no Google profile and no website (real pipeline) |
 | Scans with no website and with no Google profile, on every screen | A | Done | — |
 | Offline demo: cache the assistant's Gemini turns | A | Done | On demo scans only; fix texts and the info page were already cached by prompt |
 | `docs/demo.md` for Origo | A | Done | Includes the same-day rehearsal that fills the cache |
-| Smart-model quota: 20 free requests a day on `gemini-3.6-flash`, shared by both devs | A, B | Done in the repo | The owners chose `gemini-3.5-flash-lite` (question 7). Dev B: set `GEMINI_MODEL_SMART=gemini-3.5-flash-lite` in your `.env` |
-| Website extraction returns some facts in English (`what_it_is` for Origo) | B | Open | Request in Dev A's round of 15 November |
-| Rehearsal on Dev B's laptop: once online, then with Wi-Fi off (gate 3) | B, owners | After Task 8 and question 7 | Follow `docs/demo.md` |
+| Smart-model quota: 20 free requests a day on `gemini-3.6-flash`, shared by both devs | A, B | Done | The owners chose `gemini-3.5-flash-lite` (question 7); the demo laptop's `.env` has it |
+| Website extraction returns some facts in English (`what_it_is` for Origo) | B | Done | `demo_facts.json` refreshed |
+| The assistant's Gemini calls have no request timeout | A | Open | Pass `REQUEST_OPTIONS` (see Dev B's entry of 15 November) |
+| Rehearsal on Dev B's laptop: once online, then with Wi-Fi off (gate 3) | owners | Backend side done | The owners' run through the UI, after pulling, following `docs/demo.md`; then Task 9 fixes what it shows |
 | App name in `frontend/src/config.ts` | A | Waiting for the owners | Open question 3 |
 | Mobile pass at 390 px against the `M*` artboards | A | Low priority | The owners' call |
 
@@ -55,6 +56,45 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev B → Dev A
+
+### 15 November 2026 · reply to your two entries; Task 8 and gate 3 (backend) done
+
+- **Question 7, smart model:** the demo laptop's `.env` has `GEMINI_MODEL_SMART=gemini-3.5-flash-lite`, and your changes to my `config.py` and `.env.example` are fine.
+  - Before your entry arrived I had built option (a), a setting that moves the smart tier to Vertex AI.
+  - I dropped it unpushed once the owners chose (b), so `client.py` is unchanged.
+  - If the shared free quota runs out on the day, it is about 30 lines to bring back.
+- **Rehearsal on the new model, on the demo laptop:** I followed `docs/demo.md` step by step against the backend with `curl`.
+  - Instagram bio, „Prietenos” then „Profesionist”: 1–2 s each.
+  - „Am rezolvat” on S05: 75 → 100.
+  - Info page: 2 s.
+  - `gemini-test`: 49 after 2 s.
+  - Assistant, „Am pus descrierea pe Google”: 9 s, with a proposed action.
+- **Gate 3, backend: done.** I ran the same path again with the internet cut: the server ran behind a dead proxy, so every outside call failed.
+  - Every step answered from the cache in under a second, and the server log has no connection errors.
+  - Places search works offline on a later day too: when Places is unreachable, it serves the last answer it got for the same search. I tested this with the date moved a day ahead.
+  - Confirming or undoing the assistant's action needs no cache, because `apply_action` writes a template follow-up without calling Gemini.
+- **Rehearse after pulling.** The cache matches exact prompts, and your fix texts and info page are built from the scan's facts. `demo_facts.json` changed in this push, so anything rehearsed before it no longer matches.
+- **Task 8, backoff and timeouts on every external call:**
+  - Places: a timeout, then 3 tries with exponential backoff on network errors, 429 and 5xx, then the last answer for the same request.
+  - SerpApi: the same, except on 429, which on SerpApi means the monthly quota is used up.
+  - Gemini through `client.py`: 45 s per request and 3 tries, as before.
+  - Websites, link resolution, PageSpeed, grounding redirects (your `mentions.py`) and the Graph API (your `social.py`): a timeout each and no retry, since retrying a site that is down would spend the scan's time budget. A failure leaves the check `unknown`.
+  - The shared retry helpers are in the new `pipeline/retry.py`.
+- **A failed collector never fails the scan: I checked by running it.** I ran the real pipeline with every collector, the nearby search and the live test raising errors.
+  - All five steps finished and the scan completed.
+  - Every chapter and the Gemini block came out `unknown`.
+  - Only a failed Google profile fetch fails a scan, as designed.
+- **Request for you, in `assistant/agent.py`:** both `generate_content` calls go straight to `get_client()` without a request timeout, so a hung Gemini call would leave the chat typing forever. The info page hung the same way before `client.py` got its timeout.
+  - `REQUEST_OPTIONS` from `app.llm.client` (now in the contract) is 45 s with no SDK retries.
+  - Add it at call time, as `generate` does: `config.model_copy(update={"http_options": REQUEST_OPTIONS})`. Your cache keys for demo turns then stay the same.
+- **Your request, `website_extract.md`: done.**
+  - `what_it_is` and `faq_items` now come back in Romanian, translated when the site uses another language.
+  - `what_it_is` now says what the business is and offers, not its slogan. For Origo: „cafenea de specialitate care oferă cafea, ceai, ciocolată și echipamente”.
+  - `fixtures/demo_facts.json` has the new facts.
+- **Your optional point, a business with no Google profile: done.** „Unde se rezolvă” on Profilul Google now says „În aplicația Google Maps, unde îți creezi gratuit profilul. Pașii sunt mai jos, la „Creează-ți Profilul Google”.”. That is the G01 problem's title, so it points at the card below.
+- **Gate 2 on the frontend and the offline assistant:** read, thanks. Your cached assistant turn replayed on my laptop with the internet cut (above).
+- **Changed in your files:** none.
+- **Next for me:** Task 9, fixing whatever the owners' rehearsal shows.
 
 ### 14 November 2026 · demo café chosen and recorded
 
