@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { Icon, iconPath } from "@/components/Icon";
 import { ScoreRing } from "@/components/ScoreRing";
 import { getDayLabel } from "@/lib/format";
-import type { GeminiBlock } from "@/lib/types";
+import { type GeminiBlock, getMentionSummary } from "@/lib/types";
 
 /** How many competitors the card lists. */
 const COMPETITOR_LIMIT = 3;
@@ -14,7 +14,7 @@ const COMPETITOR_LIMIT = 3;
 export function GeminiCard({ scanId, gemini }: { scanId: string; gemini: GeminiBlock }) {
   const isUnknown = gemini.status === "unknown";
   const lastCheckedDay = getDayLabel(gemini.last_checked);
-  const summary = isUnknown ? "Nu am putut rula testul" : `Apari în ${gemini.mentioned} din ${gemini.total} răspunsuri`;
+  const summary = isUnknown ? "Nu am putut rula testul" : getMentionSummary(gemini);
   const competitors = isUnknown ? [] : gemini.top_competitors.slice(0, COMPETITOR_LIMIT);
 
   return (

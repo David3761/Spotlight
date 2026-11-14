@@ -1,4 +1,5 @@
 import type { components } from "@/lib/api-types";
+import { getCountLabel } from "@/lib/format";
 
 /** The contract's schemas, generated from the backend's OpenAPI schema by `npm run gen:api`. */
 type Schemas = components["schemas"];
@@ -104,6 +105,11 @@ export type YesNoUnknown = NonNullable<SelfReport["profile_claimed"]>;
 export type PostRecency = NonNullable<SelfReport["last_google_post"]>;
 /** The kind of a conversation with the assistant. */
 export type ConversationKind = Conversation["kind"];
+
+/** Returns how often the business appears in the live test's answers, e.g. „Apari în 5 din 12 răspunsuri”. */
+export function getMentionSummary(gemini: GeminiBlock): string {
+  return `Apari în ${gemini.mentioned} din ${getCountLabel(gemini.total, "răspuns", "răspunsuri")}`;
+}
 
 /** Returns whether a chapter with fixes has nothing left to fix: some of its checks could run and none is open. */
 export function isChapterSolved(chapter: Chapter): boolean {

@@ -4,7 +4,7 @@ import { Icon, iconPath } from "@/components/Icon";
 import { getErrorMessage } from "@/components/ErrorState";
 import { buttonVariant } from "@/components/button-styles";
 import { getDayLabel } from "@/lib/format";
-import type { GeminiBlock } from "@/lib/types";
+import { type GeminiBlock, getMentionSummary } from "@/lib/types";
 
 /** The props of {@link GeminiHeader}. */
 interface GeminiHeaderProps {
@@ -52,19 +52,19 @@ export function GeminiHeader({ scanId, gemini, isTesting, hasRetested, error, on
         <div className="contents lg:flex lg:flex-1 lg:basis-90 lg:flex-col lg:gap-2">
           <h1 className="mt-1 text-2xl font-extrabold tracking-[-0.02em] lg:m-0 lg:text-[30px]">Vizibilitate în Gemini</h1>
           {gemini.status === "complete" ? (
-            <span className="text-base font-bold text-accent-deep lg:text-lg">
-              Apari în {gemini.mentioned} din {gemini.total} răspunsuri
-            </span>
+            <>
+              <span className="text-base font-bold text-accent-deep lg:text-lg">{getMentionSummary(gemini)}</span>
+              <p className="max-w-155 text-sm leading-normal text-subtle lg:hidden">
+                I-am pus lui Gemini 12 întrebări, cum le-ar pune clienții tăi.
+              </p>
+              <p className="hidden max-w-155 text-[15px] leading-[1.55] text-subtle lg:block">
+                I-am pus lui Gemini 12 întrebări, exact cum le-ar pune clienții tăi. Mai jos vezi ce a răspuns și pe cine a
+                recomandat.
+              </p>
+            </>
           ) : (
             <span className="text-base font-bold text-accent-deep lg:text-lg">Nu am putut rula testul</span>
           )}
-          <p className="max-w-155 text-sm leading-normal text-subtle lg:hidden">
-            I-am pus lui Gemini 12 întrebări, cum le-ar pune clienții tăi.
-          </p>
-          <p className="hidden max-w-155 text-[15px] leading-[1.55] text-subtle lg:block">
-            I-am pus lui Gemini 12 întrebări, exact cum le-ar pune clienții tăi. Mai jos vezi ce a răspuns și pe cine a
-            recomandat.
-          </p>
         </div>
         <div className="contents lg:flex lg:flex-col lg:items-end lg:gap-2">
           <button
