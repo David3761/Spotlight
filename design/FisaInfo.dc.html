@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Rezolvare: pagina de informații · desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8FB}
+*{box-sizing:border-box}
+a{color:#2563EB}a:hover{color:#1D4ED8}
+button,textarea{font-family:inherit}
+@keyframes dcSlideIn{from{transform:translateX(48px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes dcUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+</style>
+</helmet>
+<div style="position: relative; min-height: 100vh; background: #F6F8FB; color: #0F172A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-wrap: wrap; overflow: hidden">
+  <div style="flex: 1 1 280px; background: #FFFFFF; border-right: 1px solid #E4E9F0">
+    <dc-import name="Sidebar" active="site" hint-size="280px,1040px"></dc-import>
+  </div>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 32px 48px 56px; display: flex; flex-direction: column; gap: 24px">
+    <a href="Panou.dc.html" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 44px; font-size: 14px; font-weight: 700; color: #475569; text-decoration: none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+      Panou principal
+    </a>
+    <section style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 28px; padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 28px">
+      <dc-import name="ScoreRing" score="50" size="140" thick="14" hint-size="140px,140px"></dc-import>
+      <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #64748B">Capitol</span>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Site-ul, văzut de Gemini</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #475569">Verificăm dacă Gemini poate citi site-ul tău. Aici lucrurile sunt tehnice, așa că le pregătim pentru persoana care îți face site-ul.</p>
+        <span style="align-self: flex-start; height: 32px; padding: 0 14px; border-radius: 999px; background: #E5F6EC; color: #157F45; font-size: 14px; font-weight: 800; display: flex; align-items: center">+50 puncte posibile</span>
+      </div>
+    </section>
+    <div style="display: flex; flex-direction: column; gap: 14px">
+      <sc-for list="{{ problems }}" as="p" hint-placeholder-count="4">
+        <article style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 24px; padding: 20px 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px">
+          <span style="width: 60px; height: 60px; flex: none; border-radius: 18px; background: #E5F6EC; color: #157F45; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 800">+{{ p.pts }}</span>
+          <div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+            <h3 style="margin: 0; font-size: 17px; font-weight: 700">{{ p.title }}</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #475569">{{ p.why }}</p>
+          </div>
+          <button type="button" onClick="{{ p.open }}" style="height: 46px; padding: 0 24px; border-radius: 999px; border: none; background: #2563EB; color: #FFFFFF; font-size: 15px; font-weight: 700; cursor: pointer">{{ p.cta }}</button>
+        </article>
+      </sc-for>
+    </div>
+  </main>
+
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
+    <div onClick="{{ close }}" style="position: absolute; inset: 0; background: rgba(15,23,42,0.32)"></div>
+    <aside role="dialog" aria-modal="true" aria-labelledby="sheetTitle" style="position: absolute; top: 0; right: 0; bottom: 0; width: 640px; max-width: 100%; background: #FFFFFF; border-radius: 28px 0 0 28px; box-shadow: -24px 0 48px rgba(15,23,42,0.16); display: flex; flex-direction: column; overflow: hidden; animation: dcSlideIn 280ms cubic-bezier(.2,.8,.2,1) both">
+      <div style="padding: 24px 28px 18px; display: flex; align-items: flex-start; gap: 16px; border-bottom: 1px solid #EEF2F6">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+          <span style="align-self: flex-start; height: 28px; padding: 0 12px; border-radius: 999px; background: #EAF1FE; color: #1E40AF; font-size: 13px; font-weight: 700; display: flex; align-items: center">Făcută pentru tine</span>
+          <h2 id="sheetTitle" style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.01em">Pagina ta de informații pentru Google</h2>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #475569">Am pregătit-o din răspunsurile tale. Pusă pe site, îi arată lui Gemini tot ce trebuie să știe despre cafenea, într-un singur loc.</p>
+        </div>
+        <button type="button" aria-label="Închide" onClick="{{ close }}" style="width: 44px; height: 44px; flex: none; border-radius: 50%; border: none; background: #F1F4F9; color: #334155; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+
+      <div style="flex: 1; min-height: 0; overflow: auto; background: #F1F4F9; padding: 24px 28px; display: flex; flex-direction: column; gap: 12px">
+        <article aria-label="Previzualizare pagină de informații" style="background: #FFFFFF; border-radius: 18px; box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 8px 24px rgba(15,23,42,0.08); padding: 28px 30px; display: flex; flex-direction: column; gap: 18px">
+          <span style="align-self: flex-start; font-size: 12px; font-weight: 600; color: #64748B; background: #F6F8FB; border-radius: 999px; padding: 4px 10px">cafeneauaboema.ro/despre</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <h3 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.01em">Cafeneaua Boema</h3>
+            <span style="font-size: 14px; font-weight: 600; color: #475569">Cafenea de specialitate în Cotroceni, București</span>
+          </div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #334155">Cafenea de specialitate cu boabe prăjite local, patiserie proaspătă și un spațiu liniștit, potrivit pentru lucru cu laptopul.</p>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748B">Adresă și zonă</span>
+              <span style="font-size: 14px; line-height: 1.5">Str. Dr. Lister, Cotroceni, București</span>
+              <span style="font-size: 13px; color: #475569">Servim clienți din Cotroceni și din cartierele din jur</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748B">Program</span>
+              <span style="font-size: 14px; line-height: 1.5">Luni–Duminică: 8:00–20:00</span>
+              <span style="font-size: 14px; line-height: 1.5">Sărbători: <mark style="background: #FEF4E2; color: #B45309; font-weight: 700; border-radius: 6px; padding: 1px 6px">de completat</mark></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748B">Contact</span>
+              <span style="font-size: 14px; line-height: 1.5">Telefon: <mark style="background: #FEF4E2; color: #B45309; font-weight: 700; border-radius: 6px; padding: 1px 6px">numărul tău</mark></span>
+              <span style="font-size: 14px; line-height: 1.5">Instagram: @cafeneauaboema</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748B">Ne găsești și pe</span>
+              <span style="font-size: 14px; line-height: 1.5">Google Maps, Facebook, Glovo, Wolt</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748B">Ce servim</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <sc-for list="{{ menu }}" as="m" hint-placeholder-count="6">
+                <span style="font-size: 13px; font-weight: 600; background: #F6F8FB; border: 1px solid #E4E9F0; border-radius: 999px; padding: 5px 12px">{{ m }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748B">Întrebări frecvente</span>
+            <sc-for list="{{ faq }}" as="f" hint-placeholder-count="3">
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 14px; font-weight: 700">{{ f.q }}</span>
+                <span style="font-size: 14px; color: #475569">{{ f.a }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </article>
+        <span style="font-size: 13px; color: #475569; padding: 0 4px">Ce e marcat cu galben completezi tu înainte s-o trimiți.</span>
+      </div>
+
+      <sc-if value="{{ footerButtons }}" hint-placeholder-val="{{ true }}">
+        <div style="padding: 16px 28px 24px; border-top: 1px solid #EEF2F6; display: flex; flex-wrap: wrap; gap: 10px">
+          <button type="button" onClick="{{ download }}" style="flex: 1 1 180px; height: 52px; border-radius: 999px; border: none; background: #2563EB; color: #FFFFFF; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ dlIcon }}"></path></svg>
+            {{ dlLabel }}
+          </button>
+          <button type="button" onClick="{{ openMsg }}" style="flex: 2 1 280px; height: 52px; border-radius: 999px; border: 1px solid #C9D8F8; background: #FFFFFF; color: #1E40AF; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"></path></svg>
+            Trimite persoanei care îți face site-ul
+          </button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ msgOpen }}" hint-placeholder-val="{{ false }}">
+        <section aria-labelledby="msgTitle" style="padding: 20px 28px 24px; border-top: 1px solid #E4E9F0; background: #FFFFFF; box-shadow: 0 -12px 28px rgba(15,23,42,0.08); display: flex; flex-direction: column; gap: 12px; animation: dcUp 260ms cubic-bezier(.2,.8,.2,1) both">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <button type="button" aria-label="Înapoi la pagină" onClick="{{ closeMsg }}" style="width: 40px; height: 40px; border-radius: 50%; border: none; background: #F1F4F9; color: #334155; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+            </button>
+            <label id="msgTitle" for="msgText" style="font-size: 16px; font-weight: 800">Mesaj pregătit, îl poți schimba</label>
+          </div>
+          <textarea id="msgText" value="{{ msg }}" onChange="{{ onMsg }}" rows="5" style="width: 100%; resize: none; border-radius: 16px; border: 2px solid #C9D8F8; padding: 14px 16px; font-size: 15px; line-height: 1.55; color: #0F172A; outline: none"></textarea>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475569">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5"></path></svg>
+            Atașat: pagina de informații și instrucțiunile tehnice
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <button type="button" style="flex: 1 1 140px; height: 48px; border-radius: 999px; border: none; background: #2563EB; color: #FFFFFF; font-size: 15px; font-weight: 700; cursor: pointer">Trimite pe WhatsApp</button>
+            <button type="button" style="flex: 1 1 140px; height: 48px; border-radius: 999px; border: 1px solid #C9D8F8; background: #FFFFFF; color: #1E40AF; font-size: 15px; font-weight: 700; cursor: pointer">Trimite pe e-mail</button>
+            <button type="button" onClick="{{ copyMsg }}" style="flex: 1 1 120px; height: 48px; border-radius: 999px; border: none; background: #F1F4F9; color: #334155; font-size: 15px; font-weight: 700; cursor: pointer">{{ copyMsgLabel }}</button>
+          </div>
+        </section>
+      </sc-if>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mesajDeschis":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  componentDidUpdate(prev) {
+    if (prev.mesajDeschis !== this.props.mesajDeschis) this.setState({ msgOpen: null });
+  }
+  componentWillUnmount() { clearTimeout(this._d); clearTimeout(this._c); }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var panelOpen = st.panelOpen != null ? st.panelOpen : true;
+    var msgOpen = st.msgOpen != null ? st.msgOpen : (this.props.mesajDeschis === true || this.props.mesajDeschis === 'true');
+    var msg = st.msg != null ? st.msg : 'Salut! Îți trimit pagina de informații pentru Cafeneaua Boema, pregătită ca Google și Gemini s-o poată citi ușor. Te rog s-o pui pe site la adresa cafeneauaboema.ro/despre, cu link din meniu. În atașament găsești și instrucțiunile tehnice. Mulțumesc mult!';
+    var p = function (pts, title, why, cta, opens) { return { pts: pts, title: title, why: why, cta: cta, open: function () { if (opens) self.setState({ panelOpen: true }); } }; };
+    return {
+      panelOpen: panelOpen,
+      msgOpen: msgOpen,
+      footerButtons: !msgOpen,
+      problems: [
+        p(15, 'Gemini nu găsește o pagină cu informațiile de bază', 'Adresa, programul și ce servești sunt împrăștiate pe site. O singură pagină clară îl ajută pe Gemini să te înțeleagă.', 'Vezi pagina', true),
+        p(15, 'Site-ul nu îi spune lui Gemini programul și adresa „pe limba lui”', 'Câteva rânduri invizibile pentru clienți îi dau lui Gemini datele exacte. Le pregătim noi pentru cel care îți face site-ul.', 'Pregătește instrucțiunile', false),
+        p(10, 'Site-ul se încarcă greu pe telefon', 'Dacă pagina se deschide greu, Gemini o citește mai rar și mai puțin.', 'Pregătește instrucțiunile', false),
+        p(10, 'Unele pagini sunt închise pentru Gemini', 'Meniul și pagina de contact nu pot fi citite. Se rezolvă dintr-o setare a site-ului.', 'Pregătește instrucțiunile', false)
+      ],
+      menu: ['Espresso', 'Flat white', 'Cafea la filtru', 'Croissante', 'Prăjituri de casă', 'Lapte vegetal'],
+      faq: [
+        { q: 'Pot lucra cu laptopul?', a: 'Da, avem Wi-Fi și prize la majoritatea meselor.' },
+        { q: 'Aveți lapte vegetal?', a: 'Da, de ovăz și de migdale.' },
+        { q: 'Se poate plăti cu cardul?', a: 'Da, cu cardul sau cu telefonul.' }
+      ],
+      close: function () { self.setState({ panelOpen: false }); },
+      openMsg: function () { self.setState({ msgOpen: true }); },
+      closeMsg: function () { self.setState({ msgOpen: false }); },
+      msg: msg,
+      onMsg: function (e) { self.setState({ msg: e.target.value }); },
+      download: function () { clearTimeout(self._d); self.setState({ dl: true }); self._d = setTimeout(function () { self.setState({ dl: false }); }, 2200); },
+      dlLabel: st.dl ? 'Descărcat' : 'Descarcă',
+      dlIcon: st.dl ? 'M5 12.5l4.5 4.5L19 7.5' : 'M12 4v11M7 10l5 5 5-5M5 20h14',
+      copyMsg: function () {
+        try { if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(function () {}); } catch (e) {}
+        clearTimeout(self._c); self.setState({ copied: true });
+        self._c = setTimeout(function () { self.setState({ copied: false }); }, 2200);
+      },
+      copyMsgLabel: st.copied ? 'Copiat' : 'Copiază'
+    };
+  }
+}
+</script>
+</body>
+</html>

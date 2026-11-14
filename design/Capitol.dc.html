@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Capitol: Profilul Google · desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8FB}
+*{box-sizing:border-box}
+a{color:#2563EB}a:hover{color:#1D4ED8}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F6F8FB; color: #0F172A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-wrap: wrap">
+  <div style="flex: 1 1 280px; background: #FFFFFF; border-right: 1px solid #E4E9F0">
+    <dc-import name="Sidebar" active="profil" hint-size="280px,1040px"></dc-import>
+  </div>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 32px 48px 56px; display: flex; flex-direction: column; gap: 24px">
+    <a href="Panou.dc.html" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 44px; font-size: 14px; font-weight: 700; color: #475569; text-decoration: none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+      Panou principal
+    </a>
+
+    <section style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 28px; padding: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 32px; box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 12px 32px rgba(15,23,42,0.05)">
+      <dc-import name="ScoreRing" score="65" size="180" thick="18" hint-size="180px,180px"></dc-import>
+      <div style="flex: 1 1 360px; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #64748B">Capitol</span>
+        <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.02em">Profilul Google</h1>
+        <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #475569; max-width: 560px">Profilul tău Google e primul loc unde se uită Gemini când cineva caută o cafenea în Cotroceni. Cu cât e mai complet, cu atât ai mai multe șanse să fii recomandat.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <span style="height: 34px; padding: 0 14px; border-radius: 999px; background: #E5F6EC; color: #157F45; font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 6px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>
+            +35 puncte posibile
+          </span>
+          <span style="height: 34px; padding: 0 14px; border-radius: 999px; background: #F1F4F9; color: #334155; font-size: 14px; font-weight: 700; display: flex; align-items: center">5 probleme de rezolvat</span>
+        </div>
+      </div>
+      <button type="button" style="height: 48px; padding: 0 20px; border-radius: 999px; border: 1px solid #C9D8F8; background: #FFFFFF; color: #1E40AF; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer">
+        Deschide Profilul tău Google
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>
+      </button>
+    </section>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 4px">
+          <h2 style="margin: 0; font-size: 20px; font-weight: 800">De rezolvat</h2>
+          <span style="font-size: 13px; font-weight: 600; color: #64748B">Cele care contează mai mult sunt primele</span>
+        </div>
+        <sc-for list="{{ problems }}" as="p" hint-placeholder-count="5">
+          <article style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 24px; padding: 20px 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px">
+            <span aria-label="{{ p.pointsLabel }}" style="width: 60px; height: 60px; flex: none; border-radius: 18px; background: #E5F6EC; color: #157F45; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 800; letter-spacing: -0.02em">{{ p.points }}</span>
+            <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <h3 style="margin: 0; font-size: 17px; font-weight: 700">{{ p.title }}</h3>
+              <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #475569">{{ p.why }}</p>
+            </div>
+            <button type="button" style="height: 46px; padding: 0 24px; border-radius: 999px; border: none; background: #2563EB; color: #FFFFFF; font-size: 15px; font-weight: 700; cursor: pointer">Rezolvă</button>
+          </article>
+        </sc-for>
+
+        <div style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 24px; overflow: hidden; margin-top: 6px">
+          <button type="button" aria-expanded="{{ openAttr }}" onClick="{{ toggle }}" style="width: 100%; min-height: 60px; padding: 0 22px; border: none; background: transparent; display: flex; align-items: center; gap: 12px; cursor: pointer; color: #0F172A; text-align: left">
+            <span style="width: 28px; height: 28px; border-radius: 50%; background: #2FB36E; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+            </span>
+            <span style="flex: 1; font-size: 16px; font-weight: 700">Rezolvate · 3</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: {{ chevron }}; transition: transform 200ms ease"><path d="M6 9l6 6 6-6"></path></svg>
+          </button>
+          <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+            <ul style="list-style: none; margin: 0; padding: 0 22px 14px; display: flex; flex-direction: column">
+              <sc-for list="{{ solved }}" as="s" hint-placeholder-count="3">
+                <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #F1F4F9">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#157F45" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                  <span style="flex: 1; font-size: 15px; font-weight: 600; color: #475569">{{ s }}</span>
+                </li>
+              </sc-for>
+            </ul>
+          </sc-if>
+        </div>
+      </div>
+
+      <aside style="flex: 1 1 300px; max-width: 380px; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+          <span style="font-size: 16px; font-weight: 800">Dacă rezolvi tot</span>
+          <div style="display: flex; align-items: center; justify-content: center; gap: 16px">
+            <dc-import name="ScoreRing" score="65" size="76" hint-size="76px,76px"></dc-import>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            <dc-import name="ScoreRing" score="100" size="76" hint-size="76px,76px"></dc-import>
+          </div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #475569">Scorul general ar crește cu aproximativ <b style="color: #0F172A">7 puncte</b>, de la 42 la 49.</p>
+        </div>
+        <div style="background: #EAF1FE; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+          <span style="font-size: 16px; font-weight: 800; color: #1E3A8A">Unde se rezolvă</span>
+          <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #1E3A8A">Aproape totul se face din aplicația Google Maps, din contul cu care ți-ai creat profilul. La fiecare problemă îți arătăm exact unde să apeși.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"rezolvateDeschise":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var open = st.open != null ? st.open : (this.props.rezolvateDeschise === true || this.props.rezolvateDeschise === 'true');
+    var p = function (pts, title, why) { return { points: '+' + pts, pointsLabel: pts + ' puncte', title: title, why: why }; };
+    return {
+      open: open,
+      openAttr: open ? 'true' : 'false',
+      chevron: open ? 'rotate(180deg)' : 'rotate(0deg)',
+      toggle: function () { self.setState({ open: !open }); },
+      problems: [
+        p(10, 'Fără descriere a afacerii', 'Gemini folosește descrierea ca să înțeleagă ce te face special. Fără ea, alege cafenelele care spun mai mult despre ele.'),
+        p(8, 'Doar 2 fotografii, recomandat minim 5', 'Pozele cu interiorul, cafeaua și vitrina arată că locul e real și primitor, iar Gemini le ia în calcul.'),
+        p(7, 'Programul de sărbători lipsește', 'Când cineva întreabă ce cafenea e deschisă de Crăciun, Gemini recomandă doar locurile cu program clar.'),
+        p(5, 'Nicio postare în ultimele 30 de zile', 'Postările recente arată că afacerea e activă. Una pe săptămână e de ajuns.'),
+        p(5, 'Lipsește linkul către meniu', 'Cu meniul la un clic, Gemini poate răspunde la întrebări ca „unde găsesc flat white cu lapte de ovăz”.')
+      ],
+      solved: ['Numărul de telefon e afișat', 'Categoria „Cafenea” e setată', 'Adresa e confirmată pe hartă']
+    };
+  }
+}
+</script>
+</body>
+</html>

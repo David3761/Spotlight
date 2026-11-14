@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Analiză în curs · desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8FB}
+*{box-sizing:border-box}
+a{color:#2563EB}a:hover{color:#1D4ED8}
+@keyframes dcSpin{to{transform:rotate(360deg)}}
+@keyframes dcPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+@keyframes dcFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F6F8FB; color: #0F172A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="min-height: 72px; background: #FFFFFF; border-bottom: 1px solid #E4E9F0; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 40px; flex-wrap: wrap">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="width: 36px; height: 36px; border-radius: 11px; background: #2563EB; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#FFFFFF"></path></svg>
+      </div>
+      <span style="font-size: 17px; font-weight: 800; letter-spacing: -0.01em">[Nume aplicație]</span>
+    </div>
+    <span style="font-size: 14px; font-weight: 600; color: #475569">Cafeneaua Boema · Cotroceni</span>
+  </header>
+
+  <main style="flex: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 32px; padding: 40px">
+    <section aria-live="polite" style="flex: 0 1 600px; background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 32px; padding: 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 16px 40px rgba(15,23,42,0.06)">
+      <div style="position: relative; width: 128px; height: 128px">
+        <svg width="128" height="128" viewBox="0 0 128 128" aria-hidden="true" style="position: absolute; inset: 0">
+          <circle cx="64" cy="64" r="56" fill="none" stroke="#EAF1FE" stroke-width="12"></circle>
+        </svg>
+        <svg width="128" height="128" viewBox="0 0 128 128" aria-hidden="true" style="position: absolute; inset: 0; animation: dcSpin 1.6s linear infinite">
+          <circle cx="64" cy="64" r="56" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-dasharray="88 264"></circle>
+        </svg>
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; animation: dcFloat 2.4s ease-in-out infinite">
+          <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center">
+        <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.02em">Analizăm afacerea ta…</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #475569; max-width: 440px">Durează cam un minut. Ne uităm unde apare Cafeneaua Boema și ce află Gemini despre ea.</p>
+      </div>
+
+      <ol style="list-style: none; margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 8px">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+          <li style="display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 18px; background: {{ s.bg }}">
+            <sc-if value="{{ s.done }}" hint-placeholder-val="{{ true }}">
+              <span style="width: 32px; height: 32px; flex: none; border-radius: 50%; background: #2FB36E; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+              </span>
+            </sc-if>
+            <sc-if value="{{ s.active }}" hint-placeholder-val="{{ false }}">
+              <span style="width: 32px; height: 32px; flex: none; border-radius: 50%; border: 3px solid #C9D8F8; border-top-color: #2563EB; animation: dcSpin 0.9s linear infinite"></span>
+            </sc-if>
+            <sc-if value="{{ s.pending }}" hint-placeholder-val="{{ false }}">
+              <span style="width: 32px; height: 32px; flex: none; border-radius: 50%; border: 2px dashed #CBD5E1"></span>
+            </sc-if>
+            <span style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 15px; font-weight: 700; color: {{ s.titleColor }}">{{ s.title }}</span>
+              <span style="font-size: 13px; color: #64748B">{{ s.detail }}</span>
+            </span>
+            <span style="font-size: 13px; font-weight: 700; color: {{ s.stateColor }}">{{ s.stateLabel }}</span>
+          </li>
+        </sc-for>
+      </ol>
+
+      <div style="width: 100%; display: flex; flex-direction: column; gap: 8px">
+        <div style="height: 10px; border-radius: 5px; background: #EEF2F6; overflow: hidden">
+          <div style="height: 10px; border-radius: 5px; background: #2563EB; width: {{ progress }}; transition: width 600ms ease"></div>
+        </div>
+        <span style="font-size: 13px; font-weight: 600; color: #475569; text-align: center">{{ progressLabel }}</span>
+      </div>
+    </section>
+
+    <aside style="flex: 0 1 320px; display: flex; flex-direction: column; gap: 16px">
+      <div style="background: #EAF1FE; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1E40AF">Știai că?</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #1E3A8A">Gemini citește și ce scriu clienții în recenzii, de exemplu „cafea bună” sau „loc liniștit pentru laptop”, ca să știe pe cine să recomande.</p>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 15px; font-weight: 700">Ce urmează</span>
+        <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #475569">Primești un scor general și o listă scurtă de lucruri de rezolvat, în ordinea în care contează cel mai mult.</p>
+      </div>
+    </aside>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pas":{"editor":"range","default":2,"min":0,"max":5,"step":1},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var pas = Number(this.props.pas);
+    if (!isFinite(pas)) pas = 2;
+    var data = [
+      ['Google', 'Am găsit Profilul tău Google', 'Căutăm Profilul tău Google…', 'Profilul tău Google'],
+      ['Recenzii', 'Am citit 38 de recenzii', 'Citim recenziile…', 'Ce spun clienții despre tine'],
+      ['Website', 'Am citit cafeneauaboema.ro', 'Citim cafeneauaboema.ro…', 'cafeneauaboema.ro'],
+      ['Rețele sociale', 'Am verificat Facebook și Instagram', 'Verificăm Facebook și Instagram…', 'Facebook și Instagram'],
+      ['Gemini', 'I-am pus lui Gemini 12 întrebări', 'Îi punem lui Gemini 12 întrebări…', '12 întrebări ca ale clienților tăi']
+    ];
+    var steps = data.map(function (d, i) {
+      var done = i < pas, active = i === pas, pending = i > pas;
+      return {
+        title: d[0], detail: done ? d[1] : (active ? d[2] : d[3]),
+        done: done, active: active, pending: pending,
+        bg: active ? '#F3F7FF' : 'transparent',
+        titleColor: pending ? '#64748B' : '#0F172A',
+        stateLabel: done ? 'Gata' : (active ? 'Acum' : 'Urmează'),
+        stateColor: done ? '#157F45' : (active ? '#1D4ED8' : '#94A3B8')
+      };
+    });
+    var pct = Math.min(100, Math.round(((pas + (pas < 5 ? 0.5 : 0)) / 5) * 100));
+    return {
+      steps: steps,
+      progress: pct + '%',
+      progressLabel: pas >= 5 ? 'Gata! Pregătim rezultatele…' : (pas + ' din 5 pași gata')
+    };
+  }
+}
+</script>
+</body>
+</html>

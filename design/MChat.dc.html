@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Chat · mobil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8FB}
+*{box-sizing:border-box}
+a{color:#2563EB}a:hover{color:#1D4ED8}
+button,input{font-family:inherit}
+@keyframes dcIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes dcDot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-4px);opacity:1}}
+@keyframes dcToastIn{0%{transform:translate(-50%,16px);opacity:0}60%{transform:translate(-50%,-3px);opacity:1}100%{transform:translate(-50%,0);opacity:1}}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #FFFFFF; color: #0F172A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="display: flex; align-items: center; gap: 4px; padding: 8px 12px; border-bottom: 1px solid #EEF2F6">
+    <a href="MConversatii.dc.html" aria-label="Înapoi la conversații" style="width: 44px; height: 44px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #334155">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+    </a>
+    <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Am pus descrierea și pozele pe Google</span>
+  </header>
+  <div style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #F6F8FB; border-bottom: 1px solid #EEF2F6">
+    <dc-import name="ScoreRing" score="{{ prof }}" animate-from="65" size="44" hint-size="44px,44px"></dc-import>
+    <span style="flex: 1; display: flex; flex-direction: column; gap: 1px">
+      <span style="font-size: 14px; font-weight: 800">Profilul Google</span>
+      <span style="font-size: 12px; color: #64748B">{{ remainingLabel }}</span>
+    </span>
+    <sc-if value="{{ hasGain }}" hint-placeholder-val="{{ false }}">
+      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: #E5F6EC; color: #157F45; font-size: 12px; font-weight: 800; display: flex; align-items: center">+{{ gained }} azi</span>
+    </sc-if>
+  </div>
+
+  <div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; padding: 16px">
+    <div aria-live="polite" style="margin-top: auto; display: flex; flex-direction: column; gap: 10px">
+      <p style="margin: 0; align-self: flex-end; max-width: 300px; background: #2563EB; color: #FFFFFF; border-radius: 18px 18px 6px 18px; padding: 10px 14px; font-size: 14px; line-height: 1.5">Salut! Am pus pe Profilul Google descrierea pe care mi-ai scris-o.</p>
+      <div style="display: flex; gap: 8px; align-items: flex-end">
+        <div style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+        <p style="margin: 0; max-width: 290px; background: #F1F4F9; border-radius: 18px 18px 18px 6px; padding: 10px 14px; font-size: 14px; line-height: 1.5">Super, mulțumesc! Ai mai schimbat ceva pe profil?</p>
+      </div>
+      <p style="margin: 0; align-self: flex-end; max-width: 300px; background: #2563EB; color: #FFFFFF; border-radius: 18px 18px 6px 18px; padding: 10px 14px; font-size: 14px; line-height: 1.5">Da, am adăugat și 4 poze noi: interiorul, vitrina și două cu cafeaua.</p>
+      <div style="display: flex; gap: 8px; align-items: flex-start">
+        <div style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <p style="margin: 0; max-width: 290px; background: #F1F4F9; border-radius: 18px 18px 18px 6px; padding: 10px 14px; font-size: 14px; line-height: 1.5">Perfect, asta rezolvă încă o problemă. Vrei să le marchez pe amândouă ca rezolvate?</p>
+          <sc-if value="{{ asking }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <button type="button" onClick="{{ markBoth }}" style="height: 44px; padding: 0 16px; border-radius: 999px; border: none; background: #2563EB; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer">Da, marchează-le</button>
+              <button type="button" onClick="{{ markDesc }}" style="height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid #C9D8F8; background: #FFFFFF; color: #1E40AF; font-size: 14px; font-weight: 700; cursor: pointer">Doar descrierea</button>
+              <button type="button" onClick="{{ decline }}" style="height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid #E4E9F0; background: #FFFFFF; color: #475569; font-size: 14px; font-weight: 600; cursor: pointer">Nu încă</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <sc-if value="{{ hasReply }}" hint-placeholder-val="{{ false }}">
+        <p style="margin: 0; align-self: flex-end; max-width: 300px; background: #2563EB; color: #FFFFFF; border-radius: 18px 18px 6px 18px; padding: 10px 14px; font-size: 14px; line-height: 1.5; animation: dcIn 260ms ease both">{{ replyText }}</p>
+      </sc-if>
+      <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 8px; align-items: flex-end">
+          <div style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+          <div aria-label="Asistentul scrie" style="background: #F1F4F9; border-radius: 18px 18px 18px 6px; padding: 14px 16px; display: flex; gap: 5px">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #64748B; animation: dcDot 1s ease-in-out infinite"></span>
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #64748B; animation: dcDot 1s ease-in-out .15s infinite"></span>
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #64748B; animation: dcDot 1s ease-in-out .3s infinite"></span>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ marked }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 8px; align-items: flex-start; animation: dcIn 320ms ease both">
+          <div style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+            <div style="background: #FFFFFF; border: 2px solid #BFE6CF; border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+              <div style="display: flex; align-items: center; gap: 8px">
+                <span style="width: 24px; height: 24px; border-radius: 50%; background: #2FB36E; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+                <span style="flex: 1; font-size: 14px; font-weight: 800">{{ cardTitle }}</span>
+                <button type="button" onClick="{{ undo }}" style="height: 36px; padding: 0 10px; border-radius: 999px; border: none; background: #F1F4F9; color: #334155; font-size: 12px; font-weight: 700; cursor: pointer">Anulează</button>
+              </div>
+              <sc-for list="{{ markedItems }}" as="m" hint-placeholder-count="2">
+                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px; background: #F3FBF6">
+                  <span style="flex: 1; font-size: 13px; font-weight: 700; line-height: 1.35">{{ m.title }}</span>
+                  <span style="font-size: 13px; font-weight: 800; color: #157F45">+{{ m.pts }}</span>
+                </div>
+              </sc-for>
+              <span style="font-size: 11px; color: #475569">Verificăm pe Google la următoarea analiză.</span>
+            </div>
+            <p style="margin: 0; background: #F1F4F9; border-radius: 18px 18px 18px 6px; padding: 10px 14px; font-size: 14px; line-height: 1.5">{{ followUp }}</p>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ declined }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 8px; align-items: flex-end; animation: dcIn 320ms ease both">
+          <div style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+          <p style="margin: 0; max-width: 290px; background: #F1F4F9; border-radius: 18px 18px 18px 6px; padding: 10px 14px; font-size: 14px; line-height: 1.5">Bine! Spune-mi oricând și le marchez.</p>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <div style="padding: 10px 12px 26px; border-top: 1px solid #EEF2F6; display: flex; gap: 10px; align-items: center">
+    <label for="mChatInput" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">Mesaj pentru asistent</label>
+    <input id="mChatInput" type="text" placeholder="Scrie un mesaj…" style="flex: 1; height: 48px; border-radius: 999px; border: none; background: #F1F4F9; padding: 0 18px; font-size: 15px; color: #0F172A; outline: none">
+    <button type="button" aria-label="Trimite" style="width: 48px; height: 48px; border-radius: 50%; border: none; background: #2563EB; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>
+    </button>
+  </div>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: absolute; left: 50%; bottom: 100px; transform: translate(-50%, 0); display: flex; align-items: center; gap: 10px; height: 50px; padding: 0 20px 0 8px; border-radius: 999px; background: #0F172A; color: #FFFFFF; font-size: 15px; font-weight: 700; white-space: nowrap; box-shadow: 0 16px 36px rgba(15,23,42,0.28); animation: dcToastIn 520ms cubic-bezier(.2,.9,.3,1.2) both">
+      <span style="width: 32px; height: 32px; border-radius: 50%; background: #2FB36E; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></span>
+      +{{ gained }} puncte
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"stare":{"editor":"enum","default":"Înainte de marcare","options":["Înainte de marcare","După marcare"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  componentDidUpdate(prev) {
+    if (prev.stare !== this.props.stare) { clearTimeout(this._w); clearTimeout(this._t); this.setState({ phase: null, keys: null, toast: null }); }
+  }
+  componentWillUnmount() { clearTimeout(this._w); clearTimeout(this._t); }
+  mark(keys, reply) {
+    var self = this;
+    clearTimeout(this._w); clearTimeout(this._t);
+    this.setState({ phase: 'typing', keys: keys, reply: reply, toast: false });
+    this._w = setTimeout(function () {
+      self.setState({ phase: 'after', toast: true });
+      self._t = setTimeout(function () { self.setState({ toast: false }); }, 3200);
+    }, 1300);
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var initial = (this.props.stare || 'Înainte de marcare') === 'După marcare' ? 'after' : 'before';
+    var phase = st.phase || initial;
+    var keys = st.keys || ['desc', 'photos'];
+    var reply = st.reply || 'Da, marchează-le.';
+    var all = [
+      { key: 'desc', title: 'Fără descriere a afacerii', pts: 10 },
+      { key: 'photos', title: 'Doar 2 fotografii, recomandat minim 5', pts: 8 }
+    ];
+    var isMarked = phase === 'after';
+    var markedItems = isMarked ? all.filter(function (t) { return keys.indexOf(t.key) >= 0; }) : [];
+    var gained = markedItems.reduce(function (a, t) { return a + t.pts; }, 0);
+    var prof = 65 + gained;
+    var overall = Math.round(42.2 + gained * 0.2);
+    var remaining = 5 - markedItems.length;
+    return {
+      asking: phase === 'before',
+      hasReply: phase === 'typing' || phase === 'after' || phase === 'declined',
+      replyText: phase === 'declined' ? 'Nu încă.' : reply,
+      typing: phase === 'typing',
+      marked: isMarked,
+      declined: phase === 'declined',
+      markedItems: markedItems,
+      cardTitle: markedItems.length === 1 ? 'Am marcat ca rezolvată' : 'Am marcat ca rezolvate',
+      followUp: 'Profilul Google a urcat la ' + prof + ', iar scorul general la ' + overall + '. Facem acum programul de sărbători?',
+      markBoth: function () { self.mark(['desc', 'photos'], 'Da, marchează-le.'); },
+      markDesc: function () { self.mark(['desc'], 'Doar descrierea deocamdată.'); },
+      decline: function () { clearTimeout(self._w); self.setState({ phase: 'declined' }); },
+      undo: function () { clearTimeout(self._t); self.setState({ phase: 'before', toast: false }); },
+      toast: st.toast != null ? st.toast : false,
+      gained: gained, hasGain: gained > 0, prof: prof,
+      remainingLabel: remaining === 1 ? '1 problemă rămasă' : remaining + ' probleme rămase'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Vizibilitate în Gemini · mobil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8FB}
+*{box-sizing:border-box}
+a{color:#2563EB}a:hover{color:#1D4ED8}
+button{font-family:inherit}
+@keyframes dcSpin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="width: 390px; height: 2100px; overflow: hidden; background: #F6F8FB; color: #0F172A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="display: flex; align-items: center; gap: 4px; padding: 10px 12px">
+    <a href="MPanou.dc.html" aria-label="Înapoi la panou" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #334155">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+    </a>
+    <span style="font-size: 15px; font-weight: 700; color: #475569">Panou</span>
+  </header>
+
+  <section style="padding: 0 20px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+    <dc-import name="ScoreRing" score="17" size="120" thick="14" hint-size="120px,120px"></dc-import>
+    <h1 style="margin: 4px 0 0; font-size: 24px; font-weight: 800; letter-spacing: -0.02em">Vizibilitate în Gemini</h1>
+    <span style="font-size: 16px; font-weight: 700; color: #1E3A8A">Apari în 2 din 12 răspunsuri</span>
+    <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #475569">I-am pus lui Gemini 12 întrebări, cum le-ar pune clienții tăi.</p>
+    <button type="button" onClick="{{ retest }}" aria-busy="{{ busy }}" style="width: 100%; height: 50px; margin-top: 6px; border-radius: 999px; border: none; background: #2563EB; color: #FFFFFF; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer">
+      <sc-if value="{{ testing }}" hint-placeholder-val="{{ false }}">
+        <span style="width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.35); border-top-color: #FFFFFF; animation: dcSpin 0.8s linear infinite"></span>
+      </sc-if>
+      <sc-if value="{{ idle }}" hint-placeholder-val="{{ true }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4"></path></svg>
+      </sc-if>
+      {{ btnLabel }}
+    </button>
+    <span style="font-size: 13px; font-weight: 600; color: #64748B">{{ lastCheck }}</span>
+  </section>
+
+  <div style="padding: 0 16px 20px; display: flex; flex-direction: column; gap: 14px">
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+      <section style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 22px; padding: 16px 16px 6px">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 8px">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <h2 style="margin: 0; font-size: 17px; font-weight: 800">{{ g.name }}</h2>
+            <span style="font-size: 12px; color: #64748B">{{ g.desc }}</span>
+          </div>
+          <span style="height: 28px; padding: 0 10px; border-radius: 999px; font-size: 12px; font-weight: 800; display: flex; align-items: center; white-space: nowrap; background: {{ g.tint }}; color: {{ g.ink }}">{{ g.score }}</span>
+        </div>
+        <sc-for list="{{ g.rows }}" as="q" hint-placeholder-count="4">
+          <div style="display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-top: 1px solid #F1F4F9">
+            <sc-if value="{{ q.yes }}" hint-placeholder-val="{{ false }}">
+              <span role="img" aria-label="Apari" style="width: 26px; height: 26px; flex: none; border-radius: 50%; background: #2FB36E; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+            </sc-if>
+            <sc-if value="{{ q.no }}" hint-placeholder-val="{{ true }}">
+              <span role="img" aria-label="Nu apari" style="width: 26px; height: 26px; flex: none; border-radius: 50%; background: #FDECEC; color: #B42318; display: flex; align-items: center; justify-content: center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></span>
+            </sc-if>
+            <span style="flex: 1; display: flex; flex-direction: column; gap: 3px">
+              <span style="font-size: 14px; font-weight: 700; line-height: 1.4">„{{ q.text }}”</span>
+              <span style="font-size: 12px; line-height: 1.4; color: #475569">{{ q.lead }} <b style="color: #0F172A">{{ q.others }}</b></span>
+            </span>
+          </div>
+        </sc-for>
+      </section>
+    </sc-for>
+
+    <section aria-labelledby="mCmpTitle" style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 22px; padding: 18px 16px; display: flex; flex-direction: column; gap: 18px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h2 id="mCmpTitle" style="margin: 0; font-size: 18px; font-weight: 800">De ce îi alege Gemini pe ei?</h2>
+        <span style="font-size: 13px; color: #64748B">Tu față de cele 3 cafenele recomandate cel mai des</span>
+      </div>
+      <sc-for list="{{ bars }}" as="m" hint-placeholder-count="2">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <span style="font-size: 14px; font-weight: 700">{{ m.label }}</span>
+            <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #FDECEC; color: #B42318; font-size: 11px; font-weight: 700; display: flex; align-items: center">mult mai puține</span>
+          </div>
+          <sc-for list="{{ m.rows }}" as="b" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="width: 112px; flex: none; font-size: 12px; font-weight: {{ b.weight }}; color: {{ b.nameColor }}">{{ b.name }}</span>
+              <span style="flex: 1; height: 10px; border-radius: 5px; background: #F1F4F9; overflow: hidden">
+                <span style="display: block; height: 10px; border-radius: 5px; width: {{ b.w }}; background: {{ b.color }}"></span>
+              </span>
+              <span style="width: 34px; text-align: right; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums">{{ b.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <div style="background: #F6F8FB; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; font-weight: 600; color: #64748B">Notă medie</span>
+          <span style="font-size: 20px; font-weight: 800">4,6</span>
+          <span style="font-size: 12px; font-weight: 700; color: #157F45">la fel ca ei (4,5–4,7)</span>
+        </div>
+        <div style="background: #F6F8FB; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; font-weight: 600; color: #64748B">Program complet</span>
+          <span style="font-size: 20px; font-weight: 800">Nu</span>
+          <span style="font-size: 12px; font-weight: 700; color: #B45309">ei toți îl au</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #334155"><b style="color: #0F172A">Ai o notă la fel de bună.</b> Îți lipsesc recenziile, fotografiile și programul complet.</p>
+      <a href="MCapitol.dc.html" style="height: 48px; border-radius: 999px; background: #EAF1FE; color: #1E40AF; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-decoration: none">Vezi ce poți rezolva acum</a>
+    </section>
+  </div>
+
+  <div style="margin-top: auto">
+    <dc-import name="TabBar" active="gemini" hint-size="390px,88px"></dc-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2100}}'>
+class Component extends DCLogic {
+  componentWillUnmount() { clearTimeout(this._t); }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var CV = 'Ceașca Verde', AC = 'Atelier Coffee Lab', BC = 'Bob de Cafea';
+    var q = function (text, yes, others) { return { text: text, yes: yes, no: !yes, lead: yes ? 'Alături de:' : 'Recomandate:', others: others.join(', ') }; };
+    var group = function (name, desc, rows) {
+      var hits = rows.filter(function (r) { return r.yes; }).length;
+      return { name: name, desc: desc, rows: rows, score: hits + ' din ' + rows.length, tint: hits > 0 ? '#E5F6EC' : '#FDECEC', ink: hits > 0 ? '#157F45' : '#B42318' };
+    };
+    var bar = function (label, vals) {
+      var max = Math.max.apply(null, vals);
+      var names = ['Cafeneaua Boema', CV, AC, BC];
+      return { label: label, rows: vals.map(function (v, i) {
+        return { name: names[i], v: v, w: Math.max(3, Math.round(v / max * 100)) + '%', color: i === 0 ? '#2563EB' : '#CBD5E1', weight: i === 0 ? '800' : '600', nameColor: i === 0 ? '#1E40AF' : '#475569' };
+      }) };
+    };
+    var testing = !!st.testing;
+    return {
+      testing: testing, idle: !testing, busy: testing ? 'true' : 'false',
+      btnLabel: testing ? 'Testăm…' : 'Testează din nou',
+      lastCheck: testing ? 'Îi punem din nou cele 12 întrebări…' : (st.checked ? 'Ultima verificare: acum câteva secunde' : 'Ultima verificare: azi'),
+      retest: function () {
+        if (testing) return;
+        self.setState({ testing: true }); clearTimeout(self._t);
+        self._t = setTimeout(function () { self.setState({ testing: false, checked: true }); }, 2400);
+      },
+      groups: [
+        group('General', 'Despre tot orașul', [
+          q('cea mai bună cafenea din București', false, [CV, AC, BC]),
+          q('cafenele de specialitate în București', false, [AC, CV]),
+          q('unde beau o cafea bună în București', false, [CV, BC]),
+          q('cafenea cu prăjituri bune în București', false, [CV, AC])
+        ]),
+        group('Cartier', 'Despre zona ta', [
+          q('cafenea în Cotroceni', true, [BC]),
+          q('cafenea lângă Palatul Cotroceni', true, [CV]),
+          q('cafenea deschisă duminica în Cotroceni', false, [BC, CV]),
+          q('brunch în Cotroceni', false, [AC, BC])
+        ]),
+        group('Situații', 'Ce caută oamenii', [
+          q('cafenea unde pot lucra cu laptopul', false, [AC, CV]),
+          q('cafenea liniștită pentru o întâlnire', false, [CV]),
+          q('cafenea cu terasă în București', false, [AC, BC]),
+          q('cafenea unde pot veni cu câinele', false, [CV, AC])
+        ])
+      ],
+      bars: [bar('Recenzii pe Google', [38, 412, 287, 196]), bar('Fotografii', [2, 64, 41, 28])]
+    };
+  }
+}
+</script>
+</body>
+</html>

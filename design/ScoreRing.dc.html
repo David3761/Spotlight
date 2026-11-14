@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Inel de scor</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div role="img" aria-label="{{ ariaLabel }}" style="position: relative; width: {{ sizePx }}; height: {{ sizePx }}; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #0F172A; transform: {{ bump }}; transition: transform 380ms cubic-bezier(.3,1.6,.5,1)">
+  <svg width="{{ size }}" height="{{ size }}" viewBox="{{ viewBox }}" aria-hidden="true" style="display: block; transform: rotate(-90deg)">
+    <circle cx="{{ c }}" cy="{{ c }}" r="{{ r }}" fill="none" stroke="{{ track }}" stroke-width="{{ thick }}"></circle>
+    <circle cx="{{ c }}" cy="{{ c }}" r="{{ r }}" fill="none" stroke="{{ color }}" stroke-width="{{ thick }}" stroke-linecap="round" stroke-dasharray="{{ dash }}" stroke-dashoffset="{{ offset }}"></circle>
+  </svg>
+  <sc-if value="{{ inner }}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0">
+      <span style="font-size: {{ numSize }}; font-weight: 800; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums">{{ shown }}</span>
+      <sc-if value="{{ showMax }}" hint-placeholder-val="{{ false }}">
+        <span style="font-size: {{ maxSize }}; font-weight: 600; color: #64748B; margin-top: 4px">din 100</span>
+      </sc-if>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"score":{"editor":"range","default":42,"min":0,"max":100,"step":1},"size":{"editor":"int","default":180,"min":16,"max":400},"thick":{"editor":"int","default":0,"min":0,"max":60},"inner":{"editor":"boolean","default":true},"showMax":{"editor":"boolean","default":false},"animateFrom":{"editor":"int","default":null,"min":0,"max":100},"$preview":{"width":240,"height":240}}'>
+class Component extends DCLogic {
+  num(v, d) { var n = Number(v); return isFinite(n) && v !== '' && v !== null && v !== undefined ? n : d; }
+  clamp(v) { return Math.max(0, Math.min(100, v)); }
+  target() { return this.clamp(this.num(this.props.score, 42)); }
+  componentDidMount() {
+    var from = this.num(this.props.animateFrom, null);
+    if (from !== null && from !== this.target()) this.tween(this.clamp(from), this.target(), 350);
+  }
+  componentDidUpdate(prev) {
+    var before = this.clamp(this.num(prev.score, 42));
+    if (before !== this.target()) {
+      var cur = this.state && this.state.shown != null ? this.state.shown : before;
+      this.tween(cur, this.target(), 120);
+    }
+  }
+  componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._b); if (this._r) cancelAnimationFrame(this._r); }
+  tween(a, b, delay) {
+    var self = this;
+    clearTimeout(this._t); if (this._r) cancelAnimationFrame(this._r);
+    this.setState({ shown: a, bump: false });
+    this._t = setTimeout(function () {
+      var t0 = performance.now(), d = 1100;
+      var step = function (now) {
+        var p = Math.min(1, (now - t0) / d), e = 1 - Math.pow(1 - p, 3);
+        self.setState({ shown: a + (b - a) * e });
+        if (p < 1) { self._r = requestAnimationFrame(step); }
+        else if (b > a) {
+          self.setState({ bump: true });
+          self._b = setTimeout(function () { self.setState({ bump: false }); }, 380);
+        }
+      };
+      self._r = requestAnimationFrame(step);
+    }, delay);
+  }
+  renderVals() {
+    var size = this.num(this.props.size, 180);
+    var thick = this.num(this.props.thick, 0) || Math.max(3, Math.round(size * 0.1));
+    var s = this.state && this.state.shown != null ? this.state.shown : this.target();
+    var shown = Math.round(s);
+    var r = (size - thick) / 2;
+    var C = 2 * Math.PI * r;
+    var color = shown < 40 ? '#E5484D' : (shown < 70 ? '#F5A524' : '#2FB36E');
+    return {
+      size: size, sizePx: size + 'px', viewBox: '0 0 ' + size + ' ' + size,
+      c: size / 2, r: r, thick: thick, track: '#E9EEF5', color: color,
+      dash: C.toFixed(2), offset: (C * (1 - s / 100)).toFixed(2),
+      shown: shown,
+      inner: this.props.inner !== false && this.props.inner !== 'false',
+      showMax: this.props.showMax === true || this.props.showMax === 'true',
+      numSize: Math.round(size * (this.props.showMax === true || this.props.showMax === 'true' ? 0.28 : 0.3)) + 'px',
+      maxSize: Math.max(11, Math.round(size * 0.075)) + 'px',
+      bump: this.state && this.state.bump ? 'scale(1.06)' : 'scale(1)',
+      ariaLabel: 'Scor ' + this.target() + ' din 100'
+    };
+  }
+}
+</script>
+</body>
+</html>

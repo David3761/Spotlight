@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Stare: capitol rezolvat</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8FB}
+*{box-sizing:border-box}
+a{color:#2563EB}a:hover{color:#1D4ED8}
+button{font-family:inherit}
+@keyframes dcPop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes dcTwinkle{0%,100%{opacity:.25}50%{opacity:1}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F6F8FB; color: #0F172A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-wrap: wrap">
+  <div style="flex: 1 1 280px; background: #FFFFFF; border-right: 1px solid #E4E9F0">
+    <dc-import name="Sidebar" active="social" override="social:0" hint-size="280px,1040px"></dc-import>
+  </div>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 32px 48px 56px; display: flex; flex-direction: column; gap: 24px">
+    <a href="Panou.dc.html" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 44px; font-size: 14px; font-weight: 700; color: #475569; text-decoration: none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+      Panou principal
+    </a>
+
+    <section style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 28px; padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 28px">
+      <dc-import name="ScoreRing" score="100" size="120" thick="14" hint-size="120px,120px"></dc-import>
+      <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #64748B">Capitol</span>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Rețele sociale</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #475569">Facebook, Instagram și TikTok spun clar cine ești, ce servești și unde te găsesc clienții.</p>
+      </div>
+    </section>
+
+    <section aria-live="polite" style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 32px; padding: 56px 40px; display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
+      <div style="position: relative; width: 152px; height: 152px">
+        <svg width="152" height="152" viewBox="0 0 152 152" aria-hidden="true" style="position: absolute; inset: 0">
+          <circle cx="76" cy="76" r="64" fill="#E5F6EC"></circle>
+          <path d="M28 30l2.4 6.8L37 39l-6.6 2.4L28 48l-2.4-6.6L19 39l6.6-2.2z" fill="#F5A524" style="animation: dcTwinkle 2s ease-in-out infinite"></path>
+          <path d="M126 22l1.8 5L133 29l-5.2 1.8L126 36l-1.8-5.2L119 29l5.2-2z" fill="#2563EB" style="animation: dcTwinkle 2.4s ease-in-out .4s infinite"></path>
+          <path d="M132 112l1.6 4.4 4.4 1.6-4.4 1.6-1.6 4.4-1.6-4.4-4.4-1.6 4.4-1.6z" fill="#2FB36E" style="animation: dcTwinkle 1.8s ease-in-out .8s infinite"></path>
+          <circle cx="22" cy="104" r="5" fill="#9DBBF7" style="animation: dcTwinkle 2.2s ease-in-out .2s infinite"></circle>
+        </svg>
+        <div style="position: absolute; left: 36px; top: 36px; width: 80px; height: 80px; border-radius: 50%; background: #2FB36E; display: flex; align-items: center; justify-content: center; animation: dcPop 700ms cubic-bezier(.3,1.4,.5,1) both; box-shadow: 0 12px 28px rgba(47,179,110,0.35)">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        </div>
+      </div>
+      <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Totul e rezolvat aici 🎉</h2>
+      <p style="margin: 0; max-width: 520px; font-size: 16px; line-height: 1.55; color: #475569">Ai rezolvat toate cele 3 probleme din acest capitol. Verificăm din nou în fiecare săptămână și îți spunem dacă apare ceva nou.</p>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px">
+        <a href="Panou.dc.html#capitole" style="height: 50px; padding: 0 24px; border-radius: 999px; background: #2563EB; color: #FFFFFF; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-decoration: none">
+          Mergi la Conținutul site-ului
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <a href="Panou.dc.html" style="height: 50px; padding: 0 24px; border-radius: 999px; border: 1px solid #C9D8F8; background: #FFFFFF; color: #1E40AF; font-size: 15px; font-weight: 700; display: flex; align-items: center; text-decoration: none">Înapoi la panou</a>
+      </div>
+    </section>
+
+    <section aria-label="Rezolvate" style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 24px; padding: 8px 22px 12px">
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 52px">
+        <span style="width: 28px; height: 28px; border-radius: 50%; background: #2FB36E; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        </span>
+        <span style="font-size: 16px; font-weight: 700">Rezolvate · 3</span>
+      </div>
+      <ul style="list-style: none; margin: 0; padding: 0">
+        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #F1F4F9; font-size: 15px; font-weight: 600; color: #475569">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#157F45" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <span style="flex: 1">Descrierea de pe Instagram spune ce faci și unde ești</span>
+          <span style="font-size: 13px; font-weight: 700; color: #157F45">+6</span>
+        </li>
+        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #F1F4F9; font-size: 15px; font-weight: 600; color: #475569">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#157F45" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <span style="flex: 1">Pagina de Facebook are linkul către site</span>
+          <span style="font-size: 13px; font-weight: 700; color: #157F45">+5</span>
+        </li>
+        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #F1F4F9; font-size: 15px; font-weight: 600; color: #475569">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#157F45" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <span style="flex: 1">O postare nouă pe TikTok luna aceasta</span>
+          <span style="font-size: 13px; font-weight: 700; color: #157F45">+4</span>
+        </li>
+      </ul>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

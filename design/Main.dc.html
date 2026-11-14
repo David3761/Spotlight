@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Configurare · desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8FB}
+*{box-sizing:border-box}
+a{color:#2563EB}a:hover{color:#1D4ED8}
+button,input{font-family:inherit}
+@keyframes dcPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F6F8FB; color: #0F172A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column">
+
+  <header style="min-height: 72px; background: #FFFFFF; border-bottom: 1px solid #E4E9F0; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 40px; flex-wrap: wrap">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="width: 36px; height: 36px; border-radius: 11px; background: #2563EB; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#FFFFFF"></path></svg>
+      </div>
+      <span style="font-size: 17px; font-weight: 800; letter-spacing: -0.01em">[Nume aplicație]</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+      <span style="font-size: 13px; font-weight: 600; color: #475569">Pasul 5 din 7 · Google Maps</span>
+      <div style="display: flex; gap: 6px" role="progressbar" aria-label="Progres configurare" aria-valuemin="0" aria-valuemax="7" aria-valuenow="4">
+        <span style="width: 44px; height: 6px; border-radius: 3px; background: #2563EB"></span>
+        <span style="width: 44px; height: 6px; border-radius: 3px; background: #2563EB"></span>
+        <span style="width: 44px; height: 6px; border-radius: 3px; background: #2563EB"></span>
+        <span style="width: 44px; height: 6px; border-radius: 3px; background: #2563EB"></span>
+        <span style="width: 44px; height: 6px; border-radius: 3px; background: #9DBBF7"></span>
+        <span style="width: 44px; height: 6px; border-radius: 3px; background: #E4E9F0"></span>
+        <span style="width: 44px; height: 6px; border-radius: 3px; background: #E4E9F0"></span>
+      </div>
+    </div>
+    <button type="button" style="height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid #E4E9F0; background: #FFFFFF; color: #475569; font-size: 14px; font-weight: 600; cursor: pointer">Continui mai târziu</button>
+  </header>
+
+  <main style="flex: 1; width: 100%; max-width: 1400px; margin: 0 auto; padding: 32px 40px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
+
+    <section aria-label="Conversație" style="flex: 999 1 560px; min-width: 0; height: 764px; background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 28px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 12px 32px rgba(15,23,42,0.05)">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 18px 28px; border-bottom: 1px solid #EEF2F6">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 700">Asistentul tău</span>
+          <span style="font-size: 13px; color: #64748B">Te ajut să apari în recomandările lui Gemini</span>
+        </div>
+      </div>
+
+      <div style="flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; padding: 24px 28px">
+        <div style="display: flex; gap: 12px; align-items: flex-end">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+          <p style="margin: 0; max-width: 560px; background: #F1F4F9; border-radius: 20px 20px 20px 6px; padding: 12px 18px; font-size: 15px; line-height: 1.5">Ce nume frumos! Ce fel de afacere ai?</p>
+        </div>
+        <p style="margin: 0; align-self: flex-end; background: #2563EB; color: #FFFFFF; border-radius: 20px 20px 6px 20px; padding: 10px 18px; font-size: 15px; font-weight: 600">Cafenea</p>
+        <div style="display: flex; gap: 12px; align-items: flex-end">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+          <p style="margin: 0; max-width: 560px; background: #F1F4F9; border-radius: 20px 20px 20px 6px; padding: 12px 18px; font-size: 15px; line-height: 1.5">În ce oraș și cartier te găsesc clienții?</p>
+        </div>
+        <p style="margin: 0; align-self: flex-end; background: #2563EB; color: #FFFFFF; border-radius: 20px 20px 6px 20px; padding: 10px 18px; font-size: 15px; font-weight: 600">București, Cotroceni</p>
+        <div style="display: flex; gap: 12px; align-items: flex-end">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+          <p style="margin: 0; max-width: 560px; background: #F1F4F9; border-radius: 20px 20px 20px 6px; padding: 12px 18px; font-size: 15px; line-height: 1.5">Ai un site web?</p>
+        </div>
+        <p style="margin: 0; align-self: flex-end; background: #2563EB; color: #FFFFFF; border-radius: 20px 20px 6px 20px; padding: 10px 18px; font-size: 15px; font-weight: 600">Da · cafeneauaboema.ro</p>
+        <div style="display: flex; gap: 12px; align-items: flex-end">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+          <p style="margin: 0; max-width: 560px; background: #F1F4F9; border-radius: 20px 20px 20px 6px; padding: 12px 18px; font-size: 15px; line-height: 1.5">Perfect. Acum hai să te găsim pe Google Maps. Lipește linkul afacerii tale sau te caut eu.</p>
+        </div>
+        <p style="margin: 0; align-self: flex-end; background: #2563EB; color: #FFFFFF; border-radius: 20px 20px 6px 20px; padding: 10px 18px; font-size: 15px; font-weight: 600">Caută-mă pe Google</p>
+
+        <div style="display: flex; gap: 12px; align-items: flex-start">
+          <div style="width: 32px; height: 32px; flex: none; border-radius: 50%; background: #EAF1FE; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.2 6.3 6.3 2.2-6.3 2.2L12 19.5l-2.2-6.3L3.5 11l6.3-2.2z" fill="#2563EB"></path></svg></div>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+            <p style="margin: 0; align-self: flex-start; background: #F1F4F9; border-radius: 20px 20px 20px 6px; padding: 12px 18px; font-size: 15px; line-height: 1.5">Am găsit 3 locuri care se potrivesc. Care dintre ele ești tu?</p>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+              <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
+                <div style="border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: #FFFFFF; border: {{ r.border }}">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+                    <div style="width: 44px; height: 44px; border-radius: 14px; background: #EAF1FE; color: #2563EB; display: flex; align-items: center; justify-content: center">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></svg>
+                    </div>
+                    <sc-if value="{{ r.best }}" hint-placeholder-val="{{ true }}">
+                      <span style="font-size: 12px; font-weight: 700; color: #1E40AF; background: #EAF1FE; padding: 4px 10px; border-radius: 999px">Cel mai probabil</span>
+                    </sc-if>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 4px">
+                    <span style="font-size: 15px; font-weight: 700">{{ r.name }}</span>
+                    <span style="font-size: 13px; color: #64748B">{{ r.addr }}</span>
+                    <span style="font-size: 13px; color: #475569; font-weight: 600">{{ r.kind }} · {{ r.rating }} ★ · {{ r.reviews }}</span>
+                  </div>
+                  <button type="button" style="height: 44px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; background: {{ r.btnBg }}; color: {{ r.btnFg }}; border: {{ r.btnBorder }}">Asta sunt eu</button>
+                </div>
+              </sc-for>
+            </div>
+            <button type="button" style="align-self: flex-start; height: 44px; padding: 0 4px; border: none; background: none; color: #1D4ED8; font-size: 14px; font-weight: 700; cursor: pointer">Nu sunt aici · lipesc eu linkul</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 16px 24px; border-top: 1px solid #EEF2F6; display: flex; gap: 12px; align-items: center">
+        <label for="mapsLink" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">Linkul de pe Google Maps</label>
+        <div style="flex: 1; height: 52px; border-radius: 999px; background: #F1F4F9; display: flex; align-items: center; gap: 10px; padding: 0 18px; color: #64748B">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>
+          <input id="mapsLink" type="url" placeholder="Sau lipește aici linkul de pe Google Maps…" style="flex: 1; border: none; background: transparent; font-size: 15px; color: #0F172A; outline: none">
+        </div>
+        <button type="button" aria-label="Trimite" style="width: 52px; height: 52px; border-radius: 50%; border: none; background: #2563EB; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>
+        </button>
+      </div>
+    </section>
+
+    <aside aria-label="Cartea de vizită" style="flex: 1 1 340px; max-width: 400px; display: flex; flex-direction: column; gap: 16px">
+      <div style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 28px; padding: 28px; display: flex; flex-direction: column; gap: 22px; box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 12px 32px rgba(15,23,42,0.05)">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #64748B">Cartea de vizită</span>
+          <span style="font-size: 13px; color: #64748B">Se completează pe măsură ce răspunzi</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px">
+          <div style="width: 56px; height: 56px; border-radius: 18px; background: #EAF1FE; color: #1E40AF; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 800">CB</div>
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-size: 20px; font-weight: 800; letter-spacing: -0.01em">Cafeneaua Boema</span>
+            <span style="font-size: 14px; color: #64748B">Cafenea · Cotroceni, București</span>
+          </div>
+        </div>
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+          <sc-for list="{{ fields }}" as="f" hint-placeholder-count="7">
+            <li style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #F1F4F9">
+              <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background: #F1F4F9; color: #475569; display: flex; align-items: center; justify-content: center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ f.icon }}"></path></svg>
+              </span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 12px; font-weight: 600; color: #64748B">{{ f.label }}</span>
+                <span style="font-size: 14px; font-weight: 600; color: {{ f.valueColor }}">{{ f.value }}</span>
+              </span>
+              <sc-if value="{{ f.done }}" hint-placeholder-val="{{ true }}">
+                <span aria-label="Completat" style="width: 24px; height: 24px; border-radius: 50%; background: #E5F6EC; color: #157F45; display: flex; align-items: center; justify-content: center">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                </span>
+              </sc-if>
+              <sc-if value="{{ f.active }}" hint-placeholder-val="{{ false }}">
+                <span aria-label="În lucru" style="width: 24px; height: 24px; border-radius: 50%; border: 2px solid #2563EB; display: flex; align-items: center; justify-content: center">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #2563EB; animation: dcPulse 1.4s ease-in-out infinite"></span>
+                </span>
+              </sc-if>
+              <sc-if value="{{ f.pending }}" hint-placeholder-val="{{ false }}">
+                <span aria-label="Urmează" style="width: 24px; height: 24px; border-radius: 50%; border: 2px dashed #CBD5E1"></span>
+              </sc-if>
+            </li>
+          </sc-for>
+        </ul>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #475569">
+            <span>4 din 7 gata</span>
+            <span>încă ~1 minut</span>
+          </div>
+          <div style="height: 8px; border-radius: 4px; background: #EEF2F6; overflow: hidden">
+            <div style="width: 57%; height: 8px; border-radius: 4px; background: #2563EB"></div>
+          </div>
+        </div>
+      </div>
+      <p style="margin: 0; padding: 0 12px; font-size: 13px; line-height: 1.5; color: #64748B">Poți schimba oricând orice răspuns din pagina afacerii tale.</p>
+    </aside>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var I = {
+      store: 'M4 9l1.5-5h13L20 9M4 9v11h16V9M4 9h16M9 20v-6h6v6',
+      cup: 'M5 8h12v6a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5zM17 9h1.5a2.5 2.5 0 0 1 0 5H17M8 3v2M11 3v2M14 3v2',
+      pin: 'M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+      globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18',
+      map: 'M9 4L3 6.5v13L9 17l6 2.5 6-2.5v-13L15 6.5 9 4zM9 4v13M15 6.5v13',
+      share: 'M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4',
+      grid: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z'
+    };
+    var f = function (label, value, st, icon) {
+      return { label: label, value: value, icon: icon, done: st === 'done', active: st === 'active', pending: st === 'pending',
+        valueColor: st === 'pending' ? '#94A3B8' : (st === 'active' ? '#1D4ED8' : '#0F172A') };
+    };
+    var r = function (name, addr, kind, rating, reviews, best) {
+      return { name: name, addr: addr, kind: kind, rating: rating, reviews: reviews, best: best,
+        border: best ? '2px solid #2563EB' : '1px solid #E4E9F0',
+        btnBg: best ? '#2563EB' : '#FFFFFF', btnFg: best ? '#FFFFFF' : '#1E40AF', btnBorder: best ? 'none' : '1px solid #C9D8F8' };
+    };
+    return {
+      fields: [
+        f('Nume', 'Cafeneaua Boema', 'done', I.store),
+        f('Tip', 'Cafenea', 'done', I.cup),
+        f('Locație', 'Cotroceni, București', 'done', I.pin),
+        f('Site', 'cafeneauaboema.ro', 'done', I.globe),
+        f('Google Maps', 'Alegem locul potrivit…', 'active', I.map),
+        f('Rețele sociale', 'Urmează', 'pending', I.share),
+        f('Alte platforme', 'Urmează', 'pending', I.grid)
+      ],
+      results: [
+        r('Cafeneaua Boema', 'Str. Dr. Lister, Cotroceni', 'Cafenea', '4,6', '38 de recenzii', true),
+        r('Boema Bistro', 'Calea Moșilor, Sector 2', 'Restaurant', '4,3', '112 recenzii', false),
+        r('Boem Coffee Corner', 'Bd. Unirii, Sector 4', 'Cafenea', '4,1', '19 recenzii', false)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

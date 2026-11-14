@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<title>Rezolvare: descrierea Instagram · desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8FB}
+*{box-sizing:border-box}
+a{color:#2563EB}a:hover{color:#1D4ED8}
+button,textarea{font-family:inherit}
+@keyframes dcSlideIn{from{transform:translateX(48px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes dcFade{from{opacity:0}to{opacity:1}}
+@keyframes dcSkel{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes dcDot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-4px);opacity:1}}
+@keyframes dcToastIn{0%{transform:translate(-50%,16px);opacity:0}60%{transform:translate(-50%,-3px);opacity:1}100%{transform:translate(-50%,0);opacity:1}}
+@keyframes dcRowIn{from{background:#E5F6EC}to{background:#FFFFFF}}
+</style>
+</helmet>
+<div style="position: relative; min-height: 100vh; background: #F6F8FB; color: #0F172A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-wrap: wrap; overflow: hidden">
+  <div style="flex: 1 1 280px; background: #FFFFFF; border-right: 1px solid #E4E9F0">
+    <dc-import name="Sidebar" active="social" override="{{ sidebarOverride }}" hint-size="280px,1040px"></dc-import>
+  </div>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 32px 48px 56px; display: flex; flex-direction: column; gap: 24px">
+    <a href="Panou.dc.html" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 44px; font-size: 14px; font-weight: 700; color: #475569; text-decoration: none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+      Panou principal
+    </a>
+    <section style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 28px; padding: 28px 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 28px">
+      <dc-import name="ScoreRing" score="{{ socialScore }}" animate-from="55" size="140" thick="14" hint-size="140px,140px"></dc-import>
+      <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #64748B">Capitol</span>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Rețele sociale</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #475569">Gemini se uită și pe Facebook, Instagram și TikTok ca să afle cine ești și ce servești.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap">
+          <span style="height: 32px; padding: 0 14px; border-radius: 999px; background: #E5F6EC; color: #157F45; font-size: 14px; font-weight: 800; display: flex; align-items: center">+{{ possible }} puncte posibile</span>
+          <span style="height: 32px; padding: 0 14px; border-radius: 999px; background: #F1F4F9; color: #334155; font-size: 14px; font-weight: 700; display: flex; align-items: center">{{ problemCount }}</span>
+        </div>
+      </div>
+    </section>
+
+    <div style="display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0 4px; font-size: 20px; font-weight: 800">De rezolvat</h2>
+      <sc-for list="{{ problems }}" as="p" hint-placeholder-count="3">
+        <article style="background: #FFFFFF; border: 1px solid #E4E9F0; border-radius: 24px; padding: 20px 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px">
+          <span style="width: 60px; height: 60px; flex: none; border-radius: 18px; background: #E5F6EC; color: #157F45; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 800">+{{ p.pts }}</span>
+          <div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+            <h3 style="margin: 0; font-size: 17px; font-weight: 700">{{ p.title }}</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #475569">{{ p.why }}</p>
+          </div>
+          <button type="button" onClick="{{ p.open }}" style="height: 46px; padding: 0 24px; border-radius: 999px; border: none; background: #2563EB; color: #FFFFFF; font-size: 15px; font-weight: 700; cursor: pointer">Rezolvă</button>
+        </article>
+      </sc-for>
+      <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+        <div style="border: 1px solid #E4E9F0; border-radius: 24px; padding: 8px 22px 10px; animation: dcRowIn 1.6s ease both">
+          <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+            <span style="width: 26px; height: 26px; border-radius: 50%; background: #2FB36E; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+            <span style="flex: 1; font-size: 16px; font-weight: 700">Rezolvate · 1</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #F1F4F9; font-size: 15px; font-weight: 600; color: #475569">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#157F45" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+            <span style="flex: 1">Descrierea de pe Instagram spune ce faci și unde ești</span>
+            <span style="font-size: 13px; font-weight: 800; color: #157F45">+6</span>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
+    <div onClick="{{ close }}" style="position: absolute; inset: 0; background: rgba(15,23,42,0.32); animation: dcFade 220ms ease both"></div>
+    <aside role="dialog" aria-modal="true" aria-labelledby="fixTitle" style="position: absolute; top: 0; right: 0; bottom: 0; width: 520px; max-width: 100%; background: #FFFFFF; border-radius: 28px 0 0 28px; box-shadow: -24px 0 48px rgba(15,23,42,0.16); display: flex; flex-direction: column; animation: dcSlideIn 280ms cubic-bezier(.2,.8,.2,1) both">
+      <div style="padding: 24px 28px 18px; display: flex; align-items: flex-start; gap: 16px; border-bottom: 1px solid #EEF2F6">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+          <span style="align-self: flex-start; height: 28px; padding: 0 12px; border-radius: 999px; background: #E5F6EC; color: #157F45; font-size: 13px; font-weight: 800; display: flex; align-items: center">Rețele sociale · +6 puncte</span>
+          <h2 id="fixTitle" style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.01em">Scrie descrierea pentru Instagram</h2>
+        </div>
+        <button type="button" aria-label="Închide" onClick="{{ close }}" style="width: 44px; height: 44px; flex: none; border-radius: 50%; border: none; background: #F1F4F9; color: #334155; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+
+      <div style="flex: 1; min-height: 0; overflow: auto; padding: 22px 28px; display: flex; flex-direction: column; gap: 20px">
+        <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #475569; background: #F6F8FB; border-radius: 16px; padding: 14px 16px">Gemini citește descrierea profilului ca să afle ce faci și unde ești. Am scris-o din răspunsurile tale. Schimb-o cum vrei.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <label for="bioText" style="font-size: 14px; font-weight: 700">Descrierea ta</label>
+          <sc-if value="{{ generating }}" hint-placeholder-val="{{ false }}">
+            <div aria-live="polite" style="min-height: 156px; border-radius: 18px; border: 2px solid #E4E9F0; background: #FFFFFF; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+              <span style="height: 14px; width: 92%; border-radius: 7px; background: #E9EEF5; animation: dcSkel 1.2s ease-in-out infinite"></span>
+              <span style="height: 14px; width: 100%; border-radius: 7px; background: #E9EEF5; animation: dcSkel 1.2s ease-in-out .15s infinite"></span>
+              <span style="height: 14px; width: 74%; border-radius: 7px; background: #E9EEF5; animation: dcSkel 1.2s ease-in-out .3s infinite"></span>
+              <span style="margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #1D4ED8">
+                <span style="display: flex; gap: 4px">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #2563EB; animation: dcDot 1s ease-in-out infinite"></span>
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #2563EB; animation: dcDot 1s ease-in-out .15s infinite"></span>
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #2563EB; animation: dcDot 1s ease-in-out .3s infinite"></span>
+                </span>
+                Scriem descrierea…
+              </span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+            <textarea id="bioText" value="{{ text }}" onChange="{{ onText }}" rows="5" aria-describedby="bioCount" style="width: 100%; min-height: 156px; resize: vertical; border-radius: 18px; border: 2px solid #C9D8F8; background: #FFFFFF; padding: 16px 18px; font-size: 16px; line-height: 1.55; color: #0F172A; outline: none; animation: dcFade 300ms ease both"></textarea>
+          </sc-if>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+            <span style="font-size: 13px; color: #64748B">Am inclus: cartierul, ce servești, programul</span>
+            <span id="bioCount" style="font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; color: {{ countColor }}">{{ count }} / 150</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span id="toneLabel" style="font-size: 14px; font-weight: 700">Ton</span>
+          <div role="group" aria-labelledby="toneLabel" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+            <sc-for list="{{ tones }}" as="t" hint-placeholder-count="3">
+              <button type="button" aria-pressed="{{ t.pressed }}" onClick="{{ t.pick }}" style="height: 44px; padding: 0 18px; border-radius: 999px; font-size: 14px; cursor: pointer; border: {{ t.border }}; background: {{ t.bg }}; color: {{ t.fg }}; font-weight: {{ t.weight }}">{{ t.name }}</button>
+            </sc-for>
+            <button type="button" onClick="{{ regen }}" style="height: 44px; padding: 0 16px; margin-left: auto; border-radius: 999px; border: none; background: #F1F4F9; color: #334155; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4"></path></svg>
+              Generează din nou
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: #475569">
+          <span style="width: 28px; height: 28px; flex: none; border-radius: 9px; background: #EAF1FE; color: #2563EB; display: flex; align-items: center; justify-content: center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 8h.01"></path></svg>
+          </span>
+          <span>În Instagram: <b style="color: #0F172A">Profil › Editează profilul › Biografie</b>, apoi lipește textul și salvează.</span>
+        </div>
+      </div>
+
+      <div style="padding: 16px 28px 24px; border-top: 1px solid #EEF2F6; display: flex; flex-direction: column; gap: 10px">
+        <button type="button" onClick="{{ copy }}" style="height: 52px; border-radius: 999px; border: none; background: #2563EB; color: #FFFFFF; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ copyIcon }}"></path></svg>
+          {{ copyLabel }}
+        </button>
+        <button type="button" onClick="{{ markDone }}" style="height: 52px; border-radius: 999px; border: 1px solid #C9D8F8; background: #FFFFFF; color: #1E40AF; font-size: 16px; font-weight: 700; cursor: pointer">Am rezolvat</button>
+      </div>
+    </aside>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: absolute; left: calc(50% + 140px); bottom: 32px; transform: translate(-50%, 0); display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px 0 10px; border-radius: 999px; background: #0F172A; color: #FFFFFF; font-size: 16px; font-weight: 700; box-shadow: 0 16px 36px rgba(15,23,42,0.28); animation: dcToastIn 520ms cubic-bezier(.2,.9,.3,1.2) both">
+      <span style="width: 36px; height: 36px; border-radius: 50%; background: #2FB36E; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></span>
+      +6 puncte
+      <span style="font-weight: 500; color: #CBD5E1">· Rețele sociale a urcat la 61</span>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"stare":{"editor":"enum","default":"Text gata","options":["Se generează","Text gata","Rezolvat"]},"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  texts() {
+    return {
+      Prietenos: [
+        'Cafea de specialitate în inima Cotroceniului. Boabe proaspăt prăjite, croissante calde și un colț liniștit pentru laptop. Te așteptăm zilnic, 8–20.',
+        'Cafeneaua ta din Cotroceni: espresso bun, prăjituri de casă și Wi-Fi rapid. Vino pentru o cafea, rămâi pentru atmosferă. Zilnic, 8–20.'
+      ],
+      Profesionist: [
+        'Cafeneaua Boema · cafea de specialitate în Cotroceni, București. Espresso, filtru și patiserie proaspătă. Deschis zilnic, 8:00–20:00.',
+        'Cafenea de specialitate în Cotroceni. Cafea prăjită local, patiserie zilnică, spațiu potrivit pentru lucru. Program: zilnic, 8:00–20:00.'
+      ],
+      Scurt: [
+        'Cafea de specialitate în Cotroceni. Zilnic, 8–20.',
+        'Cafea bună și liniște, în Cotroceni. Zilnic, 8–20.'
+      ]
+    };
+  }
+  phaseFromProp() {
+    var s = this.props.stare || 'Text gata';
+    return s === 'Se generează' ? 'gen' : (s === 'Rezolvat' ? 'done' : 'ready');
+  }
+  componentDidUpdate(prev) {
+    if (prev.stare !== this.props.stare) {
+      clearTimeout(this._g); clearTimeout(this._t);
+      this.setState({ phase: null, toast: null });
+    }
+  }
+  componentWillUnmount() { clearTimeout(this._g); clearTimeout(this._t); clearTimeout(this._c); }
+  generate(tone, variant) {
+    var self = this;
+    clearTimeout(this._g);
+    this.setState({ phase: 'gen', tone: tone, variant: variant, text: null });
+    this._g = setTimeout(function () { self.setState({ phase: 'ready' }); }, 1500);
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var phase = st.phase || this.phaseFromProp();
+    var tone = st.tone || 'Prietenos';
+    var variant = st.variant || 0;
+    var T = this.texts();
+    var text = st.text != null ? st.text : T[tone][variant % T[tone].length];
+    var isDone = phase === 'done';
+    var toast = st.toast != null ? st.toast : isDone;
+    var all = [
+      { id: 1, pts: 6, title: 'Descrierea de pe Instagram nu spune ce faci și unde ești', why: 'Gemini citește descrierea profilului ca să afle ce servești și în ce cartier ești.' },
+      { id: 2, pts: 5, title: 'Pagina de Facebook nu are linkul către site', why: 'Linkul îl ajută pe Gemini să lege pagina de Facebook de site și de Profilul tău Google.' },
+      { id: 3, pts: 4, title: 'Nicio postare pe TikTok în ultimele 60 de zile', why: 'Postările recente arată că afacerea e activă și merită recomandată.' }
+    ];
+    var problems = all.filter(function (p) { return !(isDone && p.id === 1); }).map(function (p) {
+      p.open = function () { if (p.id === 1) self.generate(tone, variant); };
+      return p;
+    });
+    var possible = problems.reduce(function (a, p) { return a + p.pts; }, 0);
+    var count = text.length;
+    return {
+      sidebarOverride: isDone ? 'social:2' : '',
+      socialScore: isDone ? 61 : 55,
+      possible: possible,
+      problemCount: problems.length === 1 ? '1 problemă de rezolvat' : problems.length + ' probleme de rezolvat',
+      problems: problems,
+      isDone: isDone,
+      panelOpen: phase === 'gen' || phase === 'ready',
+      generating: phase === 'gen',
+      ready: phase === 'ready',
+      text: text,
+      count: phase === 'gen' ? '–' : count,
+      countColor: count > 150 ? '#B42318' : '#475569',
+      onText: function (e) { self.setState({ text: e.target.value }); },
+      tones: ['Prietenos', 'Profesionist', 'Scurt'].map(function (n) {
+        var on = n === tone;
+        return { name: n, pressed: on ? 'true' : 'false', border: on ? '2px solid #2563EB' : '1px solid #E4E9F0', bg: on ? '#EAF1FE' : '#FFFFFF', fg: on ? '#1E40AF' : '#334155', weight: on ? '700' : '600',
+          pick: function () { if (!on) self.generate(n, 0); } };
+      }),
+      regen: function () { self.generate(tone, variant + 1); },
+      close: function () { clearTimeout(self._g); self.setState({ phase: 'closed' }); },
+      markDone: function () {
+        clearTimeout(self._t);
+        self.setState({ phase: 'done', toast: true });
+        self._t = setTimeout(function () { self.setState({ toast: false }); }, 3200);
+      },
+      copy: function () {
+        try { if (navigator.clipboard) navigator.clipboard.writeText(text).catch(function () {}); } catch (e) {}
+        clearTimeout(self._c);
+        self.setState({ copied: true });
+        self._c = setTimeout(function () { self.setState({ copied: false }); }, 2200);
+      },
+      copyLabel: st.copied ? 'Copiat! Deschidem Instagram…' : 'Copiază și deschide Instagram',
+      copyIcon: st.copied ? 'M5 12.5l4.5 4.5L19 7.5' : 'M9 9h11v12H9zM5 15H4V4h11v1',
+      toast: toast
+    };
+  }
+}
+</script>
+</body>
+</html>
