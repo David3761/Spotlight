@@ -24,7 +24,7 @@ export function ChapterHeader({
   const isDesktop = useIsDesktop();
   const ringSize = isDesktop ? (isDone ? 120 : 180) : 160;
   const ringThick = isDesktop ? (isDone ? 14 : 18) : 16;
-  const showsPoints = chapter.has_fixes && !isDone;
+  const showsPoints = chapter.problems.length > 0;
 
   return (
     <>

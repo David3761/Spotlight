@@ -2,7 +2,7 @@ import Link from "next/link";
 import { chapterIconPath, Icon } from "@/components/Icon";
 import { ScoreRing } from "@/components/ScoreRing";
 import { getProblemCountLabel } from "@/lib/format";
-import type { Chapter } from "@/lib/types";
+import { type Chapter, isChapterSolved } from "@/lib/types";
 
 /** A component that lists the chapters as cards on mobile. */
 export function ChapterGrid({ scanId, chapters }: { scanId: string; chapters: Chapter[] }) {
@@ -25,8 +25,11 @@ function getChapterStatus(chapter: Chapter): string {
   if (!chapter.has_fixes) {
     return "Crește pe măsură ce rezolvi restul";
   }
-  if (chapter.problems.length === 0) {
+  if (isChapterSolved(chapter)) {
     return "Totul rezolvat";
+  }
+  if (chapter.problems.length === 0) {
+    return "Nu am putut verifica";
   }
   return `${getProblemCountLabel(chapter.problems.length)} de rezolvat`;
 }

@@ -104,3 +104,8 @@ export type YesNoUnknown = NonNullable<SelfReport["profile_claimed"]>;
 export type PostRecency = NonNullable<SelfReport["last_google_post"]>;
 /** The kind of a conversation with the assistant. */
 export type ConversationKind = Conversation["kind"];
+
+/** Returns whether a chapter with fixes has nothing left to fix: some of its checks could run and none is open. */
+export function isChapterSolved(chapter: Chapter): boolean {
+  return chapter.has_fixes && chapter.score !== null && chapter.problems.length === 0;
+}

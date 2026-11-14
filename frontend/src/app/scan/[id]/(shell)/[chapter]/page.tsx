@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { ErrorState } from "@/components/ErrorState";
 import { Toast } from "@/components/Toast";
 import { useLoadedScan } from "@/components/ScanShell";
-import type { Chapter } from "@/lib/types";
+import { type Chapter, isChapterSolved } from "@/lib/types";
 import { useFixPanel } from "./_hooks/use-fix-panel";
 import { useResolveProblem } from "./_hooks/use-resolve-problem";
 import { ChapterDone } from "./_components/ChapterDone";
@@ -43,7 +43,7 @@ export default function ChapterPage() {
   }
 
   const openProblem = chapter.problems.find((problem) => problem.check_id === fixPanel.checkId) ?? null;
-  const isDone = chapter.has_fixes && chapter.problems.length === 0;
+  const isDone = isChapterSolved(chapter);
   const hasProblems = chapter.problems.length > 0;
   const overallGain = chapter.overall_gain_if_all_fixed;
 

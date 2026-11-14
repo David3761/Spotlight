@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AppLogo } from "@/components/AppLogo";
 import { chapterIconPath, Icon, iconPath } from "@/components/Icon";
 import { getCountLabel } from "@/lib/format";
-import type { Chapter, Report } from "@/lib/types";
+import { type Chapter, isChapterSolved, type Report } from "@/lib/types";
 
 /** The sidebar entry that matches the current route. */
 export type SidebarSection = "panou" | "gemini" | "conversatii" | Chapter["id"] | null;
@@ -124,7 +124,7 @@ function SidebarChapter({ chapter, href, isActive }: { chapter: Chapter; href: s
           <span className="sr-only">{getCountLabel(count, "problemă nerezolvată", "probleme nerezolvate")}</span>
         </span>
       )}
-      {chapter.has_fixes && count === 0 && (
+      {isChapterSolved(chapter) && (
         <span className="flex size-6 items-center justify-center rounded-full bg-high text-white">
           <Icon path={iconPath.check} size={13} strokeWidth={3.2} />
           <span className="sr-only">Totul rezolvat</span>
