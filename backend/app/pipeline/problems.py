@@ -23,7 +23,7 @@ from app.pipeline.scoring import (
 )
 from app.pipeline.types import CheckResult
 
-LinkKind = Literal["google", "website", "instagram", "facebook", "tiktok"]
+LinkKind = Literal["google", "website", "instagram", "tiktok"]
 """Where a problem's deep link opens."""
 
 DEV_STEPS = ["Trimite instrucțiunile persoanei care îți face site-ul."]
@@ -94,8 +94,8 @@ CHAPTER_TEXTS: dict[ChapterId, ChapterTexts] = {
     ),
     "social": ChapterTexts(
         name_ro="Rețele sociale",
-        intro_ro="Gemini se uită și pe Facebook, Instagram și TikTok ca să afle cine ești și ce oferi.",
-        where_to_fix_ro="În aplicațiile Facebook, Instagram și TikTok, din contul afacerii.",
+        intro_ro="Gemini se uită și pe Instagram și TikTok ca să afle cine ești și ce servești.",
+        where_to_fix_ro="În aplicațiile Instagram și TikTok, din contul afacerii.",
     ),
     "cunoaste": ChapterTexts(
         name_ro="Te cunoaște deja Gemini?",
@@ -530,18 +530,6 @@ TEMPLATES: dict[str, CheckTemplate] = {
             "Spune clar că ești proprietarul.",
         ],
     ),
-    "S01": CheckTemplate(
-        label_ro="Pagina de Facebook",
-        title_ro="Nu am găsit pagina de Facebook",
-        solved_ro="Pagina de Facebook există",
-        why_ro="Gemini se uită pe Facebook ca să confirme că afacerea există și e activă.",
-        steps_ro=[
-            "Creează o pagină de Facebook pentru afacere sau verifică dacă linkul e corect.",
-            "Pune pe ea adresa, programul și linkul către site.",
-        ],
-        evidence_ro="{found}",
-        link="facebook",
-    ),
     "S02": CheckTemplate(
         label_ro="Profilul de Instagram",
         title_ro="Nu am găsit profilul de Instagram",
@@ -564,13 +552,13 @@ TEMPLATES: dict[str, CheckTemplate] = {
         link="instagram",
     ),
     "S04": CheckTemplate(
-        label_ro="Linkurile dintre site, rețele și Google",
-        title_ro="Lipsesc linkurile dintre site, rețele și Profilul Google",
-        solved_ro="Site-ul, rețelele și Profilul Google au linkuri unele către altele",
-        why_ro="Linkurile îl ajută pe Gemini să lege paginile tale între ele și de Profilul tău Google.",
+        label_ro="Linkurile dintre site, Instagram și Google",
+        title_ro="Lipsesc linkurile dintre site, Instagram și Profilul Google",
+        solved_ro="Site-ul, Instagram și Profilul Google au linkuri unele către altele",
+        why_ro="Linkurile îl ajută pe Gemini să lege site-ul de Instagram și de Profilul tău Google.",
         steps_ro=[
-            "Pune pe site linkuri către Facebook și Instagram.",
-            "Pune linkul site-ului pe Instagram și pe pagina de Facebook.",
+            "Pune pe site linkul către Instagram.",
+            "Pune linkul site-ului în descrierea de pe Instagram.",
             "Verifică să fie și pe Profilul tău Google.",
         ],
         evidence_ro="Lipsesc: {missing}.",
@@ -614,7 +602,6 @@ DEEP_LINK_LABELS: dict[LinkKind, str] = {
     "google": "Deschide Profilul tău Google",
     "website": "Deschide site-ul",
     "instagram": "Deschide Instagram",
-    "facebook": "Deschide Facebook",
     "tiktok": "Deschide TikTok",
 }
 """The button label of each deep link."""
@@ -670,7 +657,6 @@ def get_deep_link(link: LinkKind | None, panel: FixPanel, business: Business) ->
             "google": business.google_maps_uri,
             "website": business.website,
             "instagram": business.instagram_url,
-            "facebook": business.facebook_url,
             "tiktok": business.tiktok_url,
         }.get(link)
         if link
@@ -772,7 +758,6 @@ def build_chapter(chapter_id: ChapterId, all_checks: list[CheckResult], business
         weight=CHAPTER_WEIGHTS[chapter_id],
         possible_points=0,
         overall_gain_if_all_fixed=0,
-        start_here=False,
         has_fixes=has_fixes,
         problems=problems,
         solved=solved,

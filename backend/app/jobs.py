@@ -99,7 +99,7 @@ def get_step_details(report: Report) -> list[tuple[StepId, str]]:
         ("google", "Am găsit Profilul tău Google"),
         ("recenzii", f"Am găsit {get_count_phrase(review_count, 'recenzie', 'recenzii')}"),
         ("website", f"Am citit {urlparse(website).netloc.removeprefix('www.')}" if website else "Am verificat site-ul"),
-        ("retele", "Am verificat Facebook și Instagram"),
+        ("retele", "Am verificat Instagram"),
         ("gemini", f"I-am pus lui Gemini {get_count_phrase(report.gemini.total, 'întrebare', 'întrebări')}"),
     ]
 

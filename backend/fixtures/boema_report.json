@@ -13,16 +13,14 @@
     "phone": "021 410 2233",
     "website": "https://cafeneauaboema.ro",
     "google_maps_uri": "https://www.google.com/maps/place/?q=place_id:ChIJ-mock-cafeneaua-boema",
-    "facebook_url": "https://facebook.com/cafeneauaboema",
     "instagram_url": "https://instagram.com/cafeneauaboema",
     "instagram_handle": "cafeneauaboema",
     "tiktok_url": "https://www.tiktok.com/@cafeneauaboema"
   },
-  "overall": 44,
-  "overall_exact": 43.95,
+  "overall": 43,
+  "overall_exact": 43.2,
   "summary_ro": "Gemini te recomandă rar deocamdată. Multe se rezolvă în câteva minute.",
   "open_problem_count": 30,
-  "start_here": "continut",
   "next_steps": [
     {
       "check_id": "R01",
@@ -145,11 +143,6 @@
                 "title": "Atelier Coffee Lab",
                 "uri": "https://www.google.com/maps/place/?q=place_id:ChIJ-mock-atelier-coffee-lab",
                 "kind": "maps"
-              },
-              {
-                "title": "ghidcafenele.ro",
-                "uri": "https://ghidcafenele.ro/bucuresti/top",
-                "kind": "web"
               }
             ]
           },
@@ -219,11 +212,6 @@
                 "title": "Atelier Coffee Lab",
                 "uri": "https://www.google.com/maps/place/?q=place_id:ChIJ-mock-atelier-coffee-lab",
                 "kind": "maps"
-              },
-              {
-                "title": "deserturibucuresti.ro",
-                "uri": "https://deserturibucuresti.ro/cafenele",
-                "kind": "web"
               }
             ]
           }
@@ -323,11 +311,6 @@
                 "title": "Bob de Cafea",
                 "uri": "https://www.google.com/maps/place/?q=place_id:ChIJ-mock-bob-de-cafea",
                 "kind": "maps"
-              },
-              {
-                "title": "brunchbucuresti.ro",
-                "uri": "https://brunchbucuresti.ro/cotroceni",
-                "kind": "web"
               }
             ]
           }
@@ -400,11 +383,6 @@
                 "title": "Bob de Cafea",
                 "uri": "https://www.google.com/maps/place/?q=place_id:ChIJ-mock-bob-de-cafea",
                 "kind": "maps"
-              },
-              {
-                "title": "terase.ro",
-                "uri": "https://terase.ro/bucuresti/cafenele",
-                "kind": "web"
               }
             ]
           },
@@ -445,7 +423,6 @@
       "weight": 0.2,
       "possible_points": 34,
       "overall_gain_if_all_fixed": 7,
-      "start_here": false,
       "has_fixes": true,
       "problems": [
         {
@@ -613,7 +590,6 @@
       "weight": 0.15,
       "possible_points": 50,
       "overall_gain_if_all_fixed": 8,
-      "start_here": false,
       "has_fixes": true,
       "problems": [
         {
@@ -710,7 +686,6 @@
       "weight": 0.15,
       "possible_points": 65,
       "overall_gain_if_all_fixed": 10,
-      "start_here": true,
       "has_fixes": true,
       "problems": [
         {
@@ -871,7 +846,6 @@
       "weight": 0.1,
       "possible_points": 50,
       "overall_gain_if_all_fixed": 5,
-      "start_here": false,
       "has_fixes": true,
       "problems": [
         {
@@ -998,11 +972,10 @@
       "name_ro": "Aceleași informații peste tot",
       "intro_ro": "Gemini compară ce scrie despre tine pe Google, pe site și pe alte platforme. Dacă datele diferă, nu mai știe pe care să le creadă.",
       "where_to_fix_ro": "Pe fiecare platformă unde apari. Copiază datele de pe Profilul tău Google.",
-      "score": 39,
+      "score": 38,
       "weight": 0.1,
-      "possible_points": 61,
+      "possible_points": 62,
       "overall_gain_if_all_fixed": 6,
-      "start_here": false,
       "has_fixes": true,
       "problems": [
         {
@@ -1075,10 +1048,10 @@
           }
         },
         {
-          "check_id": "L02:facebook:hours",
+          "check_id": "L02:wolt:phone",
           "chapter_id": "info",
           "chapter_name_ro": "Aceleași informații peste tot",
-          "title_ro": "Programul de pe Facebook e diferit de cel de pe Google",
+          "title_ro": "Telefonul de pe Wolt e diferit de cel de pe Google",
           "why_ro": "Când datele diferă, Gemini nu știe pe care să le creadă și te recomandă mai rar.",
           "points": 14,
           "impact": 1.4,
@@ -1086,15 +1059,15 @@
           "fix": {
             "panel": "steps",
             "steps_ro": [
-              "Intră în contul tău de pe Facebook.",
-              "Pune programul de pe Profilul tău Google.",
+              "Intră în contul tău de pe Wolt.",
+              "Pune numărul de telefon de pe Profilul tău Google.",
               "Salvează."
             ],
             "deep_link": null,
             "deep_link_label_ro": null,
             "where_ro": null,
             "max_chars": null,
-            "evidence_ro": "Facebook: Luni–Sâmbătă 8:00–18:00. Google: Luni–Duminică 8:00–20:00."
+            "evidence_ro": "Wolt: 0731 222 333. Google: 021 410 2233."
           }
         },
         {
@@ -1103,8 +1076,8 @@
           "chapter_name_ro": "Aceleași informații peste tot",
           "title_ro": "Nu apari pe Bolt Food",
           "why_ro": "Clienții și Gemini caută și pe aceste platforme. Cu cât apari în mai multe locuri potrivite, cu atât ești mai ușor de găsit.",
-          "points": 5,
-          "impact": 0.5,
+          "points": 6,
+          "impact": 0.6,
           "fix_type": "owner_action",
           "fix": {
             "panel": "steps",
@@ -1116,7 +1089,7 @@
             "deep_link_label_ro": null,
             "where_ro": null,
             "max_chars": null,
-            "evidence_ro": "Apari pe 5 din 6 platforme potrivite."
+            "evidence_ro": "Apari pe 4 din 5 platforme potrivite."
           }
         }
       ],
@@ -1139,7 +1112,6 @@
       "weight": 0.1,
       "possible_points": 70,
       "overall_gain_if_all_fixed": 7,
-      "start_here": false,
       "has_fixes": true,
       "problems": [
         {
@@ -1237,13 +1209,12 @@
     {
       "id": "social",
       "name_ro": "Rețele sociale",
-      "intro_ro": "Gemini se uită și pe Facebook, Instagram și TikTok ca să afle cine ești și ce oferi.",
-      "where_to_fix_ro": "În aplicațiile Facebook, Instagram și TikTok, din contul afacerii.",
-      "score": 48,
+      "intro_ro": "Gemini se uită și pe Instagram și TikTok ca să afle cine ești și ce servești.",
+      "where_to_fix_ro": "În aplicațiile Instagram și TikTok, din contul afacerii.",
+      "score": 35,
       "weight": 0.05,
-      "possible_points": 53,
+      "possible_points": 65,
       "overall_gain_if_all_fixed": 3,
-      "start_here": false,
       "has_fixes": true,
       "problems": [
         {
@@ -1252,8 +1223,8 @@
           "chapter_name_ro": "Rețele sociale",
           "title_ro": "Nicio postare nouă în ultimele 30 de zile",
           "why_ro": "Postările recente arată că afacerea e activă și merită recomandată.",
-          "points": 25,
-          "impact": 1.25,
+          "points": 30,
+          "impact": 1.5,
           "fix_type": "generate",
           "fix": {
             "panel": "generate_text",
@@ -1274,8 +1245,8 @@
           "chapter_name_ro": "Rețele sociale",
           "title_ro": "Descrierea de pe Instagram nu spune ce faci și unde ești",
           "why_ro": "Gemini citește descrierea profilului ca să afle ce oferi și în ce cartier ești.",
-          "points": 20,
-          "impact": 1.0,
+          "points": 25,
+          "impact": 1.25,
           "fix_type": "generate",
           "fix": {
             "panel": "generate_text",
@@ -1293,33 +1264,27 @@
           "check_id": "S04",
           "chapter_id": "social",
           "chapter_name_ro": "Rețele sociale",
-          "title_ro": "Lipsesc linkurile dintre site, rețele și Profilul Google",
-          "why_ro": "Linkurile îl ajută pe Gemini să lege paginile tale între ele și de Profilul tău Google.",
-          "points": 8,
-          "impact": 0.4,
+          "title_ro": "Lipsesc linkurile dintre site, Instagram și Profilul Google",
+          "why_ro": "Linkurile îl ajută pe Gemini să lege site-ul de Instagram și de Profilul tău Google.",
+          "points": 10,
+          "impact": 0.5,
           "fix_type": "owner_action",
           "fix": {
             "panel": "steps",
             "steps_ro": [
-              "Pune pe site linkuri către Facebook și Instagram.",
-              "Pune linkul site-ului pe Instagram și pe pagina de Facebook.",
+              "Pune pe site linkul către Instagram.",
+              "Pune linkul site-ului în descrierea de pe Instagram.",
               "Verifică să fie și pe Profilul tău Google."
             ],
             "deep_link": null,
             "deep_link_label_ro": null,
             "where_ro": null,
             "max_chars": null,
-            "evidence_ro": "Lipsesc: linkul către site pe pagina de Facebook."
+            "evidence_ro": "Lipsesc: linkul către site în descrierea de pe Instagram."
           }
         }
       ],
       "solved": [
-        {
-          "check_id": "S01",
-          "title_ro": "Pagina de Facebook există",
-          "source": "passed",
-          "points": null
-        },
         {
           "check_id": "S02",
           "title_ro": "Profilul de Instagram există",
@@ -1338,7 +1303,6 @@
       "weight": 0.05,
       "possible_points": 0,
       "overall_gain_if_all_fixed": 0,
-      "start_here": false,
       "has_fixes": false,
       "problems": [],
       "solved": [

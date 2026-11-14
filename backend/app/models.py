@@ -112,7 +112,6 @@ class ScanInputs(BaseModel):
     place_id: str | None
     maps_url: str | None
     no_google_profile: bool
-    facebook_url: str | None
     instagram_url: str | None
     tiktok_url: str | None
     platforms: list[Platform] | None
@@ -166,7 +165,6 @@ class Business(BaseModel):
     phone: str | None
     website: str | None
     google_maps_uri: str | None
-    facebook_url: str | None
     instagram_url: str | None
     instagram_handle: str | None
     tiktok_url: str | None
@@ -226,7 +224,6 @@ class Chapter(BaseModel):
     weight: float
     possible_points: int
     overall_gain_if_all_fixed: int
-    start_here: bool
     has_fixes: bool
     problems: list[Problem]
     solved: list[SolvedItem]
@@ -324,7 +321,6 @@ class Report(BaseModel):
     overall_exact: float
     summary_ro: str
     open_problem_count: int
-    start_here: ChapterId | None
     next_steps: list[Problem]
     gemini: GeminiBlock
     chapters: list[Chapter]
@@ -384,7 +380,6 @@ class Facts(BaseModel):
     special_hours_ro: list[str]
     attributes_ro: list[str]
     instagram_handle: str | None
-    facebook_url: str | None
     tiktok_url: str | None
     platforms_ro: list[str]
     website_facts: WebsiteFacts | None

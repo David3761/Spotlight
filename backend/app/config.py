@@ -16,10 +16,9 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=BACKEND_DIR / ".env", extra="ignore")
 
     gemini_api_key: str = ""
-    gemini_grounded_api_key: str = ""
     gemini_model_fast: str = "gemini-3.5-flash-lite"
     gemini_model_smart: str = "gemini-3.8-flash"
-    gemini_model_live: str = "gemini-3.8-flash"
+    gemini_model_live: str = "gemini-2.5-flash-lite"
     places_api_key: str = ""
     pagespeed_api_key: str = ""
     serpapi_api_key: str = ""

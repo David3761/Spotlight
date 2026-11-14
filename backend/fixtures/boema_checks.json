@@ -551,7 +551,7 @@
     "check_id": "L01",
     "chapter_id": "info",
     "status": "partial",
-    "points_earned": 25.0,
+    "points_earned": 24.0,
     "points_max": 30.0,
     "claimed_fixed": false,
     "gate": false,
@@ -562,8 +562,8 @@
     },
     "params": {
       "missing": "Bolt Food",
-      "present": "5",
-      "expected": "6"
+      "present": "4",
+      "expected": "5"
     },
     "reason_ro": null
   },
@@ -622,7 +622,7 @@
     "reason_ro": null
   },
   {
-    "check_id": "L02:facebook:hours",
+    "check_id": "L02:wolt:phone",
     "chapter_id": "info",
     "status": "fail",
     "points_earned": 0.0,
@@ -630,12 +630,12 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Luni–Sâmbătă 8:00–18:00",
-      "expected": "Luni–Duminică 8:00–20:00",
+      "found": "0731 222 333",
+      "expected": "021 410 2233",
       "url": null
     },
     "params": {
-      "source": "Facebook"
+      "source": "Wolt"
     },
     "reason_ro": null
   },
@@ -724,27 +724,11 @@
     "reason_ro": null
   },
   {
-    "check_id": "S01",
-    "chapter_id": "social",
-    "status": "pass",
-    "points_earned": 20.0,
-    "points_max": 20.0,
-    "claimed_fixed": false,
-    "gate": false,
-    "evidence": {
-      "found": null,
-      "expected": null,
-      "url": "https://facebook.com/cafeneauaboema"
-    },
-    "params": {},
-    "reason_ro": null
-  },
-  {
     "check_id": "S02",
     "chapter_id": "social",
     "status": "pass",
-    "points_earned": 20.0,
-    "points_max": 20.0,
+    "points_earned": 25.0,
+    "points_max": 25.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
@@ -760,7 +744,7 @@
     "chapter_id": "social",
     "status": "fail",
     "points_earned": 0.0,
-    "points_max": 25.0,
+    "points_max": 30.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
@@ -775,8 +759,8 @@
     "check_id": "S04",
     "chapter_id": "social",
     "status": "partial",
-    "points_earned": 7.5,
-    "points_max": 15.0,
+    "points_earned": 10.0,
+    "points_max": 20.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
@@ -785,7 +769,7 @@
       "url": null
     },
     "params": {
-      "missing": "linkul către site pe pagina de Facebook"
+      "missing": "linkul către site în descrierea de pe Instagram"
     },
     "reason_ro": null
   },
@@ -794,7 +778,7 @@
     "chapter_id": "social",
     "status": "fail",
     "points_earned": 0.0,
-    "points_max": 20.0,
+    "points_max": 25.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {

@@ -2,7 +2,7 @@
 
 from typing import NamedTuple
 
-from app.models import Chapter, ChapterId, CheckStatus, FixType, Problem, Report
+from app.models import ChapterId, CheckStatus, FixType, Problem, Report
 from app.pipeline.types import CheckResult, Evidence
 
 CHAPTER_WEIGHTS: dict[ChapterId, float] = {
@@ -76,11 +76,10 @@ CATALOG: dict[str, CatalogEntry] = {
     "M02": CatalogEntry("mentiuni", 25, "owner_action"),
     "M03": CatalogEntry("mentiuni", 15, "generate"),
     "M05": CatalogEntry("mentiuni", 15, "owner_action"),
-    "S01": CatalogEntry("social", 20, "owner_action"),
-    "S02": CatalogEntry("social", 20, "owner_action"),
-    "S03": CatalogEntry("social", 25, "generate"),
-    "S04": CatalogEntry("social", 15, "owner_action"),
-    "S05": CatalogEntry("social", 20, "generate"),
+    "S02": CatalogEntry("social", 25, "owner_action"),
+    "S03": CatalogEntry("social", 30, "generate"),
+    "S04": CatalogEntry("social", 20, "owner_action"),
+    "S05": CatalogEntry("social", 25, "generate"),
     "K01": CatalogEntry("cunoaste", 50, "owner_action"),
     "K02": CatalogEntry("cunoaste", 30, "owner_action"),
     "K03": CatalogEntry("cunoaste", 20, "owner_action"),
@@ -180,13 +179,8 @@ def get_known_weight(report: Report) -> float:
     return total
 
 
-def get_chapter_impact(chapter: Chapter) -> float:
-    """Returns the overall points the chapter's open problems are worth together."""
-    return sum(problem.impact for problem in chapter.problems)
-
-
 def refresh_report_totals(report: Report) -> None:
-    """Recomputes every number derived from the chapter scores and open problems, from the overall score to where to start."""
+    """Recomputes every number derived from the chapter scores and open problems, from the overall score to the next steps."""
     report.overall_exact = get_overall_exact(
         {chapter.id: chapter.score for chapter in report.chapters},
         report.gemini.score,
@@ -201,8 +195,3 @@ def refresh_report_totals(report: Report) -> None:
     open_problems: list[Problem] = [problem for chapter in report.chapters for problem in chapter.problems]
     report.open_problem_count = len(open_problems)
     report.next_steps = sorted(open_problems, key=lambda problem: problem.impact, reverse=True)[:NEXT_STEPS_COUNT]
-    chapters_with_problems = [chapter for chapter in report.chapters if chapter.problems]
-    start_chapter = max(chapters_with_problems, key=get_chapter_impact, default=None)
-    report.start_here = start_chapter.id if start_chapter else None
-    for chapter in report.chapters:
-        chapter.start_here = chapter.id == report.start_here
