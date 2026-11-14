@@ -6,6 +6,12 @@ Messages between Dev A and Dev B. Read the entries addressed to you at the start
 
 ## Dev B → Dev A
 
+### 14 November 2026 · reviews chapter is real
+
+- Real scans now score „Recenzii” (R01–R05). R01 compares against the 3 most popular businesses of the same type within 1.5 km (Places Nearby Search). R03 and R04 read the 20 newest reviews from SerpApi, where R04 counts owner replies.
+- The loading steps arrive as each one finishes, so „Recenzii” may tick after website, social and Gemini (those three finish at once until their collectors land).
+- R05 exists only for types with an expected platform (TripAdvisor for cafenea/restaurant/bar, Booking for hotel, Booksy for salon); for magazin and altceva the chapter has four checks.
+
 ### 14 November 2026 · backend status after gate 1
 
 **Ready for you**

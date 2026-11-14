@@ -87,7 +87,10 @@ def is_google_maps_host(url: str) -> bool:
     """Returns whether a URL is on a Google Maps or Google short-link host, the only hosts the server will fetch."""
     parsed = urlparse(url)
     host = parsed.hostname or ""
-    is_google = host in SHORT_LINK_HOSTS or re.fullmatch(r"(www\.|maps\.|consent\.)?google\.(com|[a-z]{2}|co\.[a-z]{2}|com\.[a-z]{2})", host) is not None
+    is_google = (
+        host in SHORT_LINK_HOSTS
+        or re.fullmatch(r"(www\.|maps\.|consent\.)?google\.(com|[a-z]{2}|co\.[a-z]{2}|com\.[a-z]{2})", host) is not None
+    )
     return parsed.scheme in ("http", "https") and is_google
 
 

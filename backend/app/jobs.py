@@ -2,7 +2,7 @@
 
 import asyncio
 import logging
-from collections.abc import AsyncIterator, Coroutine
+from collections.abc import AsyncIterator, Callable, Coroutine
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import urlparse
@@ -30,7 +30,9 @@ from app.pipeline.assemble import (
     get_unknown_gemini_block,
 )
 from app.pipeline.canonical import CanonicalProfile, get_canonical
+from app.pipeline.collectors.competitors import NearbyCompetitor, get_nearby_competitors
 from app.pipeline.collectors.google_profile import collect_google_profile
+from app.pipeline.collectors.reviews import collect_reviews
 from app.pipeline.resolve import search_places
 from app.pipeline.romanian import get_count_phrase
 from app.pipeline.scoring import CATALOG, get_unknown_results
@@ -51,8 +53,14 @@ GOOGLE_TIMEOUT_SECONDS = 15
 GOOGLE_CHECK_IDS = [f"G{number:02d}" for number in range(2, 13)]
 """The checks the Google profile collector reports when it runs."""
 
-PENDING_CHECK_IDS = [check_id for check_id in CATALOG if check_id[0] in "RCTLMSK"]
-"""The checks of the collectors that aren't built yet."""
+NEARBY_TIMEOUT_SECONDS = 15
+"""The time limit of the nearby competitors search (3.9a)."""
+
+REVIEWS_TIMEOUT_SECONDS = 30
+"""The time limit of the reviews collector (3.2)."""
+
+REVIEW_CHECK_IDS = ["R01", "R02", "R03", "R04", "R05"]
+"""The checks the reviews collector reports."""
 
 PENDING_REASON_RO = "Nu verificăm încă asta."
 """Why a check of a collector that isn't built yet couldn't run."""
@@ -146,25 +154,12 @@ def get_fixture_checks() -> list[CheckResult]:
 
 def get_step_details(report: Report) -> list[tuple[StepId, str]]:
     """Returns the progress steps with the done text each would show for this report."""
-    review_count = report.comparison.me.review_count
-    website = report.business.website
     return [
-        ("google", "Am găsit Profilul tău Google" if report.business.place_id else "Nu am găsit un Profil Google"),
-        (
-            "recenzii",
-            f"Am găsit {get_count_phrase(review_count, 'recenzie', 'recenzii')}" if review_count else "Nu am găsit recenzii",
-        ),
-        ("website", get_website_detail(report, website)),
-        (
-            "retele",
-            "Am verificat Instagram" if get_chapter_score(report, "social") is not None else "Nu am putut verifica Instagram",
-        ),
-        (
-            "gemini",
-            f"I-am pus lui Gemini {get_count_phrase(report.gemini.total, 'întrebare', 'întrebări')}"
-            if report.gemini.total
-            else "Nu am putut întreba Gemini acum",
-        ),
+        ("google", get_google_detail(report.business.place_id is not None)),
+        ("recenzii", get_reviews_detail(report.comparison.me.review_count)),
+        ("website", get_website_detail(report.business.website, get_chapter_score(report, "site") is not None)),
+        ("retele", get_social_detail(get_chapter_score(report, "social") is not None)),
+        ("gemini", get_gemini_detail(report.gemini.total)),
     ]
 
 
@@ -173,12 +168,34 @@ def get_chapter_score(report: Report, chapter_id: ChapterId) -> int | None:
     return next(chapter.score for chapter in report.chapters if chapter.id == chapter_id)
 
 
-def get_website_detail(report: Report, website: str | None) -> str:
+def get_google_detail(has_profile: bool) -> str:
+    """Returns the Google step's done text."""
+    return "Am găsit Profilul tău Google" if has_profile else "Nu am găsit un Profil Google"
+
+
+def get_reviews_detail(review_count: int | None) -> str:
+    """Returns the reviews step's done text: how many Google reviews there are."""
+    return f"Am găsit {get_count_phrase(review_count, 'recenzie', 'recenzii')}" if review_count else "Nu am găsit recenzii"
+
+
+def get_website_detail(website: str | None, was_read: bool) -> str:
     """Returns the website step's done text: the domain read, or why it wasn't."""
     if not website:
         return "Nu ai încă un site"
     domain = urlparse(website).netloc.removeprefix("www.")
-    return f"Am citit {domain}" if get_chapter_score(report, "site") is not None else f"Nu am putut citi {domain}"
+    return f"Am citit {domain}" if was_read else f"Nu am putut citi {domain}"
+
+
+def get_social_detail(was_checked: bool) -> str:
+    """Returns the social step's done text."""
+    return "Am verificat Instagram" if was_checked else "Nu am putut verifica Instagram"
+
+
+def get_gemini_detail(questions: int) -> str:
+    """Returns the Gemini step's done text: how many questions Gemini answered."""
+    if not questions:
+        return "Nu am putut întreba Gemini acum"
+    return f"I-am pus lui Gemini {get_count_phrase(questions, 'întrebare', 'întrebări')}"
 
 
 async def replay_fixture(scan_id: str, progress: ScanProgress) -> None:
@@ -212,8 +229,36 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
         await progress.publish(FailedEvent(type="failed", message_ro=PROFILE_ERROR_RO))
         return
     try:
-        checks = await run_collector(collect_google_profile(inputs, canonical), GOOGLE_TIMEOUT_SECONDS, GOOGLE_CHECK_IDS)
-        pending_checks = get_unknown_results(PENDING_CHECK_IDS, PENDING_REASON_RO)
+        nearby = await get_nearby(inputs, canonical)
+        google_checks = await run_collector(collect_google_profile(inputs, canonical), GOOGLE_TIMEOUT_SECONDS, GOOGLE_CHECK_IDS)
+        await progress.publish(
+            StepEvent(type="step", step="google", status="done", detail_ro=get_google_detail(canonical is not None))
+        )
+        review_count = canonical.review_count if canonical else None
+        website = (canonical.website if canonical else None) or inputs.website_url
+        step_checks = await asyncio.gather(
+            run_step(
+                progress,
+                "recenzii",
+                collect_reviews(inputs, canonical, nearby),
+                REVIEWS_TIMEOUT_SECONDS,
+                REVIEW_CHECK_IDS,
+                lambda _: get_reviews_detail(review_count),
+            ),
+            run_step(
+                progress,
+                "website",
+                get_pending_checks("CT"),
+                0,
+                [],
+                lambda checks: get_website_detail(website, has_known(checks)),
+            ),
+            run_step(
+                progress, "retele", get_pending_checks("LMS"), 0, [], lambda checks: get_social_detail(has_known(checks, "S"))
+            ),
+            run_step(progress, "gemini", get_pending_checks("K"), 0, [], lambda _: get_gemini_detail(0)),
+        )
+        all_checks = google_checks + [check for checks in step_checks for check in checks]
         me = (
             get_compare_row(canonical)
             if canonical
@@ -228,12 +273,7 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
             )
         )
         comparison = Comparison(me=me, rivals=[], insights_ro=[], actions=[])
-        all_checks = checks + pending_checks
         report = build_report(scan_id, inputs, canonical, all_checks, get_unknown_gemini_block(), comparison)
-        for step, detail_ro in get_step_details(report):
-            if step != "google":
-                await progress.publish(StepEvent(type="step", step=step, status="running", detail_ro=None))
-            await progress.publish(StepEvent(type="step", step=step, status="done", detail_ro=detail_ro))
         save_report(scan_id, report, ScanInternal(source="pipeline", checks=all_checks, canonical=canonical))
         await progress.publish(CompleteEvent(type="complete", scan_id=scan_id))
     except Exception:
@@ -251,6 +291,42 @@ async def get_scan_canonical(inputs: ScanInputs) -> CanonicalProfile | None:
         candidates = await search_places(inputs.business_name, inputs.city, inputs.neighborhood)
         place_id = candidates[0].place_id if candidates and candidates[0].best else None
     return await get_canonical(place_id) if place_id else None
+
+
+async def get_nearby(inputs: ScanInputs, canonical: CanonicalProfile | None) -> list[NearbyCompetitor]:
+    """Returns the nearby competitors (3.9a), or none when there's no profile or the search fails."""
+    if canonical is None:
+        return []
+    try:
+        return await asyncio.wait_for(get_nearby_competitors(inputs.business_type, canonical), NEARBY_TIMEOUT_SECONDS)
+    except Exception:
+        logger.exception("Nearby search failed")
+        return []
+
+
+async def run_step(
+    progress: ScanProgress,
+    step: StepId,
+    collector: Coroutine[Any, Any, list[CheckResult]],
+    timeout: float,
+    check_ids: list[str],
+    get_detail: Callable[[list[CheckResult]], str],
+) -> list[CheckResult]:
+    """Runs one progress step's collector, announcing it as running and then done with its detail text."""
+    await progress.publish(StepEvent(type="step", step=step, status="running", detail_ro=None))
+    checks = await run_collector(collector, timeout, check_ids) if timeout else await collector
+    await progress.publish(StepEvent(type="step", step=step, status="done", detail_ro=get_detail(checks)))
+    return checks
+
+
+async def get_pending_checks(prefixes: str) -> list[CheckResult]:
+    """Returns the checks of collectors that aren't built yet, by check ID prefix, as `unknown`."""
+    return get_unknown_results([check_id for check_id in CATALOG if check_id[0] in prefixes], PENDING_REASON_RO)
+
+
+def has_known(checks: list[CheckResult], prefixes: str = "") -> bool:
+    """Returns whether any of the checks (optionally only those with the given ID prefixes) could run."""
+    return any(check.status != "unknown" for check in checks if not prefixes or check.check_id[0] in prefixes)
 
 
 async def run_collector(
