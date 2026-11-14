@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useSWRConfig } from "swr";
 import { buttonVariant } from "@/components/button-styles";
-import { ErrorState } from "@/components/ErrorState";
+import { ErrorCard, ErrorState } from "@/components/ErrorState";
 import { ApiError } from "@/lib/api";
+import { useIsDesktop } from "@/hooks/use-is-desktop";
 import { getScanKey, useScan } from "@/hooks/use-scan";
 import { useScanProgress } from "../_hooks/use-scan-progress";
 import { AnalysisSpinner } from "./AnalysisSpinner";
@@ -14,13 +15,11 @@ import { LoadingFrame } from "./LoadingFrame";
 import { StepList } from "./StepList";
 import { getProgressPercent, steps } from "./steps";
 
-/** The viewport width from which the desktop layout, and the automatic redirect, apply. */
-const DESKTOP_QUERY = "(min-width: 1024px)";
-
 /** A component that shows the analysis progress and sends the owner to the results when it completes. */
 export function Loading() {
   const { id: scanId } = useParams<{ id: string }>();
   const router = useRouter();
+  const isDesktop = useIsDesktop();
   const { mutate } = useSWRConfig();
   const { report } = useScan(scanId);
   const { doneDetails, outcome, failureMessage, retry } = useScanProgress(scanId);
@@ -31,10 +30,10 @@ export function Loading() {
     }
     /** The cached envelope still says "running", which would send the shell back here, so drop it. */
     void mutate(getScanKey(scanId), undefined, { revalidate: false });
-    if (window.matchMedia(DESKTOP_QUERY).matches) {
+    if (isDesktop) {
       router.replace(`/scan/${scanId}`);
     }
-  }, [outcome, scanId, mutate, router]);
+  }, [outcome, scanId, isDesktop, mutate, router]);
 
   const doneCount = Object.keys(doneDetails).length;
   const business = report?.business;
@@ -43,11 +42,12 @@ export function Loading() {
   if (outcome === "failed") {
     return (
       <LoadingFrame businessLine={businessLine}>
-        <div role="alert" className="mx-auto flex w-full max-w-xl flex-col items-start gap-4 rounded-[28px] border border-border bg-surface p-6">
-          <p className="text-[15px] font-medium text-body">{failureMessage}</p>
-          <Link href="/start" className={`${buttonVariant.primary} h-12 px-6 text-[15px]`}>
-            Încearcă din nou
-          </Link>
+        <div className="mx-auto w-full max-w-xl">
+          <ErrorCard message={failureMessage}>
+            <Link href="/start" className={`${buttonVariant.primary} h-12 px-6 text-[15px]`}>
+              Încearcă din nou
+            </Link>
+          </ErrorCard>
         </div>
       </LoadingFrame>
     );

@@ -1,15 +1,14 @@
-import Link from "next/link";
+import { BackLink } from "@/components/BackLink";
 import { ScoreRing } from "@/components/ScoreRing";
-import { Icon } from "@/components/Icon";
+import { Icon, iconPath } from "@/components/Icon";
 import { getErrorMessage } from "@/components/ErrorState";
 import { buttonVariant } from "@/components/button-styles";
+import { getDayLabel } from "@/lib/format";
 import type { GeminiBlock } from "@/lib/types";
 
 /** The path of the back icon. */
-const backIconPath = "M15 6l-6 6 6 6";
 
 /** The path of the retry icon. */
-const retryIconPath = "M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4";
 
 /** The props of {@link GeminiHeader}. */
 interface GeminiHeaderProps {
@@ -27,11 +26,6 @@ interface GeminiHeaderProps {
   onRetest: () => void;
 }
 
-/** Returns whether the given date falls on today's date. */
-function isToday(date: Date): boolean {
-  return date.toDateString() === new Date().toDateString();
-}
-
 /** Returns the "last checked" line, or `null` when the date can't be read. */
 function getLastCheckedText(lastChecked: string, isTesting: boolean, hasRetested: boolean): string | null {
   if (isTesting) {
@@ -44,10 +38,7 @@ function getLastCheckedText(lastChecked: string, isTesting: boolean, hasRetested
   if (Number.isNaN(date.getTime())) {
     return null;
   }
-  if (isToday(date)) {
-    return "Ultima verificare: azi";
-  }
-  return `Ultima verificare: ${date.toLocaleDateString("ro-RO", { day: "numeric", month: "long", year: "numeric" })}`;
+  return `Ultima verificare: ${getDayLabel(date)}`;
 }
 
 /** A component that shows the back link, the Gemini score, the intro and the retest button. */
@@ -56,15 +47,7 @@ export function GeminiHeader({ scanId, gemini, isTesting, hasRetested, error, on
 
   return (
     <>
-      <Link
-        href={`/scan/${scanId}`}
-        className="flex min-h-11 items-center gap-1 self-start ps-3.5 pt-2.5 text-[15px] font-bold text-subtle lg:gap-1.5 lg:p-0 lg:text-sm"
-      >
-        <Icon path={backIconPath} size={22} strokeWidth={2.2} className="lg:size-4.5" />
-        <span>
-          Panou<span className="hidden lg:inline"> principal</span>
-        </span>
-      </Link>
+      <BackLink scanId={scanId} />
 
       <section className="flex flex-col items-center gap-2.5 px-5 pb-5 text-center lg:flex-row lg:flex-wrap lg:gap-7 lg:rounded-[28px] lg:border lg:border-border lg:bg-surface lg:px-8 lg:py-7 lg:text-start">
         <div className="lg:hidden">
@@ -103,7 +86,7 @@ export function GeminiHeader({ scanId, gemini, isTesting, hasRetested, error, on
                 className="size-4.5 animate-[spin_0.8s_linear_infinite] rounded-full border-[2.5px] border-white/35 border-t-white"
               />
             ) : (
-              <Icon path={retryIconPath} size={18} strokeWidth={2.2} />
+              <Icon path={iconPath.refresh} size={18} strokeWidth={2.2} />
             )}
             {isTesting ? "Testăm…" : "Testează din nou"}
           </button>

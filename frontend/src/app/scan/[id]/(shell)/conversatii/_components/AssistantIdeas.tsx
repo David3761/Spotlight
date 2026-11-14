@@ -1,4 +1,5 @@
 import { Icon, iconPath } from "@/components/Icon";
+import { InfoNote } from "@/components/InfoNote";
 
 /** What the owner can ask the assistant, each one starting a conversation. */
 const ideas = [
@@ -7,9 +8,6 @@ const ideas = [
   "De ce nu apar la „cafenea unde pot lucra cu laptopul”?",
   "Ce fac prima dată azi?",
 ];
-
-/** The path of the info icon of the note. */
-const infoPath = "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 8h.01";
 
 /** A component that shows the ideas to ask the assistant and the note about marking problems as fixed. */
 export function AssistantIdeas({ isDisabled, onPick }: { isDisabled: boolean; onPick: (text: string) => void }) {
@@ -30,12 +28,9 @@ export function AssistantIdeas({ isDisabled, onPick }: { isDisabled: boolean; on
           </button>
         ))}
       </div>
-      <div className="flex items-start gap-3 rounded-3xl bg-accent-soft px-5.5 py-5">
-        <Icon path={infoPath} size={20} className="mt-px flex-none text-accent-strong" />
-        <span className="text-sm leading-[1.55] text-accent-deep">
-          Asistentul marchează o problemă ca rezolvată doar când îi spui tu. Verificăm din nou pe Google la următoarea analiză.
-        </span>
-      </div>
+      <InfoNote>
+        Asistentul marchează o problemă ca rezolvată doar când îi spui tu. Verificăm din nou pe Google la următoarea analiză.
+      </InfoNote>
     </aside>
   );
 }

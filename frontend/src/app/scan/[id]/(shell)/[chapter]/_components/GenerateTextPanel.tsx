@@ -109,7 +109,7 @@ export function GenerateTextPanel({
               onClick={regenerate}
               className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full px-4 text-sm font-bold text-accent-hover lg:ms-auto lg:w-auto lg:bg-fill lg:text-body"
             >
-              <Icon path={screenIconPath.refresh} size={17} />
+              <Icon path={iconPath.refresh} size={17} />
               Generează din nou
             </button>
           </div>
@@ -118,7 +118,7 @@ export function GenerateTextPanel({
         {fix.where_ro && (
           <div className="flex items-start gap-3 text-[13px] leading-normal text-subtle">
             <span className="flex size-7 shrink-0 items-center justify-center rounded-[9px] bg-accent-soft text-accent">
-              <Icon path={screenIconPath.info} size={16} />
+              <Icon path={iconPath.info} size={16} />
             </span>
             <span>
               Unde îl pui: <b className="text-ink">{fix.where_ro}</b>, apoi lipește textul și salvează.

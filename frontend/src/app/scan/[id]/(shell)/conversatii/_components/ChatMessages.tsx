@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { motion } from "motion/react";
+import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
+import { AssistantBubble } from "@/components/chat/AssistantBubble";
+import { TypingIndicator } from "@/components/chat/TypingIndicator";
 import { Icon, iconPath } from "@/components/Icon";
 import { useLoadedScan } from "@/components/ScanShell";
 import { buttonVariant } from "@/components/button-styles";
@@ -55,15 +58,6 @@ export function ChatMessages({ messages, isTyping, isBusy, onReply, onOption }: 
   );
 }
 
-/** A component that draws the assistant's round sparkle avatar. */
-function AssistantAvatar() {
-  return (
-    <div className="flex size-7 flex-none items-center justify-center rounded-full bg-accent-soft lg:size-8">
-      <Icon path={iconPath.sparkle} size={16} strokeWidth={0} className="size-3.5 fill-accent lg:size-4" />
-    </div>
-  );
-}
-
 /** A component that shows one message: the bubble, then its action and quick replies. */
 function MessageView({
   message,
@@ -104,9 +98,7 @@ function MessageView({
     >
       <AssistantAvatar />
       <div className="flex min-w-0 flex-col gap-2 lg:gap-2.5">
-        <p className="max-w-72.5 rounded-[18px] rounded-es-[6px] bg-fill px-3.5 py-2.5 text-sm leading-normal whitespace-pre-wrap lg:max-w-140 lg:rounded-[20px] lg:rounded-es-[6px] lg:px-4.5 lg:py-3 lg:text-[15px]">
-          {message.text}
-        </p>
+        <AssistantBubble>{message.text}</AssistantBubble>
         {action?.status === "pending" && (
           <div className="flex flex-wrap gap-1.5 lg:gap-2">
             {action.options.map((option, index) => (
@@ -215,25 +207,6 @@ function ConfirmedRow({ title, points, children }: { title: string; points: numb
         <span className="hidden text-xs text-subtle lg:block">{children}</span>
       </span>
       <span className="text-[13px] font-extrabold text-high-text lg:text-sm">+{points}</span>
-    </div>
-  );
-}
-
-/** A component that shows three bouncing dots while the assistant works on a reply. */
-function TypingIndicator() {
-  return (
-    <div className="flex items-end gap-2 lg:gap-3">
-      <AssistantAvatar />
-      <div aria-label="Asistentul scrie" className="flex gap-1.25 rounded-[18px] rounded-es-[6px] bg-fill px-4 py-3.5 lg:rounded-[20px] lg:rounded-es-[6px] lg:px-4.5 lg:py-4">
-        {[0, 0.15, 0.3].map((delay) => (
-          <motion.span
-            key={delay}
-            animate={{ y: [0, -4, 0], opacity: [0.35, 1, 0.35] }}
-            transition={{ duration: 1, ease: "easeInOut", repeat: Infinity, delay }}
-            className="size-1.75 rounded-full bg-muted"
-          />
-        ))}
-      </div>
     </div>
   );
 }

@@ -2,13 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { AnswerForm, type AnswerField } from "@/app/start/_components/AnswerForm";
-import { AssistantAvatar } from "@/app/start/_components/AssistantAvatar";
 import { BusinessCard, MobileBusinessCard } from "@/app/start/_components/BusinessCard";
 import { ChatBubble } from "@/app/start/_components/ChatBubble";
 import { LinkError } from "@/app/start/_components/LinkError";
 import { PlaceCandidates } from "@/app/start/_components/PlaceCandidates";
 import { QuickReplies, ToggleReplies } from "@/app/start/_components/QuickReplies";
-import { TypingIndicator } from "@/app/start/_components/TypingIndicator";
 import {
   businessTypeOptions,
   getCardFields,
@@ -22,10 +20,11 @@ import {
   type Phase,
 } from "@/app/start/_hooks/onboarding-model";
 import { useOnboarding, type Onboarding as OnboardingState } from "@/app/start/_hooks/use-onboarding";
+import { AppLogo } from "@/components/AppLogo";
+import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
+import { TypingIndicator } from "@/components/chat/TypingIndicator";
 import { buttonVariant, chipVariant } from "@/components/button-styles";
 import { ErrorState } from "@/components/ErrorState";
-import { iconPath } from "@/components/Icon";
-import { APP_NAME } from "@/config";
 
 /** The yes and no chips of the website question. */
 const websiteOptions = [
@@ -117,13 +116,8 @@ export function Onboarding() {
 function Header({ stepNumber }: { stepNumber: number }) {
   return (
     <header className="flex flex-col gap-2.5 border-b border-divider bg-surface px-3 pt-2.5 pb-3 lg:min-h-18 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:border-border lg:px-10 lg:py-3">
-      <div className="hidden items-center gap-3 lg:flex">
-        <div className="flex size-9 items-center justify-center rounded-[11px] bg-accent">
-          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-            <path d={iconPath.sparkle} className="fill-white" />
-          </svg>
-        </div>
-        <span className="text-[17px] font-extrabold tracking-[-0.01em]">{APP_NAME}</span>
+      <div className="hidden lg:block">
+        <AppLogo />
       </div>
       <div className="flex items-center justify-between lg:flex-col lg:gap-2">
         <span className="ps-2.5 text-sm font-bold lg:ps-0 lg:text-[13px] lg:font-semibold lg:text-subtle">

@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { buttonVariant } from "@/components/button-styles";
-import { Icon } from "@/components/Icon";
+import { Icon, iconPath } from "@/components/Icon";
 import { ScoreRing } from "@/components/ScoreRing";
+import { getProblemCountLabel } from "@/lib/format";
 import type { Report } from "@/lib/types";
-import { getProblemCountLabel } from "./format";
 
 /** The path of the arrow icon. */
-const arrowPath = "M5 12h14M13 6l6 6-6 6";
 
 /** The look shared by the summary chips. */
 const chipClass = "h-7.5 items-center rounded-full bg-fill px-3 text-[13px] font-bold text-body lg:h-8";
@@ -43,7 +42,7 @@ export function OverallCard({ report }: { report: Report }) {
             className={`${buttonVariant.primary} h-12.5 w-full text-[15px] lg:h-12 lg:w-auto lg:self-start lg:px-5.5`}
           >
             Începe cu {startChapter.name_ro}
-            <Icon path={arrowPath} size={18} strokeWidth={2.2} className="hidden lg:block" />
+            <Icon path={iconPath.arrowRight} size={18} strokeWidth={2.2} className="hidden lg:block" />
           </Link>
         )}
       </div>

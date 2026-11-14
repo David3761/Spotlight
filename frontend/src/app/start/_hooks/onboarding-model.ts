@@ -210,9 +210,6 @@ export const linkIcon = "M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10
 /** The SVG path of the broken link icon. */
 export const linkOffIcon = `${linkIcon}M4 4l16 16`;
 
-/** The SVG path of the search icon. */
-export const searchIcon = "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4";
-
 /** The SVG path of the warning icon. */
 export const warningIcon = "M12 3l9.5 17h-19zM12 10v4M12 17.5v.01";
 

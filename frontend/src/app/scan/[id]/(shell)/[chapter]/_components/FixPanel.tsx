@@ -3,8 +3,8 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Dialog } from "radix-ui";
 import { Icon, iconPath } from "@/components/Icon";
+import { useIsDesktop } from "@/hooks/use-is-desktop";
 import type { Problem } from "@/lib/types";
-import { useIsDesktop } from "../_hooks/use-is-desktop";
 import { DevExportPanel } from "./DevExportPanel";
 import { GenerateTextPanel } from "./GenerateTextPanel";
 import { InfoPagePanel } from "./InfoPagePanel";

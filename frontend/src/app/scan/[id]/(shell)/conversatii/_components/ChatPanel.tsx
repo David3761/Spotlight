@@ -1,14 +1,13 @@
 import { Icon, iconPath } from "@/components/Icon";
+import { InfoNote } from "@/components/InfoNote";
 import { ScoreRing } from "@/components/ScoreRing";
+import { getProblemCountLabel } from "@/lib/format";
 import type { Chapter } from "@/lib/types";
 import type { ChapterTask } from "./chat-data";
 
-/** The path of the info icon of the footnote. */
-const infoPath = "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 8h.01";
-
 /** Returns how many problems a chapter has left, worded for the owner. */
 function getRemainingLabel(remaining: number): string {
-  return remaining === 1 ? "1 problemă rămasă" : `${remaining} probleme rămase`;
+  return `${getProblemCountLabel(remaining)} ${remaining === 1 ? "rămasă" : "rămase"}`;
 }
 
 /** Returns the points the owner gained today in the tasks, i.e. those marked done. */
@@ -27,11 +26,7 @@ export function ChapterStrip({ chapter, tasks }: { chapter: Chapter; tasks: Chap
         <span className="text-sm font-extrabold">{chapter.name_ro}</span>
         <span className="text-xs text-muted">{getRemainingLabel(chapter.problems.length)}</span>
       </span>
-      {gained > 0 && (
-        <span className="flex h-6.5 items-center rounded-full bg-high-tint px-2.5 text-xs font-extrabold text-high-text">
-          +{gained} azi
-        </span>
-      )}
+      {gained > 0 && <GainedPill points={gained} />}
     </div>
   );
 }
@@ -65,11 +60,7 @@ export function ChatPanel({ chapter, tasks, overall, overallAtOpen }: ChatPanelP
             <ScoreRing score={chapter.score} size={96} animateFrom={getRingStart(chapter.score, gained)} />
             <div className="flex flex-col gap-1.5">
               <span className="text-[17px] font-extrabold">{chapter.name_ro}</span>
-              {gained > 0 && (
-                <span className="flex h-6.5 items-center self-start rounded-full bg-high-tint px-2.5 text-xs font-extrabold text-high-text">
-                  +{gained} azi
-                </span>
-              )}
+              {gained > 0 && <GainedPill points={gained} className="self-start" />}
               <span className="text-[13px] text-muted">{getRemainingLabel(chapter.problems.length)}</span>
             </div>
           </div>
@@ -105,12 +96,16 @@ export function ChatPanel({ chapter, tasks, overall, overallAtOpen }: ChatPanelP
           </span>
         </div>
       </div>
-      <div className="flex items-start gap-3 rounded-3xl bg-accent-soft px-5 py-4.5">
-        <Icon path={infoPath} size={20} className="mt-px flex-none text-accent-strong" />
-        <span className="text-[13px] leading-[1.55] text-accent-deep">
-          Asistentul marchează ceva ca rezolvat doar când îi spui tu, și poți anula oricând.
-        </span>
-      </div>
+      <InfoNote>Asistentul marchează ceva ca rezolvat doar când îi spui tu, și poți anula oricând.</InfoNote>
     </aside>
+  );
+}
+
+/** A component that shows the green pill with the points gained today. */
+function GainedPill({ points, className = "" }: { points: number; className?: string }) {
+  return (
+    <span className={`flex h-6.5 items-center rounded-full bg-high-tint px-2.5 text-xs font-extrabold text-high-text ${className}`}>
+      +{points} azi
+    </span>
   );
 }

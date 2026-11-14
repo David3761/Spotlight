@@ -1,9 +1,8 @@
-import { Icon } from "@/components/Icon";
+import { Icon, iconPath } from "@/components/Icon";
+import { getDayLabel } from "@/lib/format";
 import type { Business } from "@/lib/types";
-import { getDayLabel } from "./format";
 
 /** The path of the rescan icon. */
-const rescanIconPath = "M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4";
 
 /** The look shared by the desktop and mobile rescan buttons. */
 const rescanButtonClass =
@@ -23,7 +22,7 @@ interface DashboardHeaderProps {
 
 /** A component that shows the greeting and the rescan button: a heading on desktop, a compact bar on mobile. */
 export function DashboardHeader({ business, checkedAt, isRescanning, onRescan }: DashboardHeaderProps) {
-  const lastChecked = `Ultima analiză: ${getDayLabel(checkedAt)}`;
+  const lastChecked = `Ultima analiză: ${getDayLabel(new Date(checkedAt))}`;
 
   return (
     <>
@@ -38,7 +37,7 @@ export function DashboardHeader({ business, checkedAt, isRescanning, onRescan }:
           disabled={isRescanning}
           className={`${rescanButtonClass} h-11 gap-2 px-4.5 text-sm font-bold`}
         >
-          <Icon path={rescanIconPath} size={18} />
+          <Icon path={iconPath.refresh} size={18} />
           Analizează din nou
         </button>
       </div>
@@ -57,7 +56,7 @@ export function DashboardHeader({ business, checkedAt, isRescanning, onRescan }:
           disabled={isRescanning}
           className={`${rescanButtonClass} size-11`}
         >
-          <Icon path={rescanIconPath} size={20} />
+          <Icon path={iconPath.refresh} size={20} />
         </button>
       </header>
     </>

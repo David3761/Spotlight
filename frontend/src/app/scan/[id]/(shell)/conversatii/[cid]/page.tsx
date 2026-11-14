@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ErrorState, getErrorMessage } from "@/components/ErrorState";
-import { Icon } from "@/components/Icon";
+import { Icon, iconPath } from "@/components/Icon";
 import { useLoadedScan } from "@/components/ScanShell";
 import { Toast } from "@/components/Toast";
 import { buttonVariant } from "@/components/button-styles";
@@ -13,11 +13,10 @@ import { ChatComposer } from "../_components/ChatComposer";
 import { ChatMessages } from "../_components/ChatMessages";
 import { ChapterStrip, ChatPanel } from "../_components/ChatPanel";
 import { getChapterTasks, getConfirmedItems, getPanelChapter } from "../_components/chat-data";
-import { getDayLabel, getTimeLabel } from "../_components/conversation-groups";
+import { getConversationDayLabel, getTimeLabel } from "../_components/conversation-groups";
 import { useChat } from "../_hooks/use-chat";
 
 /** The path of the back arrow. */
-const backPath = "M15 6l-6 6 6 6";
 
 /** The chat page: the conversation with the assistant and, on desktop, the chapter and score panel. */
 export default function ChatPage() {
@@ -66,7 +65,7 @@ export default function ChatPage() {
             aria-label="Înapoi la conversații"
             className="flex size-11 flex-none items-center justify-center rounded-full text-body"
           >
-            <Icon path={backPath} size={22} strokeWidth={2.2} />
+            <Icon path={iconPath.back} size={22} strokeWidth={2.2} />
           </Link>
           <div className="flex min-w-0 flex-1 flex-col gap-0.5">
             <span className="truncate text-[15px] font-extrabold lg:text-base">{conversation?.title}</span>
@@ -118,7 +117,7 @@ function getSubtitle(conversation: Conversation, chapters: { id: string; name_ro
   const chapterName =
     conversation.kind === "onboarding" ? "Configurare" : chapters.find((chapter) => chapter.id === conversation.chapter_id)?.name_ro;
   const when = lastMessage
-    ? `${getDayLabel(new Date(lastMessage.created_at), new Date())}, ${getTimeLabel(lastMessage.created_at)}`
+    ? `${getConversationDayLabel(new Date(lastMessage.created_at))}, ${getTimeLabel(lastMessage.created_at)}`
     : null;
   return [when, chapterName].filter(Boolean).join(" · ");
 }

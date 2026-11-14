@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import { BackLink } from "@/components/BackLink";
 import { buttonVariant } from "@/components/button-styles";
 import { Icon, iconPath } from "@/components/Icon";
 import { ScoreRing } from "@/components/ScoreRing";
+import { useIsDesktop } from "@/hooks/use-is-desktop";
+import { getProblemCountLabel } from "@/lib/format";
 import type { Chapter } from "@/lib/types";
-import { useIsDesktop } from "../_hooks/use-is-desktop";
 import { screenIconPath } from "./icons";
-import { getProblemCountLabel } from "./problem-count";
 
 /** A component that shows the back link and the chapter's ring, name, intro and points; smaller once everything is solved. */
 export function ChapterHeader({
@@ -28,23 +28,7 @@ export function ChapterHeader({
 
   return (
     <>
-      <header className="flex items-center gap-1 px-3 py-2.5 lg:hidden">
-        <Link
-          href={`/scan/${scanId}`}
-          aria-label="Înapoi la panou"
-          className="flex size-11 items-center justify-center rounded-full text-body"
-        >
-          <Icon path={screenIconPath.back} size={22} strokeWidth={2.2} />
-        </Link>
-        <span className="text-[15px] font-bold text-subtle">Panou</span>
-      </header>
-      <Link
-        href={`/scan/${scanId}`}
-        className="hidden min-h-11 items-center gap-1.5 self-start text-sm font-bold text-subtle lg:flex"
-      >
-        <Icon path={screenIconPath.back} size={18} strokeWidth={2.2} />
-        Panou principal
-      </Link>
+      <BackLink scanId={scanId} />
 
       <section className="flex flex-col items-center gap-3.5 px-5 pt-1 pb-5 text-center lg:flex-row lg:flex-wrap lg:gap-8 lg:rounded-[28px] lg:border lg:border-border lg:bg-surface lg:p-8 lg:text-start lg:shadow-[0_1px_2px_rgba(15,23,42,0.04),0_12px_32px_rgba(15,23,42,0.05)]">
         <ScoreRing score={chapter.score} size={ringSize} thick={ringThick} />
@@ -57,7 +41,7 @@ export function ChapterHeader({
                 <Icon path={iconPath.arrowUp} size={15} strokeWidth={2.6} />+{chapter.possible_points} puncte posibile
               </span>
               <span className="hidden h-8.5 items-center rounded-full bg-fill px-3.5 text-sm font-bold text-body lg:flex">
-                {getProblemCountLabel(chapter.problems.length)}
+                {getProblemCountLabel(chapter.problems.length)} de rezolvat
               </span>
             </div>
           )}

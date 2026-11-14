@@ -2,7 +2,6 @@ import Link from "next/link";
 import { buttonVariant } from "@/components/button-styles";
 import { Icon, iconPath } from "@/components/Icon";
 import type { Chapter } from "@/lib/types";
-import { screenIconPath } from "./icons";
 
 /** A component that celebrates a chapter with every problem solved and points on to what is left. */
 export function ChapterDone({
@@ -39,7 +38,7 @@ export function ChapterDone({
         {nextChapter && (
           <Link href={`/scan/${scanId}/${nextChapter.id}`} className={`${buttonVariant.primary} h-12.5 px-6 text-[15px]`}>
             Mergi la {nextChapter.name_ro}
-            <Icon path={screenIconPath.arrowRight} size={18} strokeWidth={2.2} />
+            <Icon path={iconPath.arrowRight} size={18} strokeWidth={2.2} />
           </Link>
         )}
         <Link href={`/scan/${scanId}`} className={`${buttonVariant.outline} h-12.5 px-6 text-[15px]`}>

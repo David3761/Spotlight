@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { APP_NAME } from "@/config";
+import { AppLogo } from "@/components/AppLogo";
 import { chapterIconPath, Icon, iconPath } from "@/components/Icon";
 import type { Chapter, Report } from "@/lib/types";
 
@@ -28,13 +28,8 @@ export function Sidebar({ report, active }: { report: Report; active: SidebarSec
 
   return (
     <nav aria-label="Meniu principal" className="flex min-h-screen w-full flex-col gap-5 bg-surface px-[18px] py-6 text-ink">
-      <div className="flex items-center gap-3 px-1.5">
-        <div className="flex size-9 items-center justify-center rounded-[11px] bg-accent">
-          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-            <path d={iconPath.sparkle} className="fill-white" />
-          </svg>
-        </div>
-        <span className="text-[17px] font-extrabold tracking-[-0.01em]">{APP_NAME}</span>
+      <div className="px-1.5">
+        <AppLogo />
       </div>
 
       <div className="flex w-full items-center gap-3 rounded-[18px] border border-border bg-page p-3">

@@ -1,6 +1,5 @@
-import { Icon } from "@/components/Icon";
+import { Icon, iconPath } from "@/components/Icon";
 import { ScoreRing } from "@/components/ScoreRing";
-import { screenIconPath } from "./icons";
 
 /** A component that shows what the chapter and overall scores would be once every open problem is fixed. */
 export function AllFixedBox({
@@ -19,7 +18,7 @@ export function AllFixedBox({
       <span className="text-base font-extrabold">Dacă rezolvi tot</span>
       <div className="flex items-center justify-center gap-4">
         <ScoreRing score={chapterScore} size={76} />
-        <Icon path={screenIconPath.arrowRight} size={28} strokeWidth={2.2} className="text-faint" />
+        <Icon path={iconPath.arrowRight} size={28} strokeWidth={2.2} className="text-faint" />
         <ScoreRing score={chapterScoreIfFixed} size={76} />
       </div>
       <p className="text-sm leading-[1.55] text-subtle">

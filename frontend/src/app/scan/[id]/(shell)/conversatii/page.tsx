@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ErrorState } from "@/components/ErrorState";
-import { Icon } from "@/components/Icon";
+import { Icon, iconPath } from "@/components/Icon";
 import { useLoadedScan } from "@/components/ScanShell";
 import { AssistantIdeas } from "./_components/AssistantIdeas";
 import { ConversationList } from "./_components/ConversationList";
@@ -14,7 +14,6 @@ import { useStartConversation } from "./_hooks/use-start-conversation";
 const plusPath = "M12 5v14M5 12h14";
 
 /** The path of the magnifier icon of the search field. */
-const searchPath = "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4";
 
 /** The conversation list page: search, conversations by day, a button for a new one and ideas to ask. */
 export default function ConversationsPage() {
@@ -24,7 +23,7 @@ export default function ConversationsPage() {
   const [search, setSearch] = useState("");
 
   const matching = conversations?.filter((conversation) => getMatchesSearch(conversation, search));
-  const groups = matching ? getDayGroups(matching, new Date()) : [];
+  const groups = matching ? getDayGroups(matching) : [];
 
   return (
     <div className="flex flex-col gap-3 pb-6 lg:gap-6 lg:px-12 lg:pt-10 lg:pb-14">
@@ -55,7 +54,7 @@ export default function ConversationsPage() {
       <div className="flex flex-wrap items-start gap-6 px-4 lg:px-0">
         <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-3 lg:gap-4.5">
           <div className="flex h-11.5 items-center gap-2.5 rounded-full border border-border bg-surface px-4 text-muted lg:h-13 lg:px-4.5">
-            <Icon path={searchPath} size={18} />
+            <Icon path={iconPath.search} size={18} />
             <label htmlFor="searchChats" className="sr-only">
               Caută în conversații
             </label>

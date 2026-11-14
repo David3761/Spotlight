@@ -1,7 +1,7 @@
-import { AssistantAvatar } from "@/app/start/_components/AssistantAvatar";
-import { linkOffIcon, searchIcon } from "@/app/start/_hooks/onboarding-model";
+import { linkOffIcon } from "@/app/start/_hooks/onboarding-model";
 import { buttonVariant } from "@/components/button-styles";
-import { Icon } from "@/components/Icon";
+import { AssistantAvatar } from "@/components/chat/AssistantAvatar";
+import { Icon, iconPath } from "@/components/Icon";
 
 /** The look of the three recovery buttons' shared size. */
 const actionSize = "h-11 cursor-pointer text-sm disabled:cursor-default disabled:opacity-60";
@@ -20,7 +20,7 @@ export function LinkError({
 }) {
   return (
     <div className="flex items-start gap-2 lg:gap-3">
-      <AssistantAvatar className="size-7 lg:size-8" />
+      <AssistantAvatar />
       <div
         role="alert"
         className="flex min-w-0 flex-col gap-3.5 rounded-[22px] rounded-es-[6px] border border-low-line bg-surface p-4 lg:max-w-150 lg:p-5"
@@ -44,7 +44,7 @@ export function LinkError({
             onClick={onSearch}
             className={`${buttonVariant.primary} ${actionSize} px-5`}
           >
-            <Icon path={searchIcon} size={16} strokeWidth={2.2} />
+            <Icon path={iconPath.search} size={16} strokeWidth={2.2} />
             Caută-mă pe Google
           </button>
           <button

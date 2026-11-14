@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { chapterIconPath, Icon } from "@/components/Icon";
 import { ScoreRing } from "@/components/ScoreRing";
+import { getProblemCountLabel } from "@/lib/format";
 import type { Chapter } from "@/lib/types";
-import { getProblemCountLabel } from "./format";
 
 /** A component that lists the chapters as cards on mobile, with the one to start with marked. */
 export function ChapterGrid({ scanId, chapters }: { scanId: string; chapters: Chapter[] }) {
