@@ -282,10 +282,10 @@ Only links the owner gave (onboarding social links and platform links found on t
 
 ```
 expected = platforms expected for business_type
-           (cafenea: Instagram, TripAdvisor, plus Glovo/Wolt/Bolt Food if canonical.delivery)
-           (salon: Instagram, Booksy · hotel: Instagram, Booking)
+           (Instagram + the type's review platform from R05: TripAdvisor for cafenea/restaurant/bar,
+            Booking for hotel, Booksy for salon; plus Glovo/Wolt/Bolt Food for food types if canonical.delivery)
 
-for each known URL:
+for each platform page the website links to (the site itself isn't a source: C02–C04 already compare it with Google):
     fetch (raw first; Playwright if empty), L3 extract → { name, address, phone, hours }
     normalize (§4), compare field by field with canonical
     blocked / login wall → that source unknown, excluded from L02
@@ -335,10 +335,12 @@ ig     = Instagram Graph API Business Discovery for the handle (GET https://grap
              {biography,website,followers_count,media_count,media.limit(10){timestamp}}
          works only for business/creator accounts; personal account or no token → ig = null
 
-S02 Instagram profile exists                               ig != null, else HTTP status of the profile URL      (25)
+S02 Instagram profile exists                               ig != null, else an Instagram link from the owner or the site
+                                                           (instagram.com answers 200 even for usernames that don't exist,
+                                                           so the HTTP status can't tell)                        (25)
 S03 posted in the last 30 days                             newest ig media timestamp; ig null → self_report.last_social_post   (30)
 S04 cross-links: website ↔ Instagram ↔ Google profile      website links to Instagram, ig.website points to the site,
-                                                           canonical.website set                                 (20)
+                                                           canonical.website set; no website → unknown           (20)
 S05 Instagram bio says what + where (+ link or hours)      L1-style judge on ig.biography; ig null → unknown     (25)
 ```
 

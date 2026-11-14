@@ -7,7 +7,7 @@ Hackathon project: a Romanian web app that audits how visible a local business i
 - `docs/architecture.md` — the plan, the team split, file ownership, build order and gates.
 - `docs/contract.md` — every endpoint, response shape and shared Python interface. Code must match it exactly.
 - `docs/data-collection-algorithm.md` — checks, data sources, points, weights, pipeline.
-- `docs/sync.md` — messages between the two devs: read the entries addressed to you at the start of every task, answer there.
+- `docs/sync.md` — how the two sessions sync: rounds where Dev A writes first and Dev B answers and reports to its developer, plus the status board and open questions. Pull and read it at the start of every task, and follow its „How we sync” section.
 - `design/README.md` and `design/*.dc.html` — layout, Romanian copy and tokens (UI work).
 - Your own prompt: `docs/prompts/dev-a-frontend.md` or `docs/prompts/dev-b-backend.md`.
 
