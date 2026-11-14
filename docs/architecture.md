@@ -245,7 +245,7 @@ Assistant functions (Screen 6):
 Model tiers, set in `backend/.env` (models page and pricing page, 14 November 2026):
 
 - `GEMINI_MODEL_FAST=gemini-3.5-flash-lite` — extraction, classification, judging, prompt generation.
-- `GEMINI_MODEL_SMART=gemini-3.5-flash` — fix texts, info page, assistant chat. (`gemini-3.8-flash` answered 503 „high demand” and 504 timeouts on the free tier on 14 November 2026.)
+- `GEMINI_MODEL_SMART=gemini-3.6-flash` — fix texts, info page, assistant chat. (`gemini-3.8-flash` timed out or returned "high demand" on the free tier on 14 November; 3.6 Flash answered in 5–12 s and handled function calling.)
 - `GEMINI_MODEL_LIVE=gemini-3.5-flash-lite` — the live test (Maps grounding) and mention searches (Search grounding), on Vertex AI in the free-trial project, signed in with Application Default Credentials. New free-tier keys get no grounding, and `gemini-2.5-flash-lite` is closed to new accounts (checked 14 November 2026).
 
 The fast and smart tiers use the free-tier `GEMINI_API_KEY`. Romanian Maps-grounded prompts work: a real call returned Romanian text and Maps chunks whose place IDs match Places API IDs.
@@ -285,7 +285,7 @@ Set them up before the hackathon starts; billing and key restrictions are the us
 GEMINI_API_KEY=
 GOOGLE_CLOUD_PROJECT=
 GEMINI_MODEL_FAST=gemini-3.5-flash-lite
-GEMINI_MODEL_SMART=gemini-3.5-flash
+GEMINI_MODEL_SMART=gemini-3.6-flash
 GEMINI_MODEL_LIVE=gemini-3.5-flash-lite
 PLACES_API_KEY=
 PAGESPEED_API_KEY=

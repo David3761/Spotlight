@@ -1,6 +1,6 @@
 """Reads and writes conversations in the `conversations` table."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from pydantic import TypeAdapter
@@ -43,7 +43,7 @@ def create_conversation(
     messages: list[Message],
 ) -> str:
     """Creates a conversation with the given messages and returns its id."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     cid = uuid4().hex
     row = ConversationRow(
         id=cid,
@@ -105,7 +105,7 @@ def append_messages(cid: str, messages: list[Message]) -> None:
                 row.title = get_shortened(message.text, MAX_TITLE_CHARS)
         row.messages = MESSAGES_ADAPTER.dump_json(stored + messages).decode()
         row.pending_actions = ACTIONS_ADAPTER.dump_json(actions).decode()
-        row.updated_at = datetime.now(timezone.utc)
+        row.updated_at = datetime.now(UTC)
         session.add(row)
         session.commit()
 
@@ -128,7 +128,7 @@ def update_action(cid: str, action: ProposedAction, chapter_id: str | None = Non
         row.pending_actions = ACTIONS_ADAPTER.dump_json(actions).decode()
         if chapter_id and row.chapter_id is None:
             row.chapter_id = chapter_id
-        row.updated_at = datetime.now(timezone.utc)
+        row.updated_at = datetime.now(UTC)
         session.add(row)
         session.commit()
 
@@ -167,7 +167,7 @@ def get_summaries(scan_id: str) -> list[ConversationSummary]:
                     for action in actions
                     if action.status == "confirmed"
                 ),
-                updated_at=row.updated_at.replace(tzinfo=timezone.utc),
+                updated_at=row.updated_at.replace(tzinfo=UTC),
             )
         )
     return summaries

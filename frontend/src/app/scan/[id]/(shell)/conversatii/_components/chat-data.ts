@@ -43,7 +43,7 @@ export function getConfirmedItems(report: Report, messages: Message[]): Confirme
       return [];
     }
     return action.items
-      .filter((item) => action.confirmed_check_ids.includes(item.check_id))
+      .filter((item) => (action.confirmed_check_ids ?? []).includes(item.check_id))
       .map((item) => ({
         checkId: item.check_id,
         title: item.title_ro,
