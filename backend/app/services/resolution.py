@@ -10,6 +10,7 @@ from app.config import BACKEND_DIR
 from app.db import ScanRow, get_session
 from app.errors import ApiError
 from app.models import Chapter, ChapterId, Facts, Report, ScanInputs, ScoreUpdate
+from app.pipeline.assemble import build_facts
 from app.pipeline.problems import build_chapters
 from app.pipeline.scoring import refresh_report_totals
 from app.pipeline.types import ScanInternal
@@ -75,10 +76,15 @@ def load_inputs(scan_id: str) -> ScanInputs:
 
 
 def load_facts(scan_id: str) -> Facts:
-    """Returns the facts fix texts and the info page are written from."""
+    """Returns the facts fix texts and the info page are written from, once the scan has a report."""
     with get_session() as session:
-        get_scan_row(session, scan_id)
-    return Facts.model_validate_json((FIXTURES_DIR / "boema_facts.json").read_text(encoding="utf-8"))
+        row = get_scan_row(session, scan_id)
+        get_row_report(row)
+        inputs = ScanInputs.model_validate_json(row.inputs)
+        internal = ScanInternal.model_validate_json(row.internal)
+    if internal.source == "fixture":
+        return Facts.model_validate_json((FIXTURES_DIR / "boema_facts.json").read_text(encoding="utf-8"))
+    return build_facts(inputs, internal)
 
 
 def get_chapter(report: Report, chapter_id: ChapterId) -> Chapter:

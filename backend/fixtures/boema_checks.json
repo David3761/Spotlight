@@ -118,8 +118,8 @@
   {
     "check_id": "G09",
     "chapter_id": "profil",
-    "status": "partial",
-    "points_earned": 2.5,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 5.0,
     "claimed_fixed": false,
     "gate": false,
@@ -129,7 +129,7 @@
       "url": null
     },
     "params": {
-      "when": "de mai demult"
+      "when": "Ai spus că ultima postare e de mai demult."
     },
     "reason_ro": null
   },
@@ -137,17 +137,17 @@
     "check_id": "G10",
     "chapter_id": "profil",
     "status": "partial",
-    "points_earned": 2.5,
+    "points_earned": 3.0,
     "points_max": 5.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "dineIn, takeout, servesCoffee",
-      "expected": "outdoorSeating, Wi-Fi",
+      "found": "dineIn, servesCoffee, takeout",
+      "expected": "dineIn, takeout, outdoorSeating, servesCoffee, acceptsCreditCards",
       "url": null
     },
     "params": {
-      "missing": "terasă, Wi-Fi"
+      "missing": "terasă și plata cu cardul"
     },
     "reason_ro": null
   },

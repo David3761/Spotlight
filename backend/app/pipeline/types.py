@@ -4,7 +4,8 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from app.models import ChapterId, CheckStatus
+from app.models import ChapterId, CheckStatus, WebsiteFacts
+from app.pipeline.canonical import CanonicalProfile
 
 
 class Evidence(BaseModel):
@@ -35,3 +36,5 @@ class ScanInternal(BaseModel):
 
     source: Literal["fixture", "pipeline"]
     checks: list[CheckResult] = []
+    canonical: CanonicalProfile | None = None
+    website_facts: WebsiteFacts | None = None

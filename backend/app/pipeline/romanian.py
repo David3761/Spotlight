@@ -26,6 +26,29 @@ TYPE_NOUNS: dict[BusinessType, TypeNouns] = {
 """The nouns for each business type: „o cafenea”, „cafenele”, „cafenelele din jur”, „Meniul și prețurile”."""
 
 
+MONTHS_RO = [
+    "ianuarie",
+    "februarie",
+    "martie",
+    "aprilie",
+    "mai",
+    "iunie",
+    "iulie",
+    "august",
+    "septembrie",
+    "octombrie",
+    "noiembrie",
+    "decembrie",
+]
+"""Romanian month names, January first."""
+
+
+def get_date_ro(iso_date: str) -> str:
+    """Returns a `YYYY-MM-DD` date in Romanian, e.g. „25 decembrie 2026”."""
+    year, month, day = (int(part) for part in iso_date.split("-"))
+    return f"{day} {MONTHS_RO[month - 1]} {year}"
+
+
 def get_count_phrase(count: int, singular: str, plural: str) -> str:
     """Returns a count with its noun in Romanian: „1 recenzie”, „5 recenzii”, „38 de recenzii”."""
     if count == 1:

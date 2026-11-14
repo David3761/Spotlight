@@ -211,7 +211,7 @@ TEMPLATES: dict[str, CheckTemplate] = {
         solved_ro="Ai postat pe Google luna aceasta",
         why_ro="Postările recente arată că afacerea e activă. Una pe săptămână e de ajuns.",
         steps_ro=[*GOOGLE_EDIT, "Apasă Adaugă actualizare.", "Lipește textul, adaugă o fotografie și publică."],
-        evidence_ro="Ai spus că ultima postare e {when}.",
+        evidence_ro="{when}",
         where_ro="Profil › Adaugă actualizare",
         link="google",
     ),

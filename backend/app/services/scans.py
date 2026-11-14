@@ -38,11 +38,11 @@ def create_scan(inputs: ScanInputs) -> str:
                 created_at=datetime.now(UTC),
                 status="running",
                 inputs=inputs.model_dump_json(),
-                internal=ScanInternal(source="fixture").model_dump_json(),
+                internal=ScanInternal(source="fixture" if jobs.is_demo_scan(inputs) else "pipeline").model_dump_json(),
             )
         )
         session.commit()
-    jobs.start_scan(scan_id)
+    jobs.start_scan(scan_id, inputs)
     return scan_id
 
 

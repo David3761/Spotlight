@@ -2,6 +2,7 @@
 
 import re
 import unicodedata
+from urllib.parse import urlparse
 
 import phonenumbers
 from pydantic import BaseModel
@@ -30,6 +31,9 @@ STREET_TYPES = {"strada", "bulevardul", "calea", "soseaua", "aleea", "piata", "s
 
 LEGAL_SUFFIXES = {"srl", "sa", "pfa", "ii", "if", "snc"}
 """Company-form suffixes ignored when comparing business names."""
+
+INSTAGRAM_RESERVED_PATHS = {"p", "reel", "reels", "stories", "explore", "tv", "accounts"}
+"""Instagram paths that aren't profiles (posts, reels, stories)."""
 
 DAY_NAMES: dict[str, int] = {
     "luni": 0,
@@ -168,6 +172,25 @@ def get_name_key(name: str) -> str:
 def names_match(first: str, second: str) -> bool:
     """Returns whether two business names are the same, ignoring word order, diacritics and company-form suffixes."""
     return fuzz.token_sort_ratio(get_name_key(first), get_name_key(second)) >= NAME_MATCH_THRESHOLD
+
+
+def owner_name_matches(typed_name: str, google_name: str) -> bool:
+    """Returns whether the name the owner typed matches a Google name, also when it is only part of it („Boema”)."""
+    return fuzz.token_set_ratio(get_name_key(typed_name), get_name_key(google_name)) >= NAME_MATCH_THRESHOLD
+
+
+def get_instagram_handle(url: str | None) -> str | None:
+    """Returns the Instagram handle in a profile link or a typed „@handle”, without the @."""
+    if not url or not url.strip():
+        return None
+    text = url.strip()
+    if "instagram.com" not in text:
+        match = re.fullmatch(r"@?([A-Za-z0-9_.]+)", text)
+        return match.group(1) if match else None
+    segments = [segment for segment in urlparse(text if "://" in text else f"https://{text}").path.split("/") if segment]
+    if not segments or segments[0] in INSTAGRAM_RESERVED_PATHS:
+        return None
+    return segments[0].removeprefix("@")
 
 
 def get_minutes(hour: str, minute: str | None) -> int:

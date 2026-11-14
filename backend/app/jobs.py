@@ -1,24 +1,70 @@
 """Background scan jobs and the in-memory progress bus the SSE stream reads from."""
 
 import asyncio
-from collections.abc import AsyncIterator
+import logging
+from collections.abc import AsyncIterator, Coroutine
 from datetime import UTC, datetime
+from typing import Any
 from urllib.parse import urlparse
 
 from pydantic import TypeAdapter
 from sqlmodel import select
 
+from app.config import get_settings
 from app.db import ScanRow, get_session
-from app.models import CompleteEvent, FailedEvent, Report, ScanEvent, StepEvent, StepId
+from app.models import (
+    ChapterId,
+    CompareRow,
+    Comparison,
+    CompleteEvent,
+    FailedEvent,
+    Report,
+    ScanEvent,
+    ScanInputs,
+    StepEvent,
+    StepId,
+)
+from app.pipeline.assemble import (
+    build_report,
+    get_compare_row,
+    get_unknown_gemini_block,
+)
+from app.pipeline.canonical import CanonicalProfile, get_canonical
+from app.pipeline.collectors.google_profile import collect_google_profile
+from app.pipeline.resolve import search_places
 from app.pipeline.romanian import get_count_phrase
+from app.pipeline.scoring import CATALOG, get_unknown_results
 from app.pipeline.types import CheckResult, ScanInternal
 from app.services.resolution import FIXTURES_DIR
+
+logger = logging.getLogger(__name__)
 
 FIXTURE_STEP_SECONDS = 0.8
 """The pause between fixture replay events, so the five steps take about 8 seconds."""
 
 CHECK_LIST = TypeAdapter(list[CheckResult])
 """Parses a JSON list of check results."""
+
+GOOGLE_TIMEOUT_SECONDS = 15
+"""The time limit of the Google profile collector (3.1)."""
+
+GOOGLE_CHECK_IDS = [f"G{number:02d}" for number in range(2, 13)]
+"""The checks the Google profile collector reports when it runs."""
+
+PENDING_CHECK_IDS = [check_id for check_id in CATALOG if check_id[0] in "RCTLMSK"]
+"""The checks of the collectors that aren't built yet."""
+
+PENDING_REASON_RO = "Nu verificăm încă asta."
+"""Why a check of a collector that isn't built yet couldn't run."""
+
+COLLECTOR_ERROR_RO = "Nu am putut verifica acum. Încearcă din nou mai târziu."
+"""Why a check couldn't run when its collector failed or took too long."""
+
+PROFILE_ERROR_RO = "Nu am putut citi Profilul tău Google. Încearcă din nou."
+"""Why a scan failed when the Google profile couldn't be fetched."""
+
+PIPELINE_ERROR_RO = "Nu am putut termina analiza."
+"""Why a scan failed after the profile was fetched."""
 
 INTERRUPTED_ERROR_RO = "Analiza s-a oprit înainte să se termine. Pornește una nouă."
 """The error shown for a scan that was still running when the server stopped."""
@@ -68,11 +114,18 @@ def fail_interrupted_scans() -> None:
         session.commit()
 
 
-def start_scan(scan_id: str) -> None:
-    """Creates the progress bus for a scan and starts its analysis in the background."""
+def is_demo_scan(inputs: ScanInputs) -> bool:
+    """Returns whether a scan replays the demo report: demo mode is on and the owner picked the demo place."""
+    settings = get_settings()
+    return settings.demo_mode == "fixture" and bool(settings.demo_place_id) and inputs.place_id == settings.demo_place_id
+
+
+def start_scan(scan_id: str, inputs: ScanInputs) -> None:
+    """Creates the progress bus for a scan and starts its analysis, or the demo replay, in the background."""
     progress = ScanProgress()
     progress_by_scan[scan_id] = progress
-    task = asyncio.create_task(replay_fixture(scan_id, progress))
+    job = replay_fixture(scan_id, progress) if is_demo_scan(inputs) else run_pipeline(scan_id, inputs, progress)
+    task = asyncio.create_task(job)
     running_tasks.add(task)
     task.add_done_callback(running_tasks.discard)
 
@@ -93,15 +146,39 @@ def get_fixture_checks() -> list[CheckResult]:
 
 def get_step_details(report: Report) -> list[tuple[StepId, str]]:
     """Returns the progress steps with the done text each would show for this report."""
-    review_count = report.comparison.me.review_count or 0
+    review_count = report.comparison.me.review_count
     website = report.business.website
     return [
-        ("google", "Am găsit Profilul tău Google"),
-        ("recenzii", f"Am găsit {get_count_phrase(review_count, 'recenzie', 'recenzii')}"),
-        ("website", f"Am citit {urlparse(website).netloc.removeprefix('www.')}" if website else "Am verificat site-ul"),
-        ("retele", "Am verificat Instagram"),
-        ("gemini", f"I-am pus lui Gemini {get_count_phrase(report.gemini.total, 'întrebare', 'întrebări')}"),
+        ("google", "Am găsit Profilul tău Google" if report.business.place_id else "Nu am găsit un Profil Google"),
+        (
+            "recenzii",
+            f"Am găsit {get_count_phrase(review_count, 'recenzie', 'recenzii')}" if review_count else "Nu am găsit recenzii",
+        ),
+        ("website", get_website_detail(report, website)),
+        (
+            "retele",
+            "Am verificat Instagram" if get_chapter_score(report, "social") is not None else "Nu am putut verifica Instagram",
+        ),
+        (
+            "gemini",
+            f"I-am pus lui Gemini {get_count_phrase(report.gemini.total, 'întrebare', 'întrebări')}"
+            if report.gemini.total
+            else "Nu am putut întreba Gemini acum",
+        ),
     ]
+
+
+def get_chapter_score(report: Report, chapter_id: ChapterId) -> int | None:
+    """Returns a chapter's score in a report."""
+    return next(chapter.score for chapter in report.chapters if chapter.id == chapter_id)
+
+
+def get_website_detail(report: Report, website: str | None) -> str:
+    """Returns the website step's done text: the domain read, or why it wasn't."""
+    if not website:
+        return "Nu ai încă un site"
+    domain = urlparse(website).netloc.removeprefix("www.")
+    return f"Am citit {domain}" if get_chapter_score(report, "site") is not None else f"Nu am putut citi {domain}"
 
 
 async def replay_fixture(scan_id: str, progress: ScanProgress) -> None:
@@ -113,22 +190,86 @@ async def replay_fixture(scan_id: str, progress: ScanProgress) -> None:
             await asyncio.sleep(FIXTURE_STEP_SECONDS)
             await progress.publish(StepEvent(type="step", step=step, status="done", detail_ro=detail_ro))
             await asyncio.sleep(FIXTURE_STEP_SECONDS)
-        save_report(scan_id, report, get_fixture_checks())
+        save_report(scan_id, report, ScanInternal(source="fixture", checks=get_fixture_checks()))
         await progress.publish(CompleteEvent(type="complete", scan_id=scan_id))
     except Exception:
-        save_failure(scan_id, "Nu am putut termina analiza.")
-        await progress.publish(FailedEvent(type="failed", message_ro="Nu am putut termina analiza."))
+        save_failure(scan_id, PIPELINE_ERROR_RO)
+        await progress.publish(FailedEvent(type="failed", message_ro=PIPELINE_ERROR_RO))
         raise
 
 
-def save_report(scan_id: str, report: Report, checks: list[CheckResult]) -> None:
-    """Stores the finished report with the checks it was scored from and marks the scan complete."""
+async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress) -> None:
+    """Runs the analysis (§5): finds the profile, runs the collectors, scores, saves the report and completes the scan.
+
+    The scan fails only when the Google profile can't be fetched; a failed or slow collector leaves its checks `unknown`.
+    """
+    await progress.publish(StepEvent(type="step", step="google", status="running", detail_ro=None))
+    try:
+        canonical = await get_scan_canonical(inputs)
+    except Exception:
+        logger.exception("Steps 1-2 failed for scan %s", scan_id)
+        save_failure(scan_id, PROFILE_ERROR_RO)
+        await progress.publish(FailedEvent(type="failed", message_ro=PROFILE_ERROR_RO))
+        return
+    try:
+        checks = await run_collector(collect_google_profile(inputs, canonical), GOOGLE_TIMEOUT_SECONDS, GOOGLE_CHECK_IDS)
+        pending_checks = get_unknown_results(PENDING_CHECK_IDS, PENDING_REASON_RO)
+        me = (
+            get_compare_row(canonical)
+            if canonical
+            else CompareRow(
+                name=inputs.business_name,
+                place_id=None,
+                review_count=None,
+                rating=None,
+                photo_count=None,
+                photo_count_capped=False,
+                hours_complete=None,
+            )
+        )
+        comparison = Comparison(me=me, rivals=[], insights_ro=[], actions=[])
+        all_checks = checks + pending_checks
+        report = build_report(scan_id, inputs, canonical, all_checks, get_unknown_gemini_block(), comparison)
+        for step, detail_ro in get_step_details(report):
+            if step != "google":
+                await progress.publish(StepEvent(type="step", step=step, status="running", detail_ro=None))
+            await progress.publish(StepEvent(type="step", step=step, status="done", detail_ro=detail_ro))
+        save_report(scan_id, report, ScanInternal(source="pipeline", checks=all_checks, canonical=canonical))
+        await progress.publish(CompleteEvent(type="complete", scan_id=scan_id))
+    except Exception:
+        logger.exception("Pipeline failed for scan %s", scan_id)
+        save_failure(scan_id, PIPELINE_ERROR_RO)
+        await progress.publish(FailedEvent(type="failed", message_ro=PIPELINE_ERROR_RO))
+
+
+async def get_scan_canonical(inputs: ScanInputs) -> CanonicalProfile | None:
+    """Returns the business's Google profile (steps 1–2), or `None` when the owner has none or search finds no match."""
+    if inputs.no_google_profile:
+        return None
+    place_id = inputs.place_id
+    if place_id is None:
+        candidates = await search_places(inputs.business_name, inputs.city, inputs.neighborhood)
+        place_id = candidates[0].place_id if candidates and candidates[0].best else None
+    return await get_canonical(place_id) if place_id else None
+
+
+async def run_collector(
+    collector: Coroutine[Any, Any, list[CheckResult]], timeout: float, check_ids: list[str]
+) -> list[CheckResult]:
+    """Returns a collector's checks, or its checks as `unknown` when it fails or runs past its timeout."""
+    try:
+        return await asyncio.wait_for(collector, timeout)
+    except Exception:
+        logger.exception("Collector failed or timed out")
+        return get_unknown_results(check_ids, COLLECTOR_ERROR_RO)
+
+
+def save_report(scan_id: str, report: Report, internal: ScanInternal) -> None:
+    """Stores the finished report with the internal data it was built from and marks the scan complete."""
     with get_session() as session:
         row = session.get(ScanRow, scan_id)
         if row is None:
             return
-        internal = ScanInternal.model_validate_json(row.internal)
-        internal.checks = checks
         row.internal = internal.model_dump_json()
         row.report = report.model_dump_json()
         row.status = "complete"

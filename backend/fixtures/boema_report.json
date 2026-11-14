@@ -18,7 +18,7 @@
     "tiktok_url": "https://www.tiktok.com/@cafeneauaboema"
   },
   "overall": 43,
-  "overall_exact": 43.2,
+  "overall_exact": 42.8,
   "summary_ro": "Gemini te recomandă rar deocamdată. Multe se rezolvă în câteva minute.",
   "open_problem_count": 30,
   "next_steps": [
@@ -419,9 +419,9 @@
       "name_ro": "Profilul Google",
       "intro_ro": "Profilul tău Google e primul loc unde se uită Gemini când cineva caută o cafenea în Cotroceni. Cu cât e mai complet, cu atât ai mai multe șanse să fii recomandat.",
       "where_to_fix_ro": "Aproape totul se face din aplicația Google Maps, din contul cu care ți-ai creat profilul. La fiecare problemă îți arătăm exact unde să apeși.",
-      "score": 65,
+      "score": 63,
       "weight": 0.2,
-      "possible_points": 34,
+      "possible_points": 37,
       "overall_gain_if_all_fixed": 7,
       "has_fixes": true,
       "problems": [
@@ -500,8 +500,8 @@
           "chapter_name_ro": "Profilul Google",
           "title_ro": "Nicio postare în ultimele 30 de zile",
           "why_ro": "Postările recente arată că afacerea e activă. Una pe săptămână e de ajuns.",
-          "points": 2,
-          "impact": 0.4,
+          "points": 5,
+          "impact": 1.0,
           "fix_type": "generate",
           "fix": {
             "panel": "generate_text",
@@ -531,13 +531,13 @@
             "steps_ro": [
               "Deschide Profilul tău Google din aplicația Google Maps.",
               "Apasă Editează profilul › Mai multe.",
-              "Bifează tot ce se potrivește: terasă, Wi-Fi."
+              "Bifează tot ce se potrivește: terasă și plata cu cardul."
             ],
             "deep_link": "https://www.google.com/maps/place/?q=place_id:ChIJ-mock-cafeneaua-boema",
             "deep_link_label_ro": "Deschide Profilul tău Google",
             "where_ro": "Profil › Editează profilul › Mai multe",
             "max_chars": null,
-            "evidence_ro": "Lipsesc: terasă, Wi-Fi."
+            "evidence_ro": "Lipsesc: terasă și plata cu cardul."
           }
         }
       ],
