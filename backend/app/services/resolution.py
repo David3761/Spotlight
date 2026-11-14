@@ -10,6 +10,7 @@ from app.config import BACKEND_DIR
 from app.db import ScanRow, get_session
 from app.errors import ApiError
 from app.models import Chapter, ChapterId, Facts, Problem, Report, ScanInputs, ScoreUpdate, SolvedItem
+from app.pipeline.problems import build_chapters
 from app.pipeline.scoring import refresh_report_totals
 from app.pipeline.types import ClaimedProblem, ScanInternal
 
@@ -139,24 +140,10 @@ def mark_resolved(scan_id: str, check_ids: list[str]) -> ScoreUpdate:
         raise CheckNotFound("")
     with edit_report(scan_id) as (report, internal):
         overall_before = report.overall_exact
-        chapter_id: ChapterId | None = None
-        points_added = 0
-        for check_id in check_ids:
-            if check_id in internal.claimed_problems:
-                continue
-            problem = get_open_problem(report, check_id)
-            chapter = get_chapter(report, problem.chapter_id)
-            score_before = chapter.score or 0
-            chapter.problems.remove(problem)
-            chapter.score = min(100, score_before + problem.points)
-            chapter.solved.append(
-                SolvedItem(check_id=check_id, title_ro=problem.title_ro, source="claimed_fixed", points=problem.points)
-            )
-            internal.claimed_problems[check_id] = ClaimedProblem(problem=problem, score_added=chapter.score - score_before)
-            chapter_id = chapter_id or problem.chapter_id
-            if problem.chapter_id == chapter_id:
-                points_added += chapter.score - score_before
-        chapter_id = chapter_id or get_claimed_chapter(internal, check_ids[0])
+        if internal.source == "pipeline":
+            chapter_id, points_added = set_checks_claimed(report, internal, check_ids, claimed=True)
+        else:
+            chapter_id, points_added = claim_fixture_problems(report, internal, check_ids)
     return get_score_update(report, chapter_id, points_added, overall_before)
 
 
@@ -166,16 +153,62 @@ def unmark_resolved(scan_id: str, check_ids: list[str]) -> ScoreUpdate:
         raise CheckNotFound("")
     with edit_report(scan_id) as (report, internal):
         overall_before = report.overall_exact
-        chapter_id = get_claimed_chapter(internal, check_ids[0])
-        points_removed = 0
-        for check_id in check_ids:
-            claimed = internal.claimed_problems.pop(check_id, None)
-            if claimed is None:
-                raise CheckNotFound(check_id)
-            chapter = get_chapter(report, claimed.problem.chapter_id)
-            chapter.solved = [item for item in chapter.solved if item.check_id != check_id]
-            chapter.problems.append(claimed.problem)
-            chapter.score = (chapter.score or 0) - claimed.score_added
-            if claimed.problem.chapter_id == chapter_id:
-                points_removed += claimed.score_added
-    return get_score_update(report, chapter_id, -points_removed, overall_before)
+        if internal.source == "pipeline":
+            chapter_id, points_added = set_checks_claimed(report, internal, check_ids, claimed=False)
+        else:
+            chapter_id, points_added = reopen_fixture_problems(report, internal, check_ids)
+    return get_score_update(report, chapter_id, points_added, overall_before)
+
+
+def set_checks_claimed(report: Report, internal: ScanInternal, check_ids: list[str], claimed: bool) -> tuple[ChapterId, int]:
+    """Sets or clears „fixed by the owner” on checks and rebuilds the chapters; returns the first chapter and its score change."""
+    checks = {check.check_id: check for check in internal.checks}
+    for check_id in check_ids:
+        check = checks.get(check_id)
+        is_open_problem = check is not None and check.status in ("fail", "partial") and check.chapter_id != "cunoaste"
+        if check is None or not is_open_problem or (not claimed and not check.claimed_fixed):
+            raise CheckNotFound(check_id)
+        check.claimed_fixed = claimed
+    chapter_id = checks[check_ids[0]].chapter_id
+    score_before = get_chapter(report, chapter_id).score or 0
+    report.chapters = build_chapters(internal.checks, report.business)
+    return chapter_id, (get_chapter(report, chapter_id).score or 0) - score_before
+
+
+def claim_fixture_problems(report: Report, internal: ScanInternal, check_ids: list[str]) -> tuple[ChapterId, int]:
+    """Moves open problems of a fixture report to solved and adds their points; returns the first chapter and its score change."""
+    chapter_id: ChapterId | None = None
+    points_added = 0
+    for check_id in check_ids:
+        if check_id in internal.claimed_problems:
+            continue
+        problem = get_open_problem(report, check_id)
+        chapter = get_chapter(report, problem.chapter_id)
+        score_before = chapter.score or 0
+        chapter.problems.remove(problem)
+        chapter.score = min(100, score_before + problem.points)
+        chapter.solved.append(
+            SolvedItem(check_id=check_id, title_ro=problem.title_ro, source="claimed_fixed", points=problem.points)
+        )
+        internal.claimed_problems[check_id] = ClaimedProblem(problem=problem, score_added=chapter.score - score_before)
+        chapter_id = chapter_id or problem.chapter_id
+        if problem.chapter_id == chapter_id:
+            points_added += chapter.score - score_before
+    return chapter_id or get_claimed_chapter(internal, check_ids[0]), points_added
+
+
+def reopen_fixture_problems(report: Report, internal: ScanInternal, check_ids: list[str]) -> tuple[ChapterId, int]:
+    """Reopens problems of a fixture report and removes their points; returns the first chapter and its score change."""
+    chapter_id = get_claimed_chapter(internal, check_ids[0])
+    points_removed = 0
+    for check_id in check_ids:
+        claimed = internal.claimed_problems.pop(check_id, None)
+        if claimed is None:
+            raise CheckNotFound(check_id)
+        chapter = get_chapter(report, claimed.problem.chapter_id)
+        chapter.solved = [item for item in chapter.solved if item.check_id != check_id]
+        chapter.problems.append(claimed.problem)
+        chapter.score = (chapter.score or 0) - claimed.score_added
+        if claimed.problem.chapter_id == chapter_id:
+            points_removed += claimed.score_added
+    return chapter_id, -points_removed

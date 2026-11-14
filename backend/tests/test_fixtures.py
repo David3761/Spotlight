@@ -10,7 +10,14 @@ def test_report_fixture_validates() -> None:
     assert report.overall == 42
     assert report.open_problem_count == sum(len(chapter.problems) for chapter in report.chapters)
     assert [chapter.id for chapter in report.chapters] == [
-        "profil", "recenzii", "continut", "site", "info", "mentiuni", "social", "cunoaste",
+        "profil",
+        "recenzii",
+        "continut",
+        "site",
+        "info",
+        "mentiuni",
+        "social",
+        "cunoaste",
     ]
 
 
