@@ -52,7 +52,7 @@ Onboarding answers (place_id already picked in the browser)
 3. **Unknown is not a fail.** If a check can't run (timeout, blocked page, no API access), mark it `unknown`, leave it out of the score and show „Nu am putut verifica”.
 4. **Google is the source of truth.** Every other source is compared against the Google profile, since Gemini reads it directly.
 5. **Partial results are fine.** Each collector runs independently with its own timeout; the report shows what finished.
-6. **The measured Gemini stays clean.** Live-test calls send only the customer's question with Maps and Search grounding: no system prompt, no business context.
+6. **The measured Gemini stays clean.** Live-test calls send only the customer's question with Maps grounding: no system prompt, no business context.
 
 ---
 
@@ -307,7 +307,7 @@ queries = [
   f'top {type_plural} {city}',
   f'"{name}" recenzie',
 ]
-for each query: Gemini + Google Search grounding (live model, GEMINI_GROUNDED_API_KEY) → groundingMetadata.groundingChunks
+for each query: Gemini + Google Search grounding (live model, free tier: 500 Search-grounded requests/day) → groundingMetadata.groundingChunks
     chunk.web.title is the domain; chunk.web.uri is a vertexaisearch redirect
     → follow the redirect (GET, follow_redirects, read no body) to get the real URL for display
 
@@ -368,8 +368,9 @@ no direct fixes → chapter card shows "Crește pe măsură ce rezolvi restul"
    cartier  : "cafenea în Cotroceni", "cafenea lângă Palatul Cotroceni", ...
    situatii : "cafenea unde pot lucra cu laptopul", "cafenea unde pot veni cu câinele", ...
 
-2. Run each prompt 3 times (36 calls, semaphore 6, live model, GEMINI_GROUNDED_API_KEY):
-   tools = [Google Maps grounding, Google Search grounding]
+2. Run each prompt 3 times (36 calls, live model on the free tier: 500 Maps-grounded requests/day;
+   keep concurrency under the free tier's rate limit):
+   tools = [Google Maps grounding]   (gemini-2.5-flash-lite can't add Search grounding in the same call)
    toolConfig.retrievalConfig = { latLng: neighborhood/business location, languageCode: "ro-RO" }
    no system prompt, no business context: only the customer's question
 
@@ -379,7 +380,7 @@ no direct fixes → chapter card shows "Crește pe măsură ce rezolvi restul"
    position    = order of first appearance among businesses named (L6 as backup)
    others      = other place IDs / names in the answer
    facts_ok    = L6/L7: stated hours/address for the target vs canonical
-   sources     = maps chunks (title + uri) and web chunks (title + resolved uri)
+   sources     = maps chunks (title + uri)
 
 4. Aggregate:
    a prompt is "mentioned" if the target appears in ≥ 2 of 3 runs → "Apari în X din 12 răspunsuri"
@@ -530,7 +531,7 @@ report = Report (contract.md), saved as JSON on the scan row
 
 ## 4. LLM calls
 
-All structured JSON output except L8. Tiers: `fast` (`gemini-3.5-flash-lite`) for extraction and judging; `smart` (`gemini-3.8-flash`) for texts and chat; both on the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) use the `live` model (`gemini-3.8-flash`) on the billed `GEMINI_GROUNDED_API_KEY`, because grounding isn't available on the free tier.
+All structured JSON output except L8. Tiers: `fast` (`gemini-3.5-flash-lite`) for extraction and judging; `smart` (`gemini-3.8-flash`) for texts and chat; all on the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) use the `live` model (`gemini-2.5-flash-lite`), the newest model with grounding on the free tier (500 Maps-grounded and 500 Search-grounded requests a day).
 
 | ID | Purpose | Tier | Output |
 |---|---|---|---|

@@ -22,7 +22,7 @@ Companion documents:
 | | Dev A · screens + fix & assistant backend | Dev B · data pipeline |
 | --- | --- | --- |
 | Builds | All of `frontend/`; the backend for fix texts, the info page, the developer export and the assistant chat | The rest of `backend/`: API skeleton, places, scans, progress stream, all collectors, scoring, problem cards, demo mode |
-| Accounts (`.env` half) | Meta app for Instagram Business Discovery (`META_ACCESS_TOKEN`, `META_IG_USER_ID`); picks the demo café (`DEMO_PLACE_ID`, `DEMO_MODE`). Shared with Dev B. | Google Cloud project (Places API (New), PageSpeed Insights API), SerpApi, and two Gemini keys: `GEMINI_API_KEY` from a free-tier AI Studio project (no billing), `GEMINI_GROUNDED_API_KEY` from a billed project, used only for grounded calls. Shared with Dev A. |
+| Accounts (`.env` half) | Meta app for Instagram Business Discovery (`META_ACCESS_TOKEN`, `META_IG_USER_ID`); picks the demo café (`DEMO_PLACE_ID`, `DEMO_MODE`). Shared with Dev B. | Google Cloud project (Places API (New), PageSpeed Insights API), SerpApi, and the Gemini key: `GEMINI_API_KEY` from an AI Studio project with no billing (free tier). Shared with Dev A. |
 | Owns | `frontend/**`, root `package.json`, `backend/app/api/fixes.py`, `backend/app/api/chat.py`, `backend/app/fixes/**`, `backend/app/assistant/**`, `backend/app/llm/prompts/fix_*`, `backend/app/llm/prompts/assistant_*` | Everything else in `backend/**`, including `pyproject.toml`, `models.py`, `db.py`, `llm/client.py`, `services/resolution.py`, `fixtures/` |
 | Hands over | Meta token, IG user ID and demo place ID (hour 0); root `npm run dev` (hour 1); `api/fixes.py`, `api/chat.py`, `fixes/`, `assistant/` written against the contract (before gate 1), working end to end once Dev B's skeleton lands | Gemini, Places, PageSpeed and SerpApi keys (hour 0); skeleton serving the fixture, with `llm/client.py`, `services/resolution.py`, `db.py`, `cache.py` usable (hour 2, gate 1); real `resolve` (hour 5); a real report (hour 14, gate 2) |
 
@@ -31,7 +31,7 @@ Rules for working on one repo in parallel:
 - Both push to `main` in small commits. Run `git pull --rebase` before starting each task and before every push; the other dev pushes often. Never force-push.
 - Never edit a file the other dev owns. If you need a change there, ask; for the contract, follow the change rule in [contract.md](contract.md).
 - Dev A writes `api/fixes.py` and `api/chat.py` against the contract before gate 1; Dev B doesn't create stubs for them, only registers their routers in `main.py`.
-- Nothing may bill. Use free tiers only, check a service's free quota before calling it, and cache every response. The one exception is `GEMINI_GROUNDED_API_KEY`: grounded calls (live test, mentions) bill their tokens, so make them only for the real scans needed for gate 2 and the demo recording.
+- Nothing may bill. Use free tiers only, check a service's free quota before calling it, and cache every response. Grounded Gemini calls (live test, mentions) run on the free tier of `gemini-2.5-flash-lite`: 500 Maps-grounded and 500 Search-grounded requests a day.
 - Dev A's backend code imports only `app.models`, `app.db`, `app.llm.client`, `app.services.resolution` and `app.cache`. A new Python dependency goes through Dev B (`pyproject.toml`).
 - Frozen after this commit, changed only when both agree: `docs/architecture.md`, `docs/data-collection-algorithm.md`, `CLAUDE.md`, `README.md`, `.gitignore`.
 
@@ -55,7 +55,7 @@ flowchart TB
         PSI["PageSpeed Insights"]
         META["Instagram Graph API<br/>Business Discovery"]
         WEB["Websites & platforms<br/>httpx raw HTML · Playwright if empty"]
-        GEM["Gemini API<br/>extraction, texts, chat, live test with Maps + Search"]
+        GEM["Gemini API (free tier)<br/>extraction, texts, chat, live test with Maps grounding"]
     end
     FE -- "REST (JSON)" --> API
     BUS -- "SSE progress" --> FE
@@ -231,7 +231,7 @@ The LLM reads and writes; code decides. Scores never come from the LLM.
 | Onboarding chat | Scripted flow in the frontend | — |
 | Finding problems | Code checks (Dev B) | Reads messy pages into JSON, judges category and Instagram bio, classifies mentions |
 | Scoring and ranking | Code only (`scoring.py`) | — |
-| Live test | Code + Gemini with Maps + Search grounding | Answers the customer's question; nothing else is sent |
+| Live test | Code + Gemini with Maps grounding | Answers the customer's question; nothing else is sent |
 | Fix texts, info page, dev export | Dev A, `fixes/` | Writes the custom texts from the canonical profile and website facts |
 | Assistant chat | Dev A, `assistant/` | Proposes actions via function calling; the owner confirms or undoes |
 
@@ -242,11 +242,11 @@ Assistant functions (Screen 6):
 - `generate_fix_text(check_id, tone)` — same generator as the fix panel.
 - `what_next()` — the open problem with the highest impact.
 
-Model tiers, set in `backend/.env` (all marked stable on Google's models page, 14 November 2026; combining Maps and Search grounding needs Gemini 3.5 Flash or later):
+Model tiers, set in `backend/.env`, all on the free-tier `GEMINI_API_KEY` (models page and pricing page, 14 November 2026):
 
 - `GEMINI_MODEL_FAST=gemini-3.5-flash-lite` — extraction, classification, judging, prompt generation.
 - `GEMINI_MODEL_SMART=gemini-3.8-flash` — fix texts, info page, assistant chat.
-- `GEMINI_MODEL_LIVE=gemini-3.8-flash` — the live test and mention searches with grounding, called with `GEMINI_GROUNDED_API_KEY`.
+- `GEMINI_MODEL_LIVE=gemini-2.5-flash-lite` — the live test (Maps grounding) and mention searches (Search grounding). The newer models have no grounding on the free tier; 2.5 Flash-Lite does (500 Maps-grounded and 500 Search-grounded requests a day) and stays served "until further notice". It can't combine Maps and Search in one call (that needs Gemini 3.5 Flash or later), so the live test uses Maps grounding alone.
 
 Two open points for Dev B to verify before building the live test: Google's Maps grounding page says it "currently only supports English language prompts and responses", and its examples use the Interactions API (`client.interactions.create`) rather than `generateContent`.
 
@@ -271,8 +271,7 @@ Set them up before the hackathon starts; billing and key restrictions are the us
 
 | Service | Set up by | Used for | Watch out for |
 | --- | --- | --- | --- |
-| Gemini API (free tier) | Dev B | `GEMINI_API_KEY`: extraction, texts, chat, probe | Free tier: no grounding, lower rate limits |
-| Gemini API (billed) | Dev B | `GEMINI_GROUNDED_API_KEY`: live test, mentions | Grounding needs the paid tier: 5,000 free grounded requests/month, but tokens are billed. Live test = 36 grounded calls per scan |
+| Gemini API (free tier) | Dev B | `GEMINI_API_KEY`: everything (extraction, texts, chat, probe, live test, mentions) | AI Studio project with no billing. Lower rate limits; grounding only on `gemini-2.5-flash-lite`: 500 Maps-grounded and 500 Search-grounded requests a day. Live test = 36 Maps-grounded calls per scan, so about 13 scans a day: cache them |
 | Google Places API (New) | Dev B | Search, Place Details, Nearby Search | Key restricted to Places API (New) + PageSpeed Insights API; max 5 reviews, 10 photos |
 | PageSpeed Insights API | Dev B | T07 mobile speed | Same Google Cloud project; one run takes 15–30 s |
 | SerpApi | Dev B | Review dates and owner replies | Free plan ~250 searches/month: cache every response |
@@ -283,10 +282,9 @@ Set them up before the hackathon starts; billing and key restrictions are the us
 
 ```text
 GEMINI_API_KEY=
-GEMINI_GROUNDED_API_KEY=
 GEMINI_MODEL_FAST=gemini-3.5-flash-lite
 GEMINI_MODEL_SMART=gemini-3.8-flash
-GEMINI_MODEL_LIVE=gemini-3.8-flash
+GEMINI_MODEL_LIVE=gemini-2.5-flash-lite
 PLACES_API_KEY=
 PAGESPEED_API_KEY=
 SERPAPI_API_KEY=

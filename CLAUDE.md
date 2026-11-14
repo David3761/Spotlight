@@ -36,7 +36,7 @@ A guessed value, behaviour, name or requirement costs a rework when it's caught 
 
 - Run anything that doesn't bill: local servers, tests, free API quotas, cached responses.
 - Before calling a paid service, check its free quota and stay inside it; cache every response so repeats cost nothing. Never upgrade a plan.
-- The only key that bills is `GEMINI_GROUNDED_API_KEY` (grounded Gemini calls bill their tokens). Use it only for the live test and mentions, and only for the real scans needed for gate 2 and the demo recording. Everything else uses the free-tier `GEMINI_API_KEY`.
+- Every Gemini call uses the free-tier `GEMINI_API_KEY` (an AI Studio project with no billing). Grounded calls (live test, mentions) use `GEMINI_MODEL_LIVE` (`gemini-2.5-flash-lite`), whose free tier allows 500 Maps-grounded and 500 Search-grounded requests a day: cache every grounded response and run real scans only when you need them.
 
 ### Agents
 

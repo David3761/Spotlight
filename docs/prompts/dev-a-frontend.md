@@ -25,7 +25,7 @@ Run `git pull --rebase` now, before reading anything: Dev B pushes often. Then f
 
 Everything else belongs to Dev B. Never edit it. Your backend code may import only `app.models`, `app.db`, `app.llm.client`, `app.services.resolution` and `app.cache`, with the exact names in `docs/contract.md` → "Backend-internal interfaces". If you need a Python package that isn't in `backend/pyproject.toml`, stop and tell me so I can ask Dev B.
 
-Run `git pull --rebase` before each task and before every push. Nothing may bill: your code uses only the free-tier `GEMINI_API_KEY` (through `app.llm.client`), never the grounded key.
+Run `git pull --rebase` before each task and before every push. Nothing may bill: your code uses only the free-tier `GEMINI_API_KEY` (through `app.llm.client`).
 
 ## How to read the artboards
 
