@@ -7,7 +7,14 @@ from pydantic import RootModel
 from sse_starlette import EventSourceResponse
 
 from app.errors import ERROR_RESPONSES
-from app.models import Report, ScanCreated, ScanEnvelope, ScanEvent, ScanInputs, ScoreUpdate
+from app.models import (
+    Report,
+    ScanCreated,
+    ScanEnvelope,
+    ScanEvent,
+    ScanInputs,
+    ScoreUpdate,
+)
 from app.services import scans
 from app.services.resolution import mark_resolved
 

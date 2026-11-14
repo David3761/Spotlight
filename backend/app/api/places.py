@@ -3,7 +3,12 @@
 from fastapi import APIRouter
 
 from app.errors import ERROR_RESPONSES
-from app.models import PlaceCandidate, PlaceSearchRequest, PlaceSearchResponse, ResolveLinkRequest
+from app.models import (
+    PlaceCandidate,
+    PlaceSearchRequest,
+    PlaceSearchResponse,
+    ResolveLinkRequest,
+)
 
 router = APIRouter(tags=["places"], responses=ERROR_RESPONSES)
 """The place routes."""

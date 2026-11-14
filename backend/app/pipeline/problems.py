@@ -4,9 +4,23 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from app.models import Business, Chapter, ChapterId, FixPanel, FixPayload, Problem, SolvedItem, UnknownItem
+from app.models import (
+    Business,
+    Chapter,
+    ChapterId,
+    FixPanel,
+    FixPayload,
+    Problem,
+    SolvedItem,
+    UnknownItem,
+)
 from app.pipeline.romanian import TYPE_NOUNS
-from app.pipeline.scoring import CHAPTER_WEIGHTS, get_catalog_entry, get_chapter_score, get_problem_points
+from app.pipeline.scoring import (
+    CHAPTER_WEIGHTS,
+    get_catalog_entry,
+    get_chapter_score,
+    get_problem_points,
+)
 from app.pipeline.types import CheckResult
 
 LinkKind = Literal["google", "website", "instagram", "facebook", "tiktok"]

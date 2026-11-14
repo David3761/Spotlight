@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from app.models import ChapterId, CheckStatus, Problem
+from app.models import ChapterId, CheckStatus
 
 
 class Evidence(BaseModel):
@@ -30,16 +30,8 @@ class CheckResult(BaseModel):
     reason_ro: str | None = None
 
 
-class ClaimedProblem(BaseModel):
-    """A problem the owner marked as fixed on a fixture report, kept so it can be reopened."""
-
-    problem: Problem
-    score_added: int
-
-
 class ScanInternal(BaseModel):
-    """The `internal` JSON of a scan: where its report came from and what resolving needs."""
+    """The `internal` JSON of a scan: where its report came from and the check results it was scored from."""
 
     source: Literal["fixture", "pipeline"]
-    claimed_problems: dict[str, ClaimedProblem] = {}
     checks: list[CheckResult] = []

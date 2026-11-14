@@ -1,0 +1,856 @@
+[
+  {
+    "check_id": "G02",
+    "chapter_id": "profil",
+    "status": "pass",
+    "points_earned": 10.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {
+      "category": "Cafenea"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "G03",
+    "chapter_id": "profil",
+    "status": "pass",
+    "points_earned": 15.0,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "G04",
+    "chapter_id": "profil",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "G05",
+    "chapter_id": "profil",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "2",
+      "expected": "5",
+      "url": null
+    },
+    "params": {
+      "photos": "2 fotografii"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "G06",
+    "chapter_id": "profil",
+    "status": "pass",
+    "points_earned": 10.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "G07",
+    "chapter_id": "profil",
+    "status": "pass",
+    "points_earned": 10.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "G08",
+    "chapter_id": "profil",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "nu",
+      "expected": "da",
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "G09",
+    "chapter_id": "profil",
+    "status": "partial",
+    "points_earned": 2.5,
+    "points_max": 5.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "mai_demult",
+      "expected": "luna_asta",
+      "url": null
+    },
+    "params": {
+      "when": "de mai demult"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "G10",
+    "chapter_id": "profil",
+    "status": "partial",
+    "points_earned": 2.5,
+    "points_max": 5.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "dineIn, takeout, servesCoffee",
+      "expected": "outdoorSeating, Wi-Fi",
+      "url": null
+    },
+    "params": {
+      "missing": "terasă, Wi-Fi"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "G11",
+    "chapter_id": "profil",
+    "status": "pass",
+    "points_earned": 5.0,
+    "points_max": 5.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "G12",
+    "chapter_id": "profil",
+    "status": "pass",
+    "points_earned": 10.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "R01",
+    "chapter_id": "recenzii",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 30.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "38",
+      "expected": "287",
+      "url": null
+    },
+    "params": {
+      "reviews": "38 de recenzii",
+      "median": "287"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "R02",
+    "chapter_id": "recenzii",
+    "status": "pass",
+    "points_earned": 20.0,
+    "points_max": 20.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "4.6",
+      "expected": "4.6",
+      "url": null
+    },
+    "params": {
+      "rating": "4,6"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "R03",
+    "chapter_id": "recenzii",
+    "status": "partial",
+    "points_earned": 12.5,
+    "points_max": 25.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "2026-09-28",
+      "expected": "ultimele 30 de zile",
+      "url": null
+    },
+    "params": {
+      "days": "47 de zile"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "R04",
+    "chapter_id": "recenzii",
+    "status": "partial",
+    "points_earned": 7.5,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "11 din 20",
+      "expected": "80%",
+      "url": null
+    },
+    "params": {
+      "unanswered": "9",
+      "recent": "20 de recenzii"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "R05",
+    "chapter_id": "recenzii",
+    "status": "pass",
+    "points_earned": 10.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {
+      "platform": "TripAdvisor"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "C01",
+    "chapter_id": "continut",
+    "status": "pass",
+    "points_earned": 15.0,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "C02",
+    "chapter_id": "continut",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "C03",
+    "chapter_id": "continut",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "lipsește",
+      "expected": "Luni–Duminică 8:00–20:00",
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "C04",
+    "chapter_id": "continut",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "C05",
+    "chapter_id": "continut",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Meniul de pe site e o imagine.",
+      "expected": null,
+      "url": "https://cafeneauaboema.ro/meniu"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "C06",
+    "chapter_id": "continut",
+    "status": "partial",
+    "points_earned": 5.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "C07",
+    "chapter_id": "continut",
+    "status": "partial",
+    "points_earned": 5.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Am găsit răspuns la 2 din 5 întrebări obișnuite.",
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "C08",
+    "chapter_id": "continut",
+    "status": "pass",
+    "points_earned": 10.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "T01",
+    "chapter_id": "site",
+    "status": "pass",
+    "points_earned": 15.0,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "T02",
+    "chapter_id": "site",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 20.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "robots.txt blochează Google-Extended pentru /meniu și /contact.",
+      "expected": null,
+      "url": "https://cafeneauaboema.ro/robots.txt"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "T03",
+    "chapter_id": "site",
+    "status": "pass",
+    "points_earned": 10.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://cafeneauaboema.ro/robots.txt"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "T04",
+    "chapter_id": "site",
+    "status": "pass",
+    "points_earned": 20.0,
+    "points_max": 20.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "T05",
+    "chapter_id": "site",
+    "status": "unknown",
+    "points_earned": 0.0,
+    "points_max": 5.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": "Site-ul nu a răspuns la timp când am cerut sitemap.xml."
+  },
+  {
+    "check_id": "T06",
+    "chapter_id": "site",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Nu am găsit date structurate de tip LocalBusiness pe site.",
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "T07",
+    "chapter_id": "site",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 5.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Scorul de viteză pe telefon e 38 din 100.",
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "T08",
+    "chapter_id": "site",
+    "status": "unknown",
+    "points_earned": 0.0,
+    "points_max": 5.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": "Prima pagină s-a încărcat doar parțial, așa că nu am putut verifica."
+  },
+  {
+    "check_id": "T09",
+    "chapter_id": "site",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 10.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://cafeneauaboema.ro"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "L01",
+    "chapter_id": "info",
+    "status": "partial",
+    "points_earned": 25.0,
+    "points_max": 30.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {
+      "missing": "Bolt Food",
+      "present": "5",
+      "expected": "6"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "L02:glovo:phone",
+    "chapter_id": "info",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 14.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "0722 345 678",
+      "expected": "021 410 2233",
+      "url": null
+    },
+    "params": {
+      "source": "Glovo"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "L02:glovo:hours",
+    "chapter_id": "info",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 14.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Luni–Vineri 9:00–18:00",
+      "expected": "Luni–Duminică 8:00–20:00",
+      "url": null
+    },
+    "params": {
+      "source": "Glovo"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "L02:wolt:address",
+    "chapter_id": "info",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 14.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Bd. Eroilor 12",
+      "expected": "Str. Dr. Lister",
+      "url": null
+    },
+    "params": {
+      "source": "Wolt"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "L02:facebook:hours",
+    "chapter_id": "info",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 14.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Luni–Sâmbătă 8:00–18:00",
+      "expected": "Luni–Duminică 8:00–20:00",
+      "url": null
+    },
+    "params": {
+      "source": "Facebook"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "L02:website:name",
+    "chapter_id": "info",
+    "status": "pass",
+    "points_earned": 14.0,
+    "points_max": 14.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Cafeneaua Boema",
+      "expected": "Cafeneaua Boema",
+      "url": null
+    },
+    "params": {
+      "source": "site"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "M01",
+    "chapter_id": "mentiuni",
+    "status": "partial",
+    "points_earned": 30.0,
+    "points_max": 45.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {
+      "sites": "3 site-uri"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "M02",
+    "chapter_id": "mentiuni",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 25.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "M03",
+    "chapter_id": "mentiuni",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "M05",
+    "chapter_id": "mentiuni",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "S01",
+    "chapter_id": "social",
+    "status": "pass",
+    "points_earned": 20.0,
+    "points_max": 20.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://facebook.com/cafeneauaboema"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "S02",
+    "chapter_id": "social",
+    "status": "pass",
+    "points_earned": 20.0,
+    "points_max": 20.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": "https://instagram.com/cafeneauaboema"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "S03",
+    "chapter_id": "social",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 25.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Ultima postare pe Instagram e de acum 41 de zile.",
+      "expected": null,
+      "url": "https://instagram.com/cafeneauaboema"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "S04",
+    "chapter_id": "social",
+    "status": "partial",
+    "points_earned": 7.5,
+    "points_max": 15.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {
+      "missing": "linkul către site pe pagina de Facebook"
+    },
+    "reason_ro": null
+  },
+  {
+    "check_id": "S05",
+    "chapter_id": "social",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 20.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": "Cafeneaua Boema ☕",
+      "expected": null,
+      "url": "https://instagram.com/cafeneauaboema"
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "K01",
+    "chapter_id": "cunoaste",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 50.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "K02",
+    "chapter_id": "cunoaste",
+    "status": "fail",
+    "points_earned": 0.0,
+    "points_max": 30.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  },
+  {
+    "check_id": "K03",
+    "chapter_id": "cunoaste",
+    "status": "pass",
+    "points_earned": 20.0,
+    "points_max": 20.0,
+    "claimed_fixed": false,
+    "gate": false,
+    "evidence": {
+      "found": null,
+      "expected": null,
+      "url": null
+    },
+    "params": {},
+    "reason_ro": null
+  }
+]

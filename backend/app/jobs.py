@@ -5,15 +5,20 @@ from collections.abc import AsyncIterator
 from datetime import UTC, datetime
 from urllib.parse import urlparse
 
+from pydantic import TypeAdapter
 from sqlmodel import select
 
 from app.db import ScanRow, get_session
 from app.models import CompleteEvent, FailedEvent, Report, ScanEvent, StepEvent, StepId
 from app.pipeline.romanian import get_count_phrase
+from app.pipeline.types import CheckResult, ScanInternal
 from app.services.resolution import FIXTURES_DIR
 
 FIXTURE_STEP_SECONDS = 0.8
 """The pause between fixture replay events, so the five steps take about 8 seconds."""
+
+CHECK_LIST = TypeAdapter(list[CheckResult])
+"""Parses a JSON list of check results."""
 
 INTERRUPTED_ERROR_RO = "Analiza s-a oprit înainte să se termine. Pornește una nouă."
 """The error shown for a scan that was still running when the server stopped."""
@@ -81,6 +86,11 @@ def get_fixture_report(scan_id: str) -> Report:
     return report
 
 
+def get_fixture_checks() -> list[CheckResult]:
+    """Returns the check results the demo report was scored from."""
+    return CHECK_LIST.validate_json((FIXTURES_DIR / "boema_checks.json").read_text(encoding="utf-8"))
+
+
 def get_step_details(report: Report) -> list[tuple[StepId, str]]:
     """Returns the progress steps with the done text each would show for this report."""
     review_count = report.comparison.me.review_count or 0
@@ -103,7 +113,7 @@ async def replay_fixture(scan_id: str, progress: ScanProgress) -> None:
             await asyncio.sleep(FIXTURE_STEP_SECONDS)
             await progress.publish(StepEvent(type="step", step=step, status="done", detail_ro=detail_ro))
             await asyncio.sleep(FIXTURE_STEP_SECONDS)
-        save_report(scan_id, report)
+        save_report(scan_id, report, get_fixture_checks())
         await progress.publish(CompleteEvent(type="complete", scan_id=scan_id))
     except Exception:
         save_failure(scan_id, "Nu am putut termina analiza.")
@@ -111,12 +121,15 @@ async def replay_fixture(scan_id: str, progress: ScanProgress) -> None:
         raise
 
 
-def save_report(scan_id: str, report: Report) -> None:
-    """Stores the finished report and marks the scan complete."""
+def save_report(scan_id: str, report: Report, checks: list[CheckResult]) -> None:
+    """Stores the finished report with the checks it was scored from and marks the scan complete."""
     with get_session() as session:
         row = session.get(ScanRow, scan_id)
         if row is None:
             return
+        internal = ScanInternal.model_validate_json(row.internal)
+        internal.checks = checks
+        row.internal = internal.model_dump_json()
         row.report = report.model_dump_json()
         row.status = "complete"
         session.add(row)

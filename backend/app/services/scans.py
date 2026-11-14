@@ -7,9 +7,22 @@ from datetime import UTC, datetime
 
 from app import jobs
 from app.db import ScanRow, get_session
-from app.models import CompleteEvent, FailedEvent, Report, ScanEnvelope, ScanEvent, ScanInputs, StepEvent
+from app.models import (
+    CompleteEvent,
+    FailedEvent,
+    Report,
+    ScanEnvelope,
+    ScanEvent,
+    ScanInputs,
+    StepEvent,
+)
 from app.pipeline.types import ScanInternal
-from app.services.resolution import edit_report, get_row_report, get_scan_row, load_inputs
+from app.services.resolution import (
+    edit_report,
+    get_row_report,
+    get_scan_row,
+    load_inputs,
+)
 
 GEMINI_TEST_STUB_SECONDS = 2.0
 """How long the stubbed Gemini re-test waits before answering."""
