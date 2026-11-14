@@ -16,7 +16,7 @@ export function ChatBubble({ turn }: { turn: ChatTurn }) {
   const tone = turn.kind === "skipped" ? "bg-divider text-subtle" : "bg-accent text-white";
   return (
     <p
-      className={`m-0 flex items-center gap-2 self-end rounded-[18px] rounded-ee-[6px] px-3.5 py-2.25 text-sm font-semibold lg:rounded-[20px] lg:rounded-ee-[6px] lg:px-4.5 lg:py-2.5 lg:text-[15px] ${tone}`}
+      className={`m-0 flex items-center gap-2 self-end rounded-[18px] rounded-ee-md px-3.5 py-2.25 text-sm font-semibold lg:rounded-[20px] lg:rounded-ee-md lg:px-4.5 lg:py-2.5 lg:text-[15px] ${tone}`}
     >
       {turn.kind === "link" ? <Icon path={linkIcon} size={16} /> : null}
       {turn.text}

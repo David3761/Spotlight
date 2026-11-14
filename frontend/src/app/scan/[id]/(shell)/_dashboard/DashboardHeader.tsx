@@ -2,8 +2,6 @@ import { Icon, iconPath } from "@/components/Icon";
 import { getDayLabel } from "@/lib/format";
 import type { Business } from "@/lib/types";
 
-/** The path of the rescan icon. */
-
 /** The look shared by the desktop and mobile rescan buttons. */
 const rescanButtonClass =
   "flex items-center justify-center rounded-full border border-border bg-surface text-body disabled:opacity-60";
@@ -22,14 +20,15 @@ interface DashboardHeaderProps {
 
 /** A component that shows the greeting and the rescan button: a heading on desktop, a compact bar on mobile. */
 export function DashboardHeader({ business, checkedAt, isRescanning, onRescan }: DashboardHeaderProps) {
-  const lastChecked = `Ultima analiză: ${getDayLabel(new Date(checkedAt))}`;
+  const checkedDay = getDayLabel(checkedAt);
+  const lastChecked = checkedDay ? `Ultima analiză: ${checkedDay}` : null;
 
   return (
     <>
       <div className="hidden flex-wrap items-end justify-between gap-4 lg:flex">
         <div className="flex flex-col gap-1.5">
           <h1 className="text-[32px] font-extrabold tracking-[-0.02em]">Bună, {business.name}</h1>
-          <span className="text-sm text-muted">{lastChecked}</span>
+          {lastChecked && <span className="text-sm text-muted">{lastChecked}</span>}
         </div>
         <button
           type="button"
@@ -47,7 +46,7 @@ export function DashboardHeader({ business, checkedAt, isRescanning, onRescan }:
         </span>
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="text-base font-extrabold">{business.name}</span>
-          <span className="text-xs text-muted">{lastChecked}</span>
+          {lastChecked && <span className="text-xs text-muted">{lastChecked}</span>}
         </span>
         <button
           type="button"

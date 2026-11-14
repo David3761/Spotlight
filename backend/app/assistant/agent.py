@@ -302,7 +302,7 @@ def get_confirmed_text(
     text = f"{chapter_part}, iar scorul general de la {overall_before} la {overall_after}."
     if next_problem is None:
         return f"{text} Nu mai ai alte probleme deschise."
-    return f"{text} Cel mai rapid pas de aici: „{next_problem.title_ro}”. Îl facem acum?"
+    return f"{text} Cel mai rapid pas de aici: „{next_problem.title_ro.rstrip('.')}”. Îl facem acum?"
 
 
 def get_followup(text: str, chips: list[str]) -> Message:

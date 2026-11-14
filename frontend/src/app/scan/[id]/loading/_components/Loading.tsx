@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useSWRConfig } from "swr";
@@ -20,20 +20,25 @@ export function Loading() {
   const { id: scanId } = useParams<{ id: string }>();
   const router = useRouter();
   const isDesktop = useIsDesktop();
+  const isDesktopRef = useRef(isDesktop);
   const { mutate } = useSWRConfig();
   const { report } = useScan(scanId);
   const { doneDetails, outcome, failureMessage, retry } = useScanProgress(scanId);
 
   useEffect(() => {
+    isDesktopRef.current = isDesktop;
+  }, [isDesktop]);
+
+  useEffect(() => {
     if (outcome !== "complete") {
       return;
     }
-    /** The cached envelope still says "running", which would send the shell back here, so drop it. */
+    // The cached envelope still says "running", which would send the shell back here, so drop it.
     void mutate(getScanKey(scanId), undefined, { revalidate: false });
-    if (isDesktop) {
+    if (isDesktopRef.current) {
       router.replace(`/scan/${scanId}`);
     }
-  }, [outcome, scanId, isDesktop, mutate, router]);
+  }, [outcome, scanId, mutate, router]);
 
   const doneCount = Object.keys(doneDetails).length;
   const business = report?.business;
@@ -66,7 +71,7 @@ export function Loading() {
     <LoadingFrame businessLine={businessLine}>
       <section
         aria-live="polite"
-        className="flex flex-col items-center gap-7 lg:flex-[0_1_600px] lg:gap-6 lg:rounded-[32px] lg:border lg:border-border lg:bg-surface lg:p-10 lg:shadow-[0_1px_2px_rgba(15,23,42,0.04),0_16px_40px_rgba(15,23,42,0.06)]"
+        className="flex flex-col items-center gap-7 lg:flex-[0_1_600px] lg:gap-6 lg:rounded-4xl lg:border lg:border-border lg:bg-surface lg:p-10 lg:shadow-[0_1px_2px_rgba(15,23,42,0.04),0_16px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col items-center gap-5 text-center lg:gap-6">
           <span className="lg:hidden">

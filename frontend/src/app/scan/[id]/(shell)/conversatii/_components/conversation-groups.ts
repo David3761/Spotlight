@@ -9,17 +9,17 @@ export interface DayGroup {
   conversations: ConversationSummary[];
 }
 
-/** Returns "Azi", "Ieri" or the long date of a day. */
-export function getConversationDayLabel(date: Date): string {
-  if (isToday(date)) {
+/** Returns "Azi", "Ieri" or the long date of a day, relative to `now`. */
+export function getConversationDayLabel(date: Date, now = new Date()): string {
+  if (isToday(date, now)) {
     return "Azi";
   }
-  const yesterday = new Date();
+  const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
-  if (date.toDateString() === yesterday.toDateString()) {
+  if (isToday(date, yesterday)) {
     return "Ieri";
   }
-  return getLongDate(date);
+  return getLongDate(date, now);
 }
 
 /** Returns the time of a timestamp as HH:MM. */
@@ -30,8 +30,9 @@ export function getTimeLabel(timestamp: string): string {
 /** Returns the conversations grouped by the day of their last change, keeping their order. */
 export function getDayGroups(conversations: ConversationSummary[]): DayGroup[] {
   const groups: DayGroup[] = [];
+  const now = new Date();
   for (const conversation of conversations) {
-    const label = getConversationDayLabel(new Date(conversation.updated_at));
+    const label = getConversationDayLabel(new Date(conversation.updated_at), now);
     const last = groups[groups.length - 1];
     if (last?.label === label) {
       last.conversations.push(conversation);

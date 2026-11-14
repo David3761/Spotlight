@@ -16,8 +16,6 @@ import { getChapterTasks, getConfirmedItems, getPanelChapter } from "../_compone
 import { getConversationDayLabel, getTimeLabel } from "../_components/conversation-groups";
 import { useChat } from "../_hooks/use-chat";
 
-/** The path of the back arrow. */
-
 /** The chat page: the conversation with the assistant and, on desktop, the chapter and score panel. */
 export default function ChatPage() {
   const { cid } = useParams<{ cid: string }>();

@@ -23,7 +23,7 @@ export function LinkError({
       <AssistantAvatar />
       <div
         role="alert"
-        className="flex min-w-0 flex-col gap-3.5 rounded-[22px] rounded-es-[6px] border border-low-line bg-surface p-4 lg:max-w-150 lg:p-5"
+        className="flex min-w-0 flex-col gap-3.5 rounded-[22px] rounded-es-md border border-low-line bg-surface p-4 lg:max-w-150 lg:p-5"
       >
         <div className="flex items-start gap-3.5">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-[14px] bg-low-tint text-low-text">

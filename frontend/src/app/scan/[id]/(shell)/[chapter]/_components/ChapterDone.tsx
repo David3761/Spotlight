@@ -16,7 +16,7 @@ export function ChapterDone({
   return (
     <section
       aria-live="polite"
-      className="flex flex-col items-center gap-5 rounded-[32px] border border-border bg-surface px-6 py-10 text-center lg:px-10 lg:py-14"
+      className="flex flex-col items-center gap-5 rounded-4xl border border-border bg-surface px-6 py-10 text-center lg:px-10 lg:py-14"
     >
       <div className="relative size-38">
         <svg width="152" height="152" viewBox="0 0 152 152" aria-hidden="true" className="absolute inset-0">

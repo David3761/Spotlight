@@ -15,11 +15,9 @@ interface PointsBadgeProps {
 /** A component that shows the "+N" green tile with the points a problem is worth. */
 export function PointsBadge({ points, size }: PointsBadgeProps) {
   return (
-    <span
-      aria-label={`${points} puncte`}
-      className={`flex shrink-0 items-center justify-center bg-high-tint font-extrabold text-high-text ${sizeClass[size]}`}
-    >
-      +{points}
+    <span className={`flex shrink-0 items-center justify-center bg-high-tint font-extrabold text-high-text ${sizeClass[size]}`}>
+      <span aria-hidden="true">+{points}</span>
+      <span className="sr-only">{points} puncte</span>
     </span>
   );
 }

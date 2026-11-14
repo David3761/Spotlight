@@ -23,7 +23,7 @@ export function NextSteps({ scanId, problems }: { scanId: string; problems: Prob
       {problems.map((problem) => (
         <div key={problem.check_id} className="flex items-center gap-4 border-t border-fill py-3.5">
           <PointsBadge points={problem.points} size="fixed" />
-          <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
+          <span className="flex min-w-0 flex-1 flex-col gap-0.75">
             <span className="text-base font-bold">{problem.title_ro}</span>
             <span className="text-[13px] font-semibold text-muted">{problem.chapter_name_ro}</span>
           </span>

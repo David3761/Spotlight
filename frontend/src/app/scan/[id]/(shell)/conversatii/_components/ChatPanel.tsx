@@ -96,7 +96,7 @@ export function ChatPanel({ chapter, tasks, overall, overallAtOpen }: ChatPanelP
           </span>
         </div>
       </div>
-      <InfoNote>Asistentul marchează ceva ca rezolvat doar când îi spui tu, și poți anula oricând.</InfoNote>
+      <InfoNote isSmall>Asistentul marchează ceva ca rezolvat doar când îi spui tu, și poți anula oricând.</InfoNote>
     </aside>
   );
 }

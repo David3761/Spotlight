@@ -27,7 +27,7 @@ export function Sidebar({ report, active }: { report: Report; active: SidebarSec
   ];
 
   return (
-    <nav aria-label="Meniu principal" className="flex min-h-screen w-full flex-col gap-5 bg-surface px-[18px] py-6 text-ink">
+    <nav aria-label="Meniu principal" className="flex min-h-screen w-full flex-col gap-5 bg-surface px-4.5 py-6 text-ink">
       <div className="px-1.5">
         <AppLogo />
       </div>
@@ -53,7 +53,7 @@ export function Sidebar({ report, active }: { report: Report; active: SidebarSec
               key={item.key}
               href={item.href}
               aria-current={isActive ? "page" : undefined}
-              className={`flex min-h-[46px] items-center gap-3 rounded-[14px] px-3 text-sm ${
+              className={`flex min-h-11.5 items-center gap-3 rounded-[14px] px-3 text-sm ${
                 isActive ? "bg-accent-soft font-bold text-accent-strong" : "font-semibold text-body"
               }`}
             >
@@ -131,7 +131,7 @@ function SidebarChapter({ chapter, href, isActive }: { chapter: Chapter; href: s
       {chapter.has_fixes && count > 0 && (
         <span
           aria-label={getCountLabel(count)}
-          className={`flex h-6 min-w-[26px] items-center justify-center rounded-full px-2 text-[13px] font-extrabold ${
+          className={`flex h-6 min-w-6.5 items-center justify-center rounded-full px-2 text-[13px] font-extrabold ${
             isActive ? "bg-accent text-white" : "bg-fill text-body"
           }`}
         >

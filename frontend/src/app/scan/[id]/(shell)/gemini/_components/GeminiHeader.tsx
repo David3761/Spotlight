@@ -6,10 +6,6 @@ import { buttonVariant } from "@/components/button-styles";
 import { getDayLabel } from "@/lib/format";
 import type { GeminiBlock } from "@/lib/types";
 
-/** The path of the back icon. */
-
-/** The path of the retry icon. */
-
 /** The props of {@link GeminiHeader}. */
 interface GeminiHeaderProps {
   /** The scan's ID. */
@@ -34,11 +30,8 @@ function getLastCheckedText(lastChecked: string, isTesting: boolean, hasRetested
   if (hasRetested) {
     return "Ultima verificare: acum câteva secunde";
   }
-  const date = new Date(lastChecked);
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
-  return `Ultima verificare: ${getDayLabel(date)}`;
+  const day = getDayLabel(lastChecked);
+  return day ? `Ultima verificare: ${day}` : null;
 }
 
 /** A component that shows the back link, the Gemini score, the intro and the retest button. */

@@ -8,17 +8,22 @@ export function getProblemCountLabel(count: number): string {
   return `${count} ${needsDe ? "de " : ""}probleme`;
 }
 
-/** Returns whether the given date falls on today's date. */
-export function isToday(date: Date): boolean {
-  return date.toDateString() === new Date().toDateString();
+/** Returns whether the date falls on the same day as `now`. */
+export function isToday(date: Date, now = new Date()): boolean {
+  return date.toDateString() === now.toDateString();
 }
 
-/** Returns a date in Romanian with day, month name and year, e.g. "12 noiembrie 2026". */
-export function getLongDate(date: Date): string {
-  return date.toLocaleDateString("ro-RO", { day: "numeric", month: "long", year: "numeric" });
+/** Returns a date in Romanian with day and month name, plus the year when it isn't the current one, e.g. "12 noiembrie". */
+export function getLongDate(date: Date, now = new Date()): string {
+  const isThisYear = date.getFullYear() === now.getFullYear();
+  return date.toLocaleDateString("ro-RO", isThisYear ? { day: "numeric", month: "long" } : { day: "numeric", month: "long", year: "numeric" });
 }
 
-/** Returns "azi" for a date from today, else its long Romanian date. */
-export function getDayLabel(date: Date): string {
+/** Returns "azi" for a timestamp from today, its long Romanian date otherwise, or `null` when it can't be read. */
+export function getDayLabel(timestamp: string): string | null {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
   return isToday(date) ? "azi" : getLongDate(date);
 }

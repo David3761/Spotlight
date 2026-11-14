@@ -78,7 +78,7 @@ function MessageView({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.26 }}
-        className="max-w-75 self-end rounded-[18px] rounded-ee-[6px] bg-accent px-3.5 py-2.5 text-sm leading-normal whitespace-pre-wrap text-white lg:max-w-130 lg:rounded-[20px] lg:rounded-ee-[6px] lg:px-4.5 lg:py-2.75 lg:text-[15px] lg:font-medium"
+        className="max-w-75 self-end rounded-[18px] rounded-ee-md bg-accent px-3.5 py-2.5 text-sm leading-normal whitespace-pre-wrap text-white lg:max-w-130 lg:rounded-[20px] lg:rounded-ee-md lg:px-4.5 lg:py-2.75 lg:text-[15px] lg:font-medium"
       >
         {message.text}
       </motion.p>
@@ -98,7 +98,7 @@ function MessageView({
     >
       <AssistantAvatar />
       <div className="flex min-w-0 flex-col gap-2 lg:gap-2.5">
-        <AssistantBubble>{message.text}</AssistantBubble>
+        <AssistantBubble className="max-w-72.5">{message.text}</AssistantBubble>
         {action?.status === "pending" && (
           <div className="flex flex-wrap gap-1.5 lg:gap-2">
             {action.options.map((option, index) => (

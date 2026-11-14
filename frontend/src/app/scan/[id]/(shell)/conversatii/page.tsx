@@ -13,8 +13,6 @@ import { useStartConversation } from "./_hooks/use-start-conversation";
 /** The path of the plus icon of the new-conversation button. */
 const plusPath = "M12 5v14M5 12h14";
 
-/** The path of the magnifier icon of the search field. */
-
 /** The conversation list page: search, conversations by day, a button for a new one and ideas to ask. */
 export default function ConversationsPage() {
   const { scanId } = useLoadedScan();

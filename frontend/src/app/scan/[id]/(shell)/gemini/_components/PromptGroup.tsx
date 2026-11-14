@@ -7,7 +7,7 @@ export function PromptGroup({ group }: { group: GeminiGroup }) {
   const hasMentions = group.mentioned > 0;
 
   return (
-    <section className="flex min-w-0 flex-col rounded-[22px] border border-border bg-surface px-4 pt-4 pb-1.5 lg:basis-75 lg:flex-1 lg:gap-1.5 lg:rounded-[24px] lg:p-5.5">
+    <section className="flex min-w-0 flex-col rounded-[22px] border border-border bg-surface px-4 pt-4 pb-1.5 lg:basis-75 lg:flex-1 lg:gap-1.5 lg:rounded-3xl lg:p-5.5">
       <div className="flex items-center justify-between gap-2.5 pb-2 lg:items-start lg:gap-3 lg:pb-2.5">
         <div className="flex flex-col gap-0.5 lg:gap-0.75">
           <h2 className="text-[17px] font-extrabold lg:text-lg">{group.name_ro}</h2>

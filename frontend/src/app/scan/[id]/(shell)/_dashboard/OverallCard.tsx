@@ -5,8 +5,6 @@ import { ScoreRing } from "@/components/ScoreRing";
 import { getProblemCountLabel } from "@/lib/format";
 import type { Report } from "@/lib/types";
 
-/** The path of the arrow icon. */
-
 /** The look shared by the summary chips. */
 const chipClass = "h-7.5 items-center rounded-full bg-fill px-3 text-[13px] font-bold text-body lg:h-8";
 

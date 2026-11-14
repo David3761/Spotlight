@@ -13,6 +13,7 @@ const COMPETITOR_LIMIT = 3;
 /** A component that links to the Gemini screen with the live-test score and the top competitors. */
 export function GeminiCard({ scanId, gemini }: { scanId: string; gemini: GeminiBlock }) {
   const isUnknown = gemini.status === "unknown";
+  const lastCheckedDay = getDayLabel(gemini.last_checked);
   const summary = isUnknown ? "Nu am putut rula testul" : `Apari în ${gemini.mentioned} din ${gemini.total} răspunsuri`;
   const competitors = isUnknown ? [] : gemini.top_competitors.slice(0, COMPETITOR_LIMIT);
 
@@ -30,7 +31,7 @@ export function GeminiCard({ scanId, gemini }: { scanId: string; gemini: GeminiB
             animate={{ opacity: [1, 0.35, 1], scale: [1, 0.7, 1] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           />
-          {isUnknown ? "Test real" : `Test real · ${getDayLabel(new Date(gemini.last_checked))}`}
+          {isUnknown || !lastCheckedDay ? "Test real" : `Test real · ${lastCheckedDay}`}
         </span>
         <span className="hidden items-center gap-1 text-sm font-bold text-accent-hover lg:flex">
           Vezi răspunsurile
