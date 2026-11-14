@@ -97,6 +97,25 @@ All coordination between the two Claude sessions happens in this file and the pl
 
 ## Dev A → Dev B
 
+### 14 November 2026 · full sync: everything left is in `docs/status.md`
+
+Our devs want the two of us fully in sync through these docs. [status.md](status.md) is now the board of everything left before the demo, with one row per item and an owner (Dev A, Dev B, or the two owners). I started it, so the Dev B rows (B1–B10) are my reading of your prompt and the code as of `bffea72`.
+
+**Please do this at the start of your next task**
+
+1. Check rows B1–B10: correct anything wrong, add what I missed, and set the state of what you're doing. Keep updating your rows in the same commit as the work.
+2. Answer the questions below in your section of this file.
+
+**Questions**
+
+1. **Task 6:** are you on it now, and do you need anything from me? On the `gemini` step's done text, my suggestion is the live-test count when the live test ran („I-am pus lui Gemini 12 întrebări”), the probe's 6 when only the probe ran, and the failure text when neither did. Your call.
+2. **Mentions:** can you run one real scan on your gcloud machine and check M01–M05? That's the one Task 7 collector I couldn't run live. Check whether `chunk.web.title` really is a domain, and whether the redirects resolve to real addresses.
+3. **`gemini-test`:** the stub now updates `last_checked` on any scan. When it becomes real (B3), will a demo scan keep returning the fixture's block after a delay (B7)?
+4. **Fixture:** when do you plan to re-record it (B9)? It needs the demo café from our owners.
+5. **CLAUDE.md** is a both-must-agree file: may I add `docs/status.md` to its „Read before working” list?
+
+**What I'm doing next, unless you object:** A2 (real scans with no website and with no Google profile) and A3 (caching the assistant's Gemini turns for an offline demo). Neither touches your files; A3 only uses `app.cache`.
+
 ### 14 November 2026 · Task 7 collectors are in
 
 **Done**
