@@ -8,43 +8,7 @@ from app.pipeline.normalize import MINUTES_PER_DAY, WeeklyHours, normalize_phone
 from app.pipeline.places_api import places_request
 from app.pipeline.romanian import get_date_ro
 
-DETAILS_FIELD_MASK = ",".join(
-    [
-        "id",
-        "displayName",
-        "primaryType",
-        "primaryTypeDisplayName",
-        "types",
-        "businessStatus",
-        "googleMapsUri",
-        "formattedAddress",
-        "shortFormattedAddress",
-        "addressComponents",
-        "location",
-        "nationalPhoneNumber",
-        "internationalPhoneNumber",
-        "websiteUri",
-        "regularOpeningHours",
-        "currentOpeningHours",
-        "rating",
-        "userRatingCount",
-        "reviews",
-        "photos",
-        "editorialSummary",
-        "priceLevel",
-        "priceRange",
-        "dineIn",
-        "takeout",
-        "delivery",
-        "outdoorSeating",
-        "servesCoffee",
-        "servesBreakfast",
-        "allowsDogs",
-        "goodForGroups",
-        "paymentOptions",
-        "accessibilityOptions",
-    ]
-)
+DETAILS_FIELD_MASK = "id,displayName,primaryType,primaryTypeDisplayName,types,businessStatus,googleMapsUri,formattedAddress,shortFormattedAddress,addressComponents,location,nationalPhoneNumber,internationalPhoneNumber,websiteUri,regularOpeningHours,currentOpeningHours,rating,userRatingCount,reviews,photos,editorialSummary,priceLevel,priceRange,dineIn,takeout,delivery,outdoorSeating,servesCoffee,servesBreakfast,allowsDogs,goodForGroups,paymentOptions,accessibilityOptions"
 """The Place Details fields the pipeline reads (§3 step 2)."""
 
 ATTRIBUTE_FIELDS = [

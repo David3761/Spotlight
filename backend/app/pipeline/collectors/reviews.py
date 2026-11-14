@@ -126,7 +126,7 @@ def get_recency_check(canonical: CanonicalProfile, recent: list[dict[str, Any]] 
         dates = [review.publish_time for review in canonical.reviews if review.publish_time]
     if not dates:
         return get_check_result("R03", "unknown", reason_ro="Nu am găsit recenzii cu dată.")
-    newest = max(datetime.fromisoformat(date.replace("Z", "+00:00")) for date in dates)
+    newest = max(datetime.fromisoformat(date) for date in dates)
     days = (datetime.now(UTC) - newest).days
     status = "pass" if days <= RECENT_DAYS else "partial" if days <= FAIRLY_RECENT_DAYS else "fail"
     params = {"days": get_count_phrase(days, "zi", "zile")}
