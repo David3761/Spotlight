@@ -1,0 +1,53 @@
+{
+  "name": "Cafeneaua Boema",
+  "type_label_ro": "Cafenea",
+  "city": "București",
+  "neighborhood": "Cotroceni",
+  "address": "Str. Dr. Lister, Cotroceni, București",
+  "phone": null,
+  "website": "https://cafeneauaboema.ro",
+  "google_maps_uri": "https://www.google.com/maps/place/?q=place_id:ChIJ-mock-cafeneaua-boema",
+  "hours_ro": [
+    "Luni–Duminică: 8:00–20:00"
+  ],
+  "special_hours_ro": [],
+  "attributes_ro": [
+    "Wi-Fi",
+    "Plata cu cardul",
+    "Plata cu telefonul"
+  ],
+  "instagram_handle": "cafeneauaboema",
+  "facebook_url": "https://facebook.com/cafeneauaboema",
+  "tiktok_url": "https://www.tiktok.com/@cafeneauaboema",
+  "platforms_ro": [
+    "Glovo",
+    "Wolt"
+  ],
+  "website_facts": {
+    "what_it_is": "cafenea de specialitate cu boabe prăjite local, patiserie proaspătă și un spațiu liniștit, potrivit pentru lucru cu laptopul",
+    "menu_items_or_services": [
+      "Espresso",
+      "Flat white",
+      "Cafea la filtru",
+      "Croissante",
+      "Prăjituri de casă",
+      "Lapte vegetal"
+    ],
+    "prices_present": false,
+    "faq_items": [
+      {
+        "q": "Pot lucra cu laptopul?",
+        "a": "Da, avem Wi-Fi și prize la majoritatea meselor."
+      },
+      {
+        "q": "Aveți lapte vegetal?",
+        "a": "Da, de ovăz și de migdale."
+      },
+      {
+        "q": "Se poate plăti cu cardul?",
+        "a": "Da, cu cardul sau cu telefonul."
+      }
+    ],
+    "language": "ro"
+  }
+}
