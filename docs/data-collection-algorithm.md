@@ -507,7 +507,6 @@ for each check with status in (fail, partial) and not claimed_fixed:
 
 passed checks → SolvedItem with a "solved" template ("Numărul de telefon e afișat")
 sort problems inside a chapter by points; next_steps = top 3 open problems by impact overall
-start_here = chapter with the highest Σ impact
 ```
 
 Copy for titles and reasons comes from the design artboards wherever a check appears there (`design/Capitol.dc.html`, `Rezolva.dc.html`, `FisaInfo.dc.html`, `Panou.dc.html`); write new templates in the same plain, jargon-free Romanian for the rest.

@@ -55,7 +55,7 @@ Push after every task (`git pull --rebase` first). Check the acceptance line bef
 - `fixtures/boema_report.json`: a complete `Report` for Cafeneaua Boema built from the design's mock data:
   - overall 42 with `overall_exact` 42.2
   - chapter scores 65 / 50 / 35 / 50 / 35 / 25 / 55 / 20 in chapter order
-  - open-problem counts 5 / 3 / 6 / 4 / 5 / 4 / 3 / 0 (30 in total), `start_here: "continut"`
+  - open-problem counts 5 / 3 / 6 / 4 / 5 / 4 / 3 / 0 (30 in total)
   - `next_steps` = the three in `Panou.dc.html`
   - Gemini score 17 with 2 of 12 mentions, groups, prompts, competitors and the comparison exactly as in `Gemini.dc.html` (photo counts above 10 → 10 with `photo_count_capped: true`), each prompt with one or two plausible sources
   - problems use catalog `check_id`s and their points; titles and reasons come from the artboards where they exist (`Capitol` for `profil`, `Rezolva` for `social` with `S05` as the Instagram bio, `FisaInfo` for `site` with `T09` as the info page)

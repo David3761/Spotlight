@@ -113,17 +113,7 @@ function SidebarChapter({ chapter, href, isActive }: { chapter: Chapter; href: s
       }`}
     >
       <Icon path={chapterIconPath[chapter.id]} size={20} className={`shrink-0 ${isActive ? "text-accent" : "text-muted"}`} />
-      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span>{chapter.name_ro}</span>
-        {chapter.start_here && (
-          <span className="flex items-center gap-1 text-[11px] font-bold text-accent-hover">
-            <svg width="11" height="11" viewBox="0 0 24 24" aria-hidden="true">
-              <path d={iconPath.sparkle} className="fill-accent" />
-            </svg>
-            Începe de aici
-          </span>
-        )}
-      </span>
+      <span className="min-w-0 flex-1">{chapter.name_ro}</span>
       {chapter.has_fixes && count > 0 && (
         <span
           className={`flex h-6 min-w-6.5 items-center justify-center rounded-full px-2 text-[13px] font-extrabold ${

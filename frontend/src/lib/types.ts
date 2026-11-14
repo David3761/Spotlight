@@ -157,8 +157,6 @@ export interface Report {
   summary_ro: string;
   /** The number of open problems across chapters. */
   open_problem_count: number;
-  /** The chapter with the highest open impact. */
-  start_here: ChapterId | null;
   /** The top 3 open problems across chapters, by impact. */
   next_steps: Problem[];
   /** The live Gemini test. */
@@ -219,8 +217,6 @@ export interface Chapter {
   possible_points: number;
   /** How much the overall score would rise if every problem were fixed. */
   overall_gain_if_all_fixed: number;
-  /** When `true`, this is the chapter to start with. */
-  start_here: boolean;
   /** When `false`, the chapter has no fixes of its own. */
   has_fixes: boolean;
   /** The open problems, by points descending. */
@@ -451,8 +447,8 @@ export interface FaqEntry {
 
 /** The generated info page for the business's website. */
 export interface InfoPage {
-  /** Where the page should live, e.g. "cafeneauaboema.ro/despre". */
-  suggested_url: string;
+  /** Where the page should live, e.g. "cafeneauaboema.ro/despre"; `null` when there's no website. */
+  suggested_url: string | null;
   /** The page title. */
   title: string;
   /** The line under the title. */

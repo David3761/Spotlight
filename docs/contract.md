@@ -151,7 +151,6 @@ interface Report {
   overall_exact: number;            // unrounded
   summary_ro: string;               // line under the ring, e.g. "Gemini te recomandă rar deocamdată. Multe se rezolvă în câteva minute."
   open_problem_count: number;       // "30 de probleme de rezolvat"
-  start_here: ChapterId | null;     // chapter with the highest open impact
   next_steps: Problem[];            // top 3 open problems across chapters, by impact
   gemini: GeminiBlock;
   chapters: Chapter[];              // always 8, in chapter order
@@ -184,7 +183,6 @@ interface Chapter {
   weight: number;                   // 0.20 … 0.05
   possible_points: number;          // Σ open problem points ("+35 puncte posibile")
   overall_gain_if_all_fixed: number;// "Scorul general ar crește cu aproximativ 7 puncte"
-  start_here: boolean;
   has_fixes: boolean;               // false for "cunoaste" → "Crește pe măsură ce rezolvi restul"
   problems: Problem[];              // open only, by points descending
   solved: SolvedItem[];             // "Rezolvate · N"
@@ -307,7 +305,7 @@ Works for every problem with `fix_type = "generate"`; the Instagram bio (`S05`) 
 
 ```ts
 interface InfoPage {
-  suggested_url: string;            // "cafeneauaboema.ro/despre"
+  suggested_url: string | null;     // "cafeneauaboema.ro/despre"; null when there's no website
   title: string;                    // "Cafeneaua Boema"
   subtitle: string;                 // "Cafenea de specialitate în Cotroceni, București"
   description: string;
@@ -338,7 +336,7 @@ One Markdown document with every `dev_export` problem: what's wrong, evidence, e
 
 ## Assistant (owner: Dev A)
 
-An unknown `cid`, `action_id` or `option_id` returns `404 conversation_not_found`.
+An unknown `cid`, `action_id` or `option_id` returns `404 conversation_not_found`. After „Anulează” (status `undone`) the action's options can be answered again.
 
 ### `GET /api/scans/{scan_id}/conversations`
 

@@ -222,7 +222,7 @@ def get_proposed_action(report: Report, check_ids: list[str]) -> tuple[ProposedA
         options += [
             ActionOption(
                 id=problem.check_id,
-                label_ro=f"Doar {problem.title_ro[:1].lower()}{problem.title_ro[1:]}",
+                label_ro=f"Doar: {problem.title_ro}",
                 check_ids=[problem.check_id],
             )
             for problem in problems
@@ -264,7 +264,7 @@ def apply_action(cid: str, action_id: str, option_id: str) -> ActionResult | Non
     option = next((candidate for candidate in action.options if candidate.id == option_id), None)
     if option is None:
         return None
-    if action.status != "pending":
+    if action.status not in ("pending", "undone"):
         return ActionResult(action=action, score=None, followup=None)
 
     if not option.check_ids:
@@ -324,7 +324,7 @@ def get_confirmed_text(
     text = f"{chapter_part}, iar scorul general de la {overall_before} la {overall_after}."
     if next_problem is None:
         return f"{text} Nu mai ai alte probleme deschise."
-    return f"{text} Cel mai rapid pas de aici: „{next_problem.title_ro.rstrip('.')}”. Îl facem acum?"
+    return f"{text} Cel mai rapid pas de aici: {next_problem.title_ro.rstrip('.')}. Îl facem acum?"
 
 
 def get_followup(text: str, chips: list[str]) -> Message:

@@ -30,9 +30,11 @@ function InfoPagePreview({ infoPage }: { infoPage: InfoPage }) {
       aria-label="Previzualizare pagină de informații"
       className="flex flex-col gap-4.5 rounded-2xl bg-surface p-5 shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.08)] lg:rounded-[18px] lg:px-7.5 lg:py-7"
     >
-      <span className="self-start rounded-full bg-page px-2.5 py-1 text-xs font-semibold text-muted">
-        {infoPage.suggested_url}
-      </span>
+      {infoPage.suggested_url && (
+        <span className="self-start rounded-full bg-page px-2.5 py-1 text-xs font-semibold text-muted">
+          {infoPage.suggested_url}
+        </span>
+      )}
       <div className="flex flex-col gap-1">
         <h3 className="text-xl font-extrabold tracking-[-0.01em] lg:text-2xl">{infoPage.title}</h3>
         <span className="text-[13px] font-semibold text-subtle lg:text-sm">{infoPage.subtitle}</span>

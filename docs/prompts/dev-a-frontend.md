@@ -52,7 +52,7 @@ Acceptance: `npm run dev:web` serves the app with the font and tokens applied.
 Build from the artboards, with typed props:
 
 - `ScoreRing` (`ScoreRing.dc.html`): props `score`, `size`, `thick`, `showMax`, `animateFrom`. Tier colour by value (< 40, 40–69, 70+), number always inside, "din 100" when `showMax`. Animates from `animateFrom` (or the previous score) over 1.1 s with cubic ease-out and a 6% scale bump at the end when the score goes up. `aria-label="Scor N din 100"`.
-- `Sidebar` (`Sidebar.dc.html`): business card, Panou principal, Vizibilitate în Gemini with "X/12", Conversații, the 8 chapters with icon, open-problem count badge, "Începe de aici" marker and a check when a chapter has 0 problems. Business switcher, "Datele afacerii" and "Ajutor" are visible but not interactive. Active item from the route.
+- `Sidebar` (`Sidebar.dc.html`): business card, Panou principal, Vizibilitate în Gemini with "X/12", Conversații, the 8 chapters with icon, open-problem count badge and a check when a chapter has 0 problems (no „Începe de aici” marker). Business switcher, "Datele afacerii" and "Ajutor" are visible but not interactive. Active item from the route.
 - `TabBar` (`TabBar.dc.html`): Acasă, Gemini, Capitole, Asistent.
 - `AppShell`: sidebar at ≥ 1024 px, tab bar below.
 - `Toast`: rises 12 px, stays about 3 s.
@@ -92,7 +92,7 @@ Subscribe to `GET /api/scans/{id}/events` with `EventSource`. Five steps in fixe
 
 Artboards: `Panou`, `MPanou`, `Capitol`, `MCapitol`, `CapitolGol`.
 
-- `/scan/[id]`: greeting, overall ring, `summary_ro`, „N de probleme de rezolvat”, „Începe cu {start_here}”, the Gemini card (mini ring, „Apari în X din 12 răspunsuri”, top 3 competitors), „Următorii pași” from `next_steps` (each „Rezolvă” goes to `/scan/{id}/{chapter}?fix={check_id}`), „Ai rezolvat ceva?” → new assistant conversation, mobile chapter list. „Analizează din nou” → `POST /rescan` → the new scan's loading route. „Ultima analiză: azi” only, with no weekly-rescan text.
+- `/scan/[id]`: greeting, overall ring, `summary_ro`, „N de probleme de rezolvat”, the Gemini card (mini ring, „Apari în X din 12 răspunsuri”, top 3 competitors), „Următorii pași” from `next_steps` (each „Rezolvă” goes to `/scan/{id}/{chapter}?fix={check_id}`), „Ai rezolvat ceva?” → new assistant conversation, mobile chapter list. „Analizează din nou” → `POST /rescan` → the new scan's loading route. „Ultima analiză: azi” only, with no weekly-rescan text.
 - `/scan/[id]/[chapter]`: ring, `intro_ro`, „+N puncte posibile”, problem cards (points, title, why, „Rezolvă”), collapsible „Rezolvate · N” from `solved`, an „Nu am putut verifica” list from `unknown`, „Dacă rezolvi tot” from `overall_gain_if_all_fixed`, „Unde se rezolvă” from `where_to_fix_ro`, „Deschide Profilul tău Google” (`business.google_maps_uri`) on `profil`. With 0 problems, show the `CapitolGol` state. `cunoaste` has no fixes: „Crește pe măsură ce rezolvi restul”.
 - `FixPanel` shell: a right side panel on desktop, a bottom sheet on mobile, sliding in over 280 ms on a backdrop `rgba(15,23,42,0.32)`, opened by `?fix=`. The generic body (`panel: "steps"`) shows the title, why, `evidence_ro`, numbered `steps_ro`, the deep link button and „Am rezolvat”.
 - „Am rezolvat”: update scores in local state first so rings animate, call `POST …/resolve`, then replace local state with `ScoreUpdate.report`. Toast „+{chapter_points_added} puncte · {chapter} a urcat la {chapter_score}”. Roll back with an error toast if the call fails.

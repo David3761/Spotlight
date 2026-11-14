@@ -1,6 +1,3 @@
-import Link from "next/link";
-import { buttonVariant } from "@/components/button-styles";
-import { Icon, iconPath } from "@/components/Icon";
 import { ScoreRing } from "@/components/ScoreRing";
 import { getProblemCountLabel } from "@/lib/format";
 import type { Report } from "@/lib/types";
@@ -8,10 +5,8 @@ import type { Report } from "@/lib/types";
 /** The look shared by the summary chips. */
 const chipClass = "h-7.5 items-center rounded-full bg-fill px-3 text-[13px] font-bold text-body lg:h-8";
 
-/** A component that shows the overall score ring, the progress line, the counts and the start button. */
+/** A component that shows the overall score ring, the progress line and the counts. */
 export function OverallCard({ report }: { report: Report }) {
-  const startChapter = report.chapters.find((chapter) => chapter.id === report.start_here);
-
   return (
     <section
       aria-label="Scor general"
@@ -34,15 +29,6 @@ export function OverallCard({ report }: { report: Report }) {
           <span className={`flex ${chipClass}`}>{getProblemCountLabel(report.open_problem_count)} de rezolvat</span>
           <span className={`hidden lg:flex ${chipClass}`}>{report.chapters.length} capitole</span>
         </div>
-        {startChapter && (
-          <Link
-            href={`/scan/${report.scan_id}/${startChapter.id}`}
-            className={`${buttonVariant.primary} h-12.5 w-full text-[15px] lg:h-12 lg:w-auto lg:self-start lg:px-5.5`}
-          >
-            Începe cu {startChapter.name_ro}
-            <Icon path={iconPath.arrowRight} size={18} strokeWidth={2.2} className="hidden lg:block" />
-          </Link>
-        )}
       </div>
     </section>
   );

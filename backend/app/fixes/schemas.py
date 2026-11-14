@@ -38,7 +38,7 @@ class GeneratedTextDraft(BaseModel):
 class InfoPage(BaseModel):
     """The info page the owner puts on their website, with its downloadable HTML."""
 
-    suggested_url: str
+    suggested_url: str | None
     title: str
     subtitle: str
     description: str

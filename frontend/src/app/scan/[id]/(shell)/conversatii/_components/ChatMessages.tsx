@@ -87,7 +87,8 @@ function MessageView({
 
   const action = message.action;
   const showChips = isLast && !isBusy && message.chips.length > 0;
-  const hasExtras = action !== null && action.status !== "undone" && action.status !== "declined";
+  const isAwaitingAnswer = action?.status === "pending" || action?.status === "undone";
+  const hasExtras = isAwaitingAnswer || action?.status === "confirmed";
 
   return (
     <motion.div
@@ -99,7 +100,7 @@ function MessageView({
       <AssistantAvatar />
       <div className="flex min-w-0 flex-col gap-2 lg:gap-2.5">
         <AssistantBubble className="max-w-72.5">{message.text}</AssistantBubble>
-        {action?.status === "pending" && (
+        {action && isAwaitingAnswer && (
           <div className="flex flex-wrap gap-1.5 lg:gap-2">
             {action.options.map((option, index) => (
               <OptionButton key={option.id} option={option} isFirst={index === 0} isDisabled={isBusy} action={action} onOption={onOption} />

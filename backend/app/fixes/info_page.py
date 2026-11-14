@@ -10,9 +10,6 @@ from app.llm.client import json_call
 from app.models import FaqItem, Facts
 from app.services.resolution import load_facts
 
-URL_WITHOUT_WEBSITE = "site-ul-tau.ro/despre"
-"""The suggested address when the business has no website."""
-
 MAX_FAQ_QUESTIONS = 5
 """The most questions the page answers."""
 
@@ -35,7 +32,7 @@ async def get_info_page(scan_id: str) -> InfoPage:
     questions = get_faq_questions(facts)
     prompt = get_prompt("fix_info_page").format(
         facts=get_facts_text(facts, facts.type_label_ro),
-        suggested_url=suggested_url,
+        suggested_url=suggested_url or "afacerea nu are încă site",
         questions="\n".join(f"{number}. {question}" for number, question in enumerate(questions, 1)),
     )
     draft = await json_call(prompt, InfoPageDraft, tier="smart")
@@ -76,10 +73,10 @@ async def get_info_page(scan_id: str) -> InfoPage:
     return page
 
 
-def get_suggested_url(facts: Facts) -> str:
-    """Returns the website's domain followed by `/despre`, or a placeholder when there is no website."""
+def get_suggested_url(facts: Facts) -> str | None:
+    """Returns the website's domain followed by `/despre`, or `None` when there is no website."""
     if not facts.website:
-        return URL_WITHOUT_WEBSITE
+        return None
     website = facts.website if "//" in facts.website else f"//{facts.website}"
     domain = urlparse(website).netloc.removeprefix("www.")
     return f"{domain}/despre"

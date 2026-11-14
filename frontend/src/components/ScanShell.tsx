@@ -108,7 +108,7 @@ export function ScanShell({ children }: { children: ReactNode }) {
           <main className="min-w-0 flex-1">{children}</main>
           {!isChatOpen && (
             <div className="sticky bottom-0 lg:hidden">
-              <TabBar scanId={scanId} chapterHref={`/scan/${scanId}/${report.start_here ?? "profil"}`} active={getTab(section)} />
+              <TabBar scanId={scanId} active={getTab(section)} />
             </div>
           )}
         </div>

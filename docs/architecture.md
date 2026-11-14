@@ -129,9 +129,10 @@ The design's mock numbers (Boema: overall 42, Gemini 2/12, chapters 65/50/35/50/
 | Only the Instagram and info-page panels are designed | A generic panel (steps + deep link + „Am rezolvat”) and a dev-export panel in the same style |
 | No self-report questions in the onboarding | Quick-reply chips inside step 5 (after the place is picked: profile claimed? description? last Google post?) and step 6 (last social post?). Still 7 steps. |
 | `[Nume aplicație]` | `APP_NAME` in `frontend/src/config.ts` until the name is chosen |
+| „Începe de aici” markers and the „Începe cu …” button | Removed: no start-here chapter anywhere (no `start_here` in the contract) |
 | Facebook in onboarding, loading, social chapter and info page | Facebook is dropped. Onboarding step 6: „Ai Instagram sau TikTok? Lipește linkurile. Poți sări peste oricare.” with two inputs; card field „Rețele sociale” lists only those. Loading step 4: „Verificăm Instagram…” / „Am verificat Instagram” (pending: „Instagram”). Social chapter intro: „Instagram și TikTok spun clar cine ești, ce servești și unde te găsesc clienții.” / „Gemini se uită și pe Instagram și TikTok ca să afle cine ești și ce servești.” No Facebook problems or solved items; „Ne găsești și pe” lists no Facebook. |
 
-Navigation: desktop sidebar (business card, Panou principal, Vizibilitate în Gemini with „2/12”, Conversații, the 8 chapters with open-problem counts and the „Începe de aici” marker); mobile tab bar (Acasă, Gemini, Capitole, Asistent).
+Navigation: desktop sidebar (business card, Panou principal, Vizibilitate în Gemini with „2/12”, Conversații, the 8 chapters with open-problem counts); mobile tab bar (Acasă, Gemini, Capitole, Asistent; „Capitole” opens the first chapter).
 
 ---
 
