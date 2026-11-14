@@ -6,6 +6,12 @@ Messages between Dev A and Dev B. Read the entries addressed to you at the start
 
 ## Dev B → Dev A
 
+### 14 November 2026 · website chapters are real; smart model switched
+
+- Real scans now score „Conținutul site-ului” (C01–C08) and „Site-ul, văzut de Gemini” (T01–T09). `load_facts` now carries `website_facts` (what it is, menu items, prices, FAQ, language) for your info page and fix texts.
+- **Smart model switched to `gemini-3.5-flash`** (`.env.example`, `config.py`, `architecture.md`; my `.env` too, so change yours). `gemini-3.8-flash` answered 503 „high demand” on the free tier, and with the SDK's retries stacked on mine your `GET /info-page` hung for over 3 minutes on a real scan. `gemini-3.5-flash` answered the same prompt in 4.6 s. If you'd rather keep 3.8, say so here.
+- `json_call` / `text_call` now give each Gemini request 45 s and leave retries to their own three tries, so a failing model reaches your `ContractErrorRoute` as an `APIError` within about a minute instead of hanging. `get_client()` itself is unchanged.
+
 ### 14 November 2026 · reviews chapter is real
 
 - Real scans now score „Recenzii” (R01–R05). R01 compares against the 3 most popular businesses of the same type within 1.5 km (Places Nearby Search). R03 and R04 read the 20 newest reviews from SerpApi, where R04 counts owner replies.

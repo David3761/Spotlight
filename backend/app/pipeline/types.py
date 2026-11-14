@@ -38,3 +38,4 @@ class ScanInternal(BaseModel):
     checks: list[CheckResult] = []
     canonical: CanonicalProfile | None = None
     website_facts: WebsiteFacts | None = None
+    site_links: list[str] = []

@@ -33,6 +33,13 @@ from app.pipeline.canonical import CanonicalProfile, get_canonical
 from app.pipeline.collectors.competitors import NearbyCompetitor, get_nearby_competitors
 from app.pipeline.collectors.google_profile import collect_google_profile
 from app.pipeline.collectors.reviews import collect_reviews
+from app.pipeline.collectors.website import (
+    CONTENT_CHECK_IDS,
+    TECH_CHECK_IDS,
+    WebsiteScan,
+    collect_website,
+    get_website_url,
+)
 from app.pipeline.resolve import search_places
 from app.pipeline.romanian import get_count_phrase
 from app.pipeline.scoring import CATALOG, get_unknown_results
@@ -61,6 +68,12 @@ REVIEWS_TIMEOUT_SECONDS = 30
 
 REVIEW_CHECK_IDS = ["R01", "R02", "R03", "R04", "R05"]
 """The checks the reviews collector reports."""
+
+WEBSITE_TIMEOUT_SECONDS = 45
+"""The time limit of the website collector (3.3), PageSpeed's 40 s included."""
+
+PENDING_TIMEOUT_SECONDS = 1
+"""The time limit of a collector that isn't built yet and answers at once."""
 
 PENDING_REASON_RO = "Nu verificăm încă asta."
 """Why a check of a collector that isn't built yet couldn't run."""
@@ -157,7 +170,7 @@ def get_step_details(report: Report) -> list[tuple[StepId, str]]:
     return [
         ("google", get_google_detail(report.business.place_id is not None)),
         ("recenzii", get_reviews_detail(report.comparison.me.review_count)),
-        ("website", get_website_detail(report.business.website, get_chapter_score(report, "site") is not None)),
+        ("website", get_website_detail(report.business.website, get_chapter_score(report, "continut") is not None)),
         ("retele", get_social_detail(get_chapter_score(report, "social") is not None)),
         ("gemini", get_gemini_detail(report.gemini.total)),
     ]
@@ -230,35 +243,46 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
         return
     try:
         nearby = await get_nearby(inputs, canonical)
-        google_checks = await run_collector(collect_google_profile(inputs, canonical), GOOGLE_TIMEOUT_SECONDS, GOOGLE_CHECK_IDS)
+        google_checks = await run_collector(
+            collect_google_profile(inputs, canonical),
+            GOOGLE_TIMEOUT_SECONDS,
+            get_unknown_results(GOOGLE_CHECK_IDS, COLLECTOR_ERROR_RO),
+        )
         await progress.publish(
             StepEvent(type="step", step="google", status="done", detail_ro=get_google_detail(canonical is not None))
         )
         review_count = canonical.review_count if canonical else None
-        website = (canonical.website if canonical else None) or inputs.website_url
-        step_checks = await asyncio.gather(
+        website = get_website_url(inputs, canonical)
+        review_checks, website_scan, social_checks, gemini_checks = await asyncio.gather(
             run_step(
                 progress,
                 "recenzii",
                 collect_reviews(inputs, canonical, nearby),
                 REVIEWS_TIMEOUT_SECONDS,
-                REVIEW_CHECK_IDS,
+                get_unknown_results(REVIEW_CHECK_IDS, COLLECTOR_ERROR_RO),
                 lambda _: get_reviews_detail(review_count),
             ),
             run_step(
                 progress,
                 "website",
-                get_pending_checks("CT"),
-                0,
-                [],
-                lambda checks: get_website_detail(website, has_known(checks)),
+                collect_website(inputs, canonical),
+                WEBSITE_TIMEOUT_SECONDS,
+                WebsiteScan(
+                    checks=get_unknown_results(CONTENT_CHECK_IDS + TECH_CHECK_IDS, COLLECTOR_ERROR_RO), facts=None, links=[]
+                ),
+                lambda scan: get_website_detail(website, has_known(scan.checks, "C")),
             ),
             run_step(
-                progress, "retele", get_pending_checks("LMS"), 0, [], lambda checks: get_social_detail(has_known(checks, "S"))
+                progress,
+                "retele",
+                get_pending_checks("LMS"),
+                PENDING_TIMEOUT_SECONDS,
+                [],
+                lambda checks: get_social_detail(has_known(checks, "S")),
             ),
-            run_step(progress, "gemini", get_pending_checks("K"), 0, [], lambda _: get_gemini_detail(0)),
+            run_step(progress, "gemini", get_pending_checks("K"), PENDING_TIMEOUT_SECONDS, [], lambda _: get_gemini_detail(0)),
         )
-        all_checks = google_checks + [check for checks in step_checks for check in checks]
+        all_checks = google_checks + review_checks + website_scan.checks + social_checks + gemini_checks
         me = (
             get_compare_row(canonical)
             if canonical
@@ -274,7 +298,14 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
         )
         comparison = Comparison(me=me, rivals=[], insights_ro=[], actions=[])
         report = build_report(scan_id, inputs, canonical, all_checks, get_unknown_gemini_block(), comparison)
-        save_report(scan_id, report, ScanInternal(source="pipeline", checks=all_checks, canonical=canonical))
+        internal = ScanInternal(
+            source="pipeline",
+            checks=all_checks,
+            canonical=canonical,
+            website_facts=website_scan.facts,
+            site_links=website_scan.links,
+        )
+        save_report(scan_id, report, internal)
         await progress.publish(CompleteEvent(type="complete", scan_id=scan_id))
     except Exception:
         logger.exception("Pipeline failed for scan %s", scan_id)
@@ -304,19 +335,19 @@ async def get_nearby(inputs: ScanInputs, canonical: CanonicalProfile | None) -> 
         return []
 
 
-async def run_step(
+async def run_step[T](
     progress: ScanProgress,
     step: StepId,
-    collector: Coroutine[Any, Any, list[CheckResult]],
+    collector: Coroutine[Any, Any, T],
     timeout: float,
-    check_ids: list[str],
-    get_detail: Callable[[list[CheckResult]], str],
-) -> list[CheckResult]:
+    fallback: T,
+    get_detail: Callable[[T], str],
+) -> T:
     """Runs one progress step's collector, announcing it as running and then done with its detail text."""
     await progress.publish(StepEvent(type="step", step=step, status="running", detail_ro=None))
-    checks = await run_collector(collector, timeout, check_ids) if timeout else await collector
-    await progress.publish(StepEvent(type="step", step=step, status="done", detail_ro=get_detail(checks)))
-    return checks
+    result = await run_collector(collector, timeout, fallback)
+    await progress.publish(StepEvent(type="step", step=step, status="done", detail_ro=get_detail(result)))
+    return result
 
 
 async def get_pending_checks(prefixes: str) -> list[CheckResult]:
@@ -329,15 +360,13 @@ def has_known(checks: list[CheckResult], prefixes: str = "") -> bool:
     return any(check.status != "unknown" for check in checks if not prefixes or check.check_id[0] in prefixes)
 
 
-async def run_collector(
-    collector: Coroutine[Any, Any, list[CheckResult]], timeout: float, check_ids: list[str]
-) -> list[CheckResult]:
-    """Returns a collector's checks, or its checks as `unknown` when it fails or runs past its timeout."""
+async def run_collector[T](collector: Coroutine[Any, Any, T], timeout: float, fallback: T) -> T:
+    """Returns a collector's result, or the fallback (its checks as `unknown`) when it fails or runs past its timeout."""
     try:
         return await asyncio.wait_for(collector, timeout)
     except Exception:
         logger.exception("Collector failed or timed out")
-        return get_unknown_results(check_ids, COLLECTOR_ERROR_RO)
+        return fallback
 
 
 def save_report(scan_id: str, report: Report, internal: ScanInternal) -> None:

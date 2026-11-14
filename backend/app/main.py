@@ -11,14 +11,16 @@ from app.api import chat, fixes, places, scans
 from app.config import get_settings
 from app.db import create_tables
 from app.errors import ApiError, handle_api_error
+from app.pipeline.fetch import close_browser
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-    """Creates the database tables and fails scans a previous run left unfinished, before the app starts serving."""
+    """Creates the tables and fails scans a previous run left unfinished; closes the render browser on shutdown."""
     create_tables()
     jobs.fail_interrupted_scans()
     yield
+    await close_browser()
 
 
 app = FastAPI(title="Marketingadvisor API", lifespan=lifespan)

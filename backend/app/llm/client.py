@@ -23,6 +23,9 @@ GroundingTool = Literal["maps", "search"]
 MAPS_TITLE_SUFFIX = " - Google Maps"
 """The suffix Google adds to the titles of Maps sources."""
 
+REQUEST_OPTIONS = types.HttpOptions(timeout=45_000, retry_options=types.HttpRetryOptions(attempts=1))
+"""Per-request limits: a 45 s timeout and no SDK retries, so `generate`'s own three tries are the only ones."""
+
 gemini_slots = asyncio.Semaphore(6)
 """The limit on concurrent Gemini calls across the whole backend."""
 
@@ -65,8 +68,9 @@ async def generate(
     client: genai.Client, model: str, prompt: str, config: types.GenerateContentConfig
 ) -> types.GenerateContentResponse:
     """Returns one generation with text, within the concurrency limit and with exponential backoff."""
+    request_config = config.model_copy(update={"http_options": REQUEST_OPTIONS})
     async with gemini_slots:
-        response = await client.aio.models.generate_content(model=model, contents=prompt, config=config)
+        response = await client.aio.models.generate_content(model=model, contents=prompt, config=request_config)
     if not response.text:
         raise ValueError(f"Gemini returned no text (model {model})")
     return response
