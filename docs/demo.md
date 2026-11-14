@@ -6,10 +6,7 @@
 
 1. `backend/.env`: `DEMO_MODE=fixture`, `DEMO_PLACE_ID=ChIJQbgapEH_sUAR__vch8jUosQ` (Origo).
 2. `npm run dev` at the repo root; wait for both servers.
-3. **Rehearse the whole path below once, online, on this laptop.** Every text and answer it generates is cached in `backend/cache/`, and later runs replay them in under a second, even with Wi-Fi off. The rehearsal matters for three reasons:
-   - The smart model allows only 20 requests a day on the free key, and both devs share that key. One rehearsal uses about 7, so keep other smart-model calls (fix texts, info pages, chat) to a minimum that day.
-   - The first info page takes about 30 seconds to write, and each fix text 10–30 seconds.
-   - The cache only matches identical input. On stage, click the same tones in the same order and type the assistant message exactly as written here.
+3. **Rehearse the whole path below once, online, on this laptop.** Every text and answer it generates is cached in `backend/cache/`, and later runs replay them in under a second, even with Wi-Fi off. The cache only matches identical input, so on stage click the same tones in the same order and type the assistant message exactly as written here. Without the rehearsal, the info page takes about 10 seconds and each fix text a few seconds, and nothing works offline.
 4. Open `http://localhost:3000/start` in a fresh browser window at desktop width.
 5. Turn off sleep and notifications. Keep the phone hotspot ready for a live scan.
 
@@ -52,5 +49,5 @@
 ## If something breaks
 
 - **A live scan of a judge's business errors or stalls:** go back to the Origo dashboard tab without comment.
-- **A fix text or the info page shows „Nu am putut contacta Gemini acum”:** the day's smart-model quota is used up, or there's no internet. Skip to the next step. Steps 1–4 and „Am rezolvat” don't call Gemini.
+- **A fix text or the info page shows „Nu am putut contacta Gemini acum”:** the free key's daily quota is used up, or there's no internet. Skip to the next step. Steps 1–4 and „Am rezolvat” don't call Gemini.
 - **The page doesn't load:** restart with `npm run dev` (a few seconds).

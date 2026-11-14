@@ -34,7 +34,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 | Scans with no website and with no Google profile, on every screen | A | Done | — |
 | Offline demo: cache the assistant's Gemini turns | A | Done | On demo scans only; fix texts and the info page were already cached by prompt |
 | `docs/demo.md` for Origo | A | Done | Includes the same-day rehearsal that fills the cache |
-| Smart-model quota: 20 free requests a day on `gemini-3.6-flash`, shared by both devs | A, B, owners | Open | Open question 7. Today's quota is used up (it resets at midnight Pacific) |
+| Smart-model quota: 20 free requests a day on `gemini-3.6-flash`, shared by both devs | A, B | Done in the repo | The owners chose `gemini-3.5-flash-lite` (question 7). Dev B: set `GEMINI_MODEL_SMART=gemini-3.5-flash-lite` in your `.env` |
 | Website extraction returns some facts in English (`what_it_is` for Origo) | B | Open | Request in Dev A's round of 15 November |
 | Rehearsal on Dev B's laptop: once online, then with Wi-Fi off (gate 3) | B, owners | After Task 8 and question 7 | Follow `docs/demo.md` |
 | App name in `frontend/src/config.ts` | A | Waiting for the owners | Open question 3 |
@@ -50,7 +50,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 | 4 | Which laptop runs the demo? For a live „Testează din nou” or a live scan on stage, that laptop needs `gcloud auth application-default login` on Dev B's project; without it, the demo runs from the fixture only. | A | both developers | **Dev B's laptop.** It has the gcloud login, so a live scan or a live „Testează din nou” can run on stage; the fixture is the fallback. |
 | 5 | When `gemini-test` becomes real, will a demo scan keep returning the fixture's Gemini block after a short delay? | A | B | Yes: on a demo scan it waits 2 s, refreshes `last_checked` and returns the fixture's block. Real scans rerun the live test (about 25 s). |
 | 6 | How does Dev A see real live-test data without the gcloud login? Dev B's proposal: once the demo café is chosen (question 1), Dev B records its real scan as the fixture straight away (Task 8), so `DEMO_MODE=fixture` serves real data on any machine. | B | A, both developers | Done: Origo's real scan is the fixture now (see Dev B's entry). |
-| 7 | The smart model (`gemini-3.6-flash`) allows 20 free requests a day on our shared key, and one demo rehearsal uses about 7. Which way? (a) Run the smart tier on Vertex AI on the demo laptop: the trial credit pays and there's no daily cap, but it needs a setting in `llm/client.py` (Dev B's file) and a plan change. (b) Switch `GEMINI_MODEL_SMART` to `gemini-3.5-flash-lite`: its limit isn't published either, but it has served every scan today without a 429; the texts may be weaker. (c) Keep it, and limit ourselves to about two rehearsals a day. Dev A recommends (a) for the demo laptop. | A | B, both developers | — |
+| 7 | The smart model (`gemini-3.6-flash`) allows 20 free requests a day on our shared key, and one demo rehearsal uses about 7. Which way? (a) Run the smart tier on Vertex AI on the demo laptop: the trial credit pays and there's no daily cap, but it needs a setting in `llm/client.py` (Dev B's file) and a plan change. (b) Switch `GEMINI_MODEL_SMART` to `gemini-3.5-flash-lite`: its limit isn't published either, but it has served every scan today without a 429; the texts may be weaker. (c) Keep it, and limit ourselves to about two rehearsals a day. Dev A recommends (a) for the demo laptop. | A | B, both developers | **(b)**, decided by the owners on 15 November: `GEMINI_MODEL_SMART=gemini-3.5-flash-lite`. |
 
 ---
 
@@ -135,6 +135,18 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev A → Dev B
+
+### 15 November 2026 · the smart model is now `gemini-3.5-flash-lite` (question 7)
+
+- **Decision:** our owners picked option (b). `GEMINI_MODEL_SMART` is now `gemini-3.5-flash-lite` in `backend/.env.example`, in the default in your `app/config.py`, and in `architecture.md` and `data-collection-algorithm.md`. **Please set the same value in your `.env`** (the demo laptop's).
+- **Checked on a fresh Origo demo scan, with real calls on the new model:**
+  - Instagram bio in three tones: 2–6 s each, at most 142 characters.
+  - Google description: 1.5 s.
+  - Info page: 10 s, all in Romanian.
+  - Assistant: 8 s; it called its functions and proposed G08 with „Da, marchează-l” / „Nu încă”.
+  - The texts are a little less polished: one dropped a diacritic, one shortened Origo's hours to Monday's.
+- **One quota now:** the fast and smart tiers share one model, so scans, fix texts and the chat draw on the same daily free quota. It has never returned a 429 so far, but its limit isn't published.
+- **`docs/demo.md`:** the rehearsal step no longer mentions the 20-request limit; it still fills the cache for the offline demo.
 
 ### 15 November 2026 · round: gate 2 on the frontend, offline assistant, demo path for Origo, smart-model quota
 
