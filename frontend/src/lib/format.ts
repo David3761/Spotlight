@@ -1,11 +1,16 @@
-/** Returns a problem count with its Romanian plural, e.g. "1 problemă", "5 probleme", "30 de probleme". */
-export function getProblemCountLabel(count: number): string {
+/** Returns a count with its Romanian noun, adding the "de" that 20 and up need, e.g. "1 recenzie", "5 recenzii", "38 de recenzii". */
+export function getCountLabel(count: number, singular: string, plural: string): string {
   if (count === 1) {
-    return "1 problemă";
+    return `1 ${singular}`;
   }
   const lastTwoDigits = count % 100;
   const needsDe = count !== 0 && (lastTwoDigits === 0 || lastTwoDigits >= 20);
-  return `${count} ${needsDe ? "de " : ""}probleme`;
+  return `${count} ${needsDe ? "de " : ""}${plural}`;
+}
+
+/** Returns a problem count with its Romanian plural, e.g. "1 problemă", "5 probleme", "30 de probleme". */
+export function getProblemCountLabel(count: number): string {
+  return getCountLabel(count, "problemă", "probleme");
 }
 
 /** Returns whether the date falls on the same day as `now`. */

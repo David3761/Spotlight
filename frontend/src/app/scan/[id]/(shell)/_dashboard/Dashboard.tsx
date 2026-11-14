@@ -8,14 +8,14 @@ import { DashboardHeader } from "./DashboardHeader";
 import { GeminiCard } from "./GeminiCard";
 import { NextSteps } from "./NextSteps";
 import { OverallCard } from "./OverallCard";
-import { useOpenAssistant } from "./use-open-assistant";
 import { useRescan } from "./use-rescan";
+import { useStartConversation } from "@/hooks/use-start-conversation";
 
 /** A component that shows the scan's dashboard: overall score, Gemini test, next steps and chapters. */
 export function Dashboard() {
   const { scanId, report } = useLoadedScan();
   const rescan = useRescan(scanId);
-  const assistant = useOpenAssistant(scanId);
+  const assistant = useStartConversation(scanId);
 
   return (
     <div className="flex flex-col lg:gap-7 lg:px-12 lg:pt-10 lg:pb-14">
@@ -33,9 +33,9 @@ export function Dashboard() {
         </div>
         <div className="hidden items-stretch gap-6 lg:flex lg:flex-wrap">
           <NextSteps scanId={scanId} problems={report.next_steps} />
-          <AssistantCard isPending={assistant.isPending} onOpen={assistant.openAssistant} />
+          <AssistantCard isPending={assistant.starting !== null} onOpen={() => assistant.start(null)} />
         </div>
-        {assistant.error !== null && <ErrorState error={assistant.error} onRetry={assistant.openAssistant} />}
+        {assistant.failure && <ErrorState error={assistant.failure.error} onRetry={assistant.retry} />}
         <ChapterGrid scanId={scanId} chapters={report.chapters} />
       </div>
     </div>

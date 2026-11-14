@@ -13,12 +13,14 @@ interface ChatComposerProps {
   isBusy: boolean;
   /** Called with the new text when the owner types. */
   onChange: (value: string) => void;
-  /** Called with the text to send, from the input or a quick message. */
+  /** Called with the typed text to send. */
   onSend: (text: string) => void;
+  /** Called with a quick message to send, leaving the typed text alone. */
+  onQuickMessage: (text: string) => void;
 }
 
 /** A component that offers quick messages (desktop), the message input and the send button. */
-export function ChatComposer({ value, isBusy, onChange, onSend }: ChatComposerProps) {
+export function ChatComposer({ value, isBusy, onChange, onSend, onQuickMessage }: ChatComposerProps) {
   const canSend = !isBusy && value.trim() !== "";
 
   /** Sends the typed text. */
@@ -37,7 +39,7 @@ export function ChatComposer({ value, isBusy, onChange, onSend }: ChatComposerPr
             key={message}
             type="button"
             disabled={isBusy}
-            onClick={() => onSend(message)}
+            onClick={() => onQuickMessage(message)}
             className={`${chipVariant.idle} h-9 px-3.5 text-[13px] disabled:opacity-60`}
           >
             {message}

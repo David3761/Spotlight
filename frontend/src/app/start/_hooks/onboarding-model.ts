@@ -1,4 +1,5 @@
 import { chapterIconPath, iconPath } from "@/components/Icon";
+import { getCountLabel } from "@/lib/format";
 import type {
   BusinessType,
   Message,
@@ -267,15 +268,6 @@ export function getInitials(name: string): string {
     .join("");
 }
 
-/** Returns "N recenzii" with the Romanian "de" that numbers above 19 need. */
-function getReviewCountLabel(count: number): string {
-  if (count === 1) {
-    return "1 recenzie";
-  }
-  const lastTwoDigits = count % 100;
-  return lastTwoDigits === 0 || lastTwoDigits >= 20 ? `${count} de recenzii` : `${count} recenzii`;
-}
-
 /** Returns the line under a candidate's address: type, rating and review count. */
 export function getCandidateMeta(candidate: PlaceCandidate): string {
   const parts = [candidate.type_label_ro];
@@ -283,7 +275,7 @@ export function getCandidateMeta(candidate: PlaceCandidate): string {
     parts.push(`${candidate.rating.toString().replace(".", ",")} ★`);
   }
   if (candidate.review_count !== null) {
-    parts.push(getReviewCountLabel(candidate.review_count));
+    parts.push(getCountLabel(candidate.review_count, "recenzie", "recenzii"));
   }
   return parts.join(" · ");
 }

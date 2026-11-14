@@ -8,7 +8,7 @@ import { AssistantIdeas } from "./_components/AssistantIdeas";
 import { ConversationList } from "./_components/ConversationList";
 import { getDayGroups, getMatchesSearch } from "./_components/conversation-groups";
 import { useConversations } from "./_hooks/use-conversations";
-import { useStartConversation } from "./_hooks/use-start-conversation";
+import { useStartConversation } from "@/hooks/use-start-conversation";
 
 /** The path of the plus icon of the new-conversation button. */
 const plusPath = "M12 5v14M5 12h14";

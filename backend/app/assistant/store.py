@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from uuid import uuid4
 
 from pydantic import TypeAdapter
+from sqlalchemy import literal_column
 from sqlmodel import select
 
 from app.assistant.schemas import (
@@ -138,7 +139,7 @@ def get_summaries(scan_id: str) -> list[ConversationSummary]:
         rows = session.exec(
             select(ConversationRow)
             .where(ConversationRow.scan_id == scan_id)
-            .order_by(ConversationRow.updated_at.desc())
+            .order_by(ConversationRow.updated_at.desc(), literal_column("rowid").desc())
         ).all()
 
     chapter_names = {}

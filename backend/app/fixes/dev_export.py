@@ -68,11 +68,12 @@ def get_dev_export(scan_id: str) -> DevExport:
             "Adaugă în `robots.txt`, la rădăcina site-ului:\n\n"
             f"```text\n{robots_lines}\n```"
         )
-    blocks.append(
-        "## Date structurate (JSON-LD)\n\n"
-        "Pune în `<head>` al paginii principale, completând ce lipsește:\n\n"
-        f'```html\n<script type="application/ld+json">\n{get_json_ld(facts)}\n</script>\n```'
-    )
+    if "T06" in check_ids:
+        blocks.append(
+            "## Date structurate (JSON-LD)\n\n"
+            "Pune în `<head>` al paginii principale, completând ce lipsește:\n\n"
+            f'```html\n<script type="application/ld+json">\n{get_json_ld(facts, report.business.type)}\n</script>\n```'
+        )
     return DevExport(
         markdown="\n\n".join(blocks) + "\n",
         message_ro=DEVELOPER_MESSAGE.format(name=facts.name),
@@ -93,7 +94,7 @@ def get_problem_block(number: int, problem: Problem, facts: Facts, site: str) ->
     return "\n".join(lines)
 
 
-def get_json_ld(facts: Facts) -> str:
+def get_json_ld(facts: Facts, business_type: str) -> str:
     """Returns the `LocalBusiness` JSON-LD for the business, with only the fields that are known."""
     same_as = [
         link
@@ -108,7 +109,7 @@ def get_json_ld(facts: Facts) -> str:
         address["streetAddress"] = facts.address
     snippet = {
         "@context": "https://schema.org",
-        "@type": "CafeOrCoffeeShop" if facts.type_label_ro.lower() == "cafenea" else "LocalBusiness",
+        "@type": "CafeOrCoffeeShop" if business_type == "cafenea" else "LocalBusiness",
         "name": facts.name,
         "address": address,
         "telephone": facts.phone,

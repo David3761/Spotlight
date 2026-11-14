@@ -81,6 +81,11 @@ TOOLS = [
 ]
 """The four functions the model may call."""
 
+TEXT_ONLY = types.ToolConfig(
+    function_calling_config=types.FunctionCallingConfig(mode=types.FunctionCallingConfigMode.NONE)
+)
+"""The tool config of the last round, which must answer in text instead of calling more functions."""
+
 
 async def send_message(cid: str, text: str) -> Message | None:
     """Stores the owner's message, runs the agent and returns its reply, or `None` for an unknown conversation."""
@@ -116,13 +121,17 @@ async def get_reply(scan_id: str, history: list[Message], text: str) -> Message:
     proposed_actions: list[ProposedAction] = []
     reply_text = None
 
-    for _ in range(MAX_ROUNDS):
+    for round_number in range(1, MAX_ROUNDS + 1):
+        if round_number == MAX_ROUNDS:
+            config = config.model_copy(update={"tool_config": TEXT_ONLY})
         response = await client.aio.models.generate_content(
             model=model, contents=contents, config=config
         )
         function_calls = response.function_calls
         if not function_calls:
             reply_text = response.text
+            break
+        if round_number == MAX_ROUNDS:
             break
         contents.append(response.candidates[0].content)
         response_parts = []
@@ -166,11 +175,15 @@ async def run_function(
             ],
         }
     if name == "propose_mark_resolved":
-        action = get_proposed_action(report, args.get("check_ids") or [])
+        action, left_out = get_proposed_action(report, args.get("check_ids") or [])
         if action is None:
             return {"error": "Niciun check_id nu e o problemă deschisă. Apelează get_report."}
         proposed_actions.append(action)
-        return {"status": "proposed", "items": [item.title_ro for item in action.items]}
+        result: dict[str, Any] = {"status": "proposed", "items": [item.title_ro for item in action.items]}
+        if left_out:
+            result["not_included"] = left_out
+            result["note"] = "O propunere cuprinde un singur capitol. Propune-le pe celelalte după ce proprietarul răspunde."
+        return result
     if name == "generate_fix_text":
         tone = args.get("tone")
         generated = await get_generated_text(
@@ -187,14 +200,17 @@ async def run_function(
     return {"error": f"Funcție necunoscută: {name}"}
 
 
-def get_proposed_action(report: Report, check_ids: list[str]) -> ProposedAction | None:
-    """Returns a pending action for the open problems among the ids, or `None` when none is open."""
+def get_proposed_action(report: Report, check_ids: list[str]) -> tuple[ProposedAction | None, list[str]]:
+    """Returns a pending action for the open problems among the ids that share the first one's chapter, and the open ids left out."""
     open_problems = {problem.check_id: problem for problem in get_open_problems(report)}
-    problems = [
+    candidates = [
         open_problems[check_id] for check_id in dict.fromkeys(check_ids) if check_id in open_problems
     ]
-    if not problems:
-        return None
+    if not candidates:
+        return None, []
+    chapter_id = candidates[0].chapter_id
+    problems = [problem for problem in candidates if problem.chapter_id == chapter_id]
+    left_out = [problem.check_id for problem in candidates if problem.chapter_id != chapter_id]
     options = [
         ActionOption(
             id="all",
@@ -206,13 +222,13 @@ def get_proposed_action(report: Report, check_ids: list[str]) -> ProposedAction 
         options += [
             ActionOption(
                 id=problem.check_id,
-                label_ro=f"Doar {problem.title_ro.lower()}",
+                label_ro=f"Doar {problem.title_ro[:1].lower()}{problem.title_ro[1:]}",
                 check_ids=[problem.check_id],
             )
             for problem in problems
         ]
     options.append(ActionOption(id="no", label_ro="Nu încă", check_ids=[]))
-    return ProposedAction(
+    action = ProposedAction(
         action_id=uuid4().hex,
         items=[
             ProposedItem(
@@ -222,6 +238,7 @@ def get_proposed_action(report: Report, check_ids: list[str]) -> ProposedAction 
         ],
         options=options,
     )
+    return action, left_out
 
 
 def get_next_problem(report: Report) -> Problem | None:
@@ -258,9 +275,14 @@ def apply_action(cid: str, action_id: str, option_id: str) -> ActionResult | Non
         return ActionResult(action=action, score=None, followup=followup)
 
     report_before = load_report(conversation.scan_id)
-    score = mark_resolved(conversation.scan_id, option.check_ids)
+    open_ids = {problem.check_id for problem in get_open_problems(report_before)}
+    still_open = [check_id for check_id in option.check_ids if check_id in open_ids]
     action.status = "confirmed"
     action.confirmed_check_ids = option.check_ids
+    if not still_open:
+        store.update_action(cid, action)
+        return ActionResult(action=action, score=None, followup=None)
+    score = mark_resolved(conversation.scan_id, still_open)
     chapter_before = next(
         (chapter.score for chapter in report_before.chapters if chapter.id == score.chapter_id),
         None,

@@ -1,15 +1,11 @@
 import Link from "next/link";
 import { AppLogo } from "@/components/AppLogo";
 import { chapterIconPath, Icon, iconPath } from "@/components/Icon";
+import { getCountLabel } from "@/lib/format";
 import type { Chapter, Report } from "@/lib/types";
 
 /** The sidebar entry that matches the current route. */
 export type SidebarSection = "panou" | "gemini" | "conversatii" | Chapter["id"] | null;
-
-/** Returns the screen-reader label of a chapter's open-problem badge. */
-function getCountLabel(count: number): string {
-  return count === 1 ? "1 problemă nerezolvată" : `${count} probleme nerezolvate`;
-}
 
 /** A component that shows the desktop navigation: business, main pages, conversations and the 8 chapters. */
 export function Sidebar({ report, active }: { report: Report; active: SidebarSection }) {
@@ -130,17 +126,18 @@ function SidebarChapter({ chapter, href, isActive }: { chapter: Chapter; href: s
       </span>
       {chapter.has_fixes && count > 0 && (
         <span
-          aria-label={getCountLabel(count)}
           className={`flex h-6 min-w-6.5 items-center justify-center rounded-full px-2 text-[13px] font-extrabold ${
             isActive ? "bg-accent text-white" : "bg-fill text-body"
           }`}
         >
-          {count}
+          <span aria-hidden="true">{count}</span>
+          <span className="sr-only">{getCountLabel(count, "problemă nerezolvată", "probleme nerezolvate")}</span>
         </span>
       )}
       {chapter.has_fixes && count === 0 && (
-        <span aria-label="Totul rezolvat" className="flex size-6 items-center justify-center rounded-full bg-high text-white">
+        <span className="flex size-6 items-center justify-center rounded-full bg-high text-white">
           <Icon path={iconPath.check} size={13} strokeWidth={3.2} />
+          <span className="sr-only">Totul rezolvat</span>
         </span>
       )}
     </Link>

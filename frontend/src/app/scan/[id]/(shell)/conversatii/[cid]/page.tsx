@@ -28,8 +28,8 @@ export default function ChatPage() {
   const isBusy = isSending || isAnswering;
   const listHref = `/scan/${scanId}/conversatii`;
 
-  /** Sends a message and puts the text back in the input when it fails. */
-  const submit = async (text: string) => {
+  /** Sends the typed message: clears the input at once and puts the text back when sending fails. */
+  const sendDraft = async (text: string) => {
     setDraft("");
     const isSent = await send(text);
     if (!isSent) {
@@ -40,7 +40,7 @@ export default function ChatPage() {
   /** Repeats the request that failed. */
   const retryFailure = () => {
     if (failure?.kind === "send") {
-      void submit(failure.text);
+      void (draft.trim() === failure.text ? sendDraft(failure.text) : send(failure.text));
     } else if (failure?.kind === "answer") {
       void answer(failure.actionId, failure.optionId);
     }
@@ -87,7 +87,7 @@ export default function ChatPage() {
               messages={messages}
               isTyping={isBusy}
               isBusy={isBusy}
-              onReply={submit}
+              onReply={send}
               onOption={answer}
             />
             {failure && (
@@ -98,7 +98,7 @@ export default function ChatPage() {
                 </button>
               </div>
             )}
-            <ChatComposer value={draft} isBusy={isBusy} onChange={setDraft} onSend={submit} />
+            <ChatComposer value={draft} isBusy={isBusy} onChange={setDraft} onSend={sendDraft} onQuickMessage={send} />
           </>
         )}
       </section>

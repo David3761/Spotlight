@@ -53,7 +53,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
   if (!response.ok) {
     const body = (await response.json().catch(() => null)) as ApiErrorBody | null;
-    throw new ApiError(body?.error.code ?? "http_error", response.status, body?.error.message_ro ?? null);
+    throw new ApiError(body?.error?.code ?? "http_error", response.status, body?.error?.message_ro ?? null);
   }
   return (await response.json()) as T;
 }
