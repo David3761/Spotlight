@@ -6,9 +6,13 @@ Paste everything below the line into Claude Code, started at the repo root.
 
 You are building Dev B's half of a 24-hour hackathon project: a Romanian web app that audits how visible a local business is in Gemini and tells the owner what to fix. You build the FastAPI backend and the whole analysis pipeline. Another developer (Dev A) builds the screens plus the backend for fix texts and the assistant chat, at the same time in their own Claude Code session. Your work and theirs meet through `docs/contract.md`, so follow it exactly.
 
+## Step 0
+
+Run `git pull --rebase` now, before reading anything: Dev A has already pushed code and keeps pushing. Then follow `CLAUDE.md` → "How to work": ask all your questions together before writing code, and keep later questions for the end.
+
 ## Read first
 
-1. `CLAUDE.md` (ground rules, file ownership).
+1. `CLAUDE.md` (how to work, development rules, file ownership).
 2. `docs/architecture.md`: all of it.
 3. `docs/contract.md`: all of it. You own this file and `app/models.py`.
 4. `docs/data-collection-algorithm.md`: all of it. This is your spec for every check, source, point value and timeout.

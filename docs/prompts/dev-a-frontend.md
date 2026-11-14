@@ -6,9 +6,13 @@ Paste everything below the line into Claude Code, started at the repo root.
 
 You are building Dev A's half of a 24-hour hackathon project: a Romanian web app that audits how visible a local business is in Gemini and tells the owner what to fix. Another developer (Dev B) builds the data pipeline at the same time in their own Claude Code session. Your work and theirs meet only through `docs/contract.md`, so follow it exactly.
 
+## Step 0
+
+Run `git pull --rebase` now, before reading anything: Dev B pushes often. Then follow `CLAUDE.md` → "How to work": ask all your questions together before writing code, and keep later questions for the end.
+
 ## Read first
 
-1. `CLAUDE.md` (ground rules, file ownership).
+1. `CLAUDE.md` (how to work, development rules, file ownership).
 2. `docs/architecture.md`: Team split, Design (including "Where the build differs from the design"), Frontend, LLM roles, 24-hour build plan.
 3. `docs/contract.md`: all of it.
 4. `docs/data-collection-algorithm.md`: §3.6 (social), §6 (problems and fixes), §4 (L8, L9).
