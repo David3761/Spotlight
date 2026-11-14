@@ -338,6 +338,8 @@ One Markdown document with every `dev_export` problem: what's wrong, evidence, e
 
 ## Assistant (owner: Dev A)
 
+An unknown `cid`, `action_id` or `option_id` returns `404 conversation_not_found`.
+
 ### `GET /api/scans/{scan_id}/conversations`
 
 ```ts
