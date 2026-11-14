@@ -135,7 +135,7 @@ Then checks C01–C08 and T01–T09, and the T-gate cap. Save the website facts 
 
 ### Task 8 · Demo safety → gate 3 (hour 18–20)
 
-- Demo mode: with `DEMO_MODE=fixture`, a scan whose `place_id` equals `DEMO_PLACE_ID` returns `fixtures/boema_report.json` (with a fresh `scan_id` and `checked_at`) and replays the SSE steps over about 8 s. `gemini-test` on it returns the same block after a short delay.
+- Demo mode: with `DEMO_MODE=fixture`, a scan whose `place_id` equals `DEMO_PLACE_ID` returns `fixtures/demo_report.json` (with a fresh `scan_id` and `checked_at`) and replays the SSE steps over about 8 s. `gemini-test` on it returns the same block after a short delay.
 - Check the backoff and timeouts on every external call, and that a failed collector never fails the scan.
 - Record a real scan of the chosen demo café and save it as the fixture. Confirm the demo works with Wi-Fi off (served from `cache/` and the fixture).
 

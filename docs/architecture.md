@@ -208,7 +208,7 @@ backend/
                          fix_*.md, assistant_*.md                         A
     fixes/               schemas.py, generate.py, info_page.py, dev_export.py   A
     assistant/           schemas.py, agent.py (function calling), store.py      A
-  fixtures/boema_report.json                                              B
+  fixtures/demo_report.json, demo_checks.json, demo_facts.json         B
   cache/                 fetched pages and LLM answers (git-ignored)
 ```
 
@@ -259,7 +259,7 @@ The fast and smart tiers use the free-tier `GEMINI_API_KEY`. Romanian Maps-groun
 | `scans` table | `id`, `created_at`, `status`, `inputs` (JSON), `internal` (JSON: canonical, website facts, check results), `report` (JSON), `error` | Resolving recomputes scores from `internal` and rewrites `report` |
 | `conversations` table | `id`, `scan_id`, `kind`, `title`, `chapter_id`, `messages` (JSON), `pending_actions` (JSON), `created_at`, `updated_at` | Screen 6 |
 | `cache/` | fetched HTML, API responses, LLM answers, keyed by request hash | Saves money while developing; lets a scan replay offline |
-| `fixtures/boema_report.json` | Mock report (hour 1), replaced by a recorded real scan (hour 20) | Demo mode |
+| `fixtures/demo_report.json`, `demo_checks.json`, `demo_facts.json` | The recorded real scan of the demo café (Origo, Lipscani): its report, the checks it was scored from, and its facts | Demo mode |
 
 Place IDs can be stored freely; check the Google Maps Platform terms before keeping other Places content beyond the hackathon.
 
@@ -328,7 +328,7 @@ FRONTEND_ORIGIN=http://localhost:3000
 
 ## Demo safety
 
-- **Demo mode:** with `DEMO_MODE=fixture`, a scan whose `place_id` equals `DEMO_PLACE_ID` returns `fixtures/boema_report.json` and still plays the loading steps over about 8 s.
+- **Demo mode:** with `DEMO_MODE=fixture`, a scan whose `place_id` equals `DEMO_PLACE_ID` returns `fixtures/demo_report.json` and still plays the loading steps over about 8 s.
 - **Record a real scan the evening before** and save it as the fixture: real data, replayed.
 - **Live scan as a bonus:** offer to scan a judge's business; if it errors or stalls, switch to the fixture without comment.
 - **Cache everything** fetched during development, so a repeat scan works offline.

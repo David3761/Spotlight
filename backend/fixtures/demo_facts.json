@@ -1,0 +1,59 @@
+{
+  "name": "Origo",
+  "type_label_ro": "Cafenea",
+  "city": "București",
+  "neighborhood": "Centrul Vechi",
+  "address": "Strada Lipscani 9, 050971 București",
+  "phone": "0757 086 689",
+  "website": "https://origocoffee.ro/",
+  "google_maps_uri": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+  "hours_ro": [
+    "Luni: 07:30–20:00",
+    "Marți: 07:30–00:00",
+    "Miercuri: 07:30–00:00",
+    "Joi: 07:30–00:00",
+    "Vineri: 07:30–00:00",
+    "Sâmbătă: 08:00–00:00",
+    "Duminică: 08:00–00:00"
+  ],
+  "special_hours_ro": [],
+  "attributes_ro": [
+    "Servire la masă",
+    "La pachet",
+    "Terasă",
+    "Cafea",
+    "Câini acceptați",
+    "Potrivit pentru grupuri",
+    "Plata cu cardul",
+    "Plata cu telefonul"
+  ],
+  "instagram_handle": "origo_coffee",
+  "tiktok_url": null,
+  "platforms_ro": [
+    "Glovo",
+    "TripAdvisor"
+  ],
+  "website_facts": {
+    "what_it_is": "pioneering specialty coffee since 2013",
+    "menu_items_or_services": [
+      "Cafea Espresso",
+      "Filtru",
+      "Microlot",
+      "Abonamente",
+      "Lapte alternativ",
+      "Ceai",
+      "Ceai Alb",
+      "Ceai Verde",
+      "Ceai Negru",
+      "Infuzii",
+      "Ciocolată artizanală",
+      "Tablete",
+      "Ciocolată caldă",
+      "Bundles",
+      "Echipamente"
+    ],
+    "prices_present": false,
+    "faq_items": [],
+    "language": "ro"
+  }
+}

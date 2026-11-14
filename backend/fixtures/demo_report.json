@@ -1,0 +1,1269 @@
+{
+  "scan_id": "fdffcf80051c4a24823133ef438c7d81",
+  "checked_at": "2026-11-14T21:52:07.548042+00:00",
+  "business": {
+    "name": "Origo",
+    "initials": "O",
+    "type": "cafenea",
+    "type_label_ro": "Cafenea",
+    "city": "București",
+    "neighborhood": "Centrul Vechi",
+    "place_id": "ChIJQbgapEH_sUAR__vch8jUosQ",
+    "address": "Strada Lipscani 9, 050971 București",
+    "phone": "0757 086 689",
+    "website": "https://origocoffee.ro/",
+    "google_maps_uri": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "instagram_url": "https://www.instagram.com/origo_coffee/",
+    "instagram_handle": "origo_coffee",
+    "tiktok_url": null
+  },
+  "overall": 74,
+  "overall_exact": 73.55,
+  "summary_ro": "Gemini te poate recomanda. Mai sunt câteva detalii de pus la punct.",
+  "open_problem_count": 13,
+  "next_steps": [
+    {
+      "check_id": "R01",
+      "chapter_id": "recenzii",
+      "chapter_name_ro": "Recenzii",
+      "title_ro": "Mai puține recenzii decât cafenelele din jur",
+      "why_ro": "Gemini recomandă mai des locurile cu multe recenzii. Fiecare client mulțumit care scrie una te ajută.",
+      "points": 30,
+      "impact": 4.5,
+      "fix_type": "owner_action",
+      "fix": {
+        "panel": "steps",
+        "steps_ro": [
+          "Deschide Profilul tău Google și apasă Cere recenzii.",
+          "Copiază linkul și trimite-l clienților mulțumiți.",
+          "Pune un cod QR cu linkul la casă sau pe mese."
+        ],
+        "deep_link": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+        "deep_link_label_ro": "Deschide Profilul tău Google",
+        "where_ro": "Profil › Cere recenzii",
+        "max_chars": null,
+        "evidence_ro": "Ai 5098 de recenzii, iar cafenelele din jur au în jur de 25619."
+      }
+    },
+    {
+      "check_id": "M02",
+      "chapter_id": "mentiuni",
+      "chapter_name_ro": "Mențiuni pe alte site-uri",
+      "title_ro": "Nu apari în niciun top",
+      "why_ro": "Când cineva cere „cele mai bune cafenele”, Gemini citește topurile făcute de alții.",
+      "points": 25,
+      "impact": 2.5,
+      "fix_type": "owner_action",
+      "fix": {
+        "panel": "steps",
+        "steps_ro": [
+          "Caută topurile de cafenele din București.",
+          "Scrie-le autorilor un mesaj scurt despre tine."
+        ],
+        "deep_link": null,
+        "deep_link_label_ro": null,
+        "where_ro": null,
+        "max_chars": null,
+        "evidence_ro": null
+      }
+    },
+    {
+      "check_id": "R04",
+      "chapter_id": "recenzii",
+      "chapter_name_ro": "Recenzii",
+      "title_ro": "20 din ultimele 20 de recenzii fără răspuns",
+      "why_ro": "Răspunsurile tale arată că îți pasă de clienți, iar Gemini le citește și pe ele.",
+      "points": 15,
+      "impact": 2.25,
+      "fix_type": "generate",
+      "fix": {
+        "panel": "generate_text",
+        "steps_ro": [
+          "Deschide Profilul tău Google › Recenzii.",
+          "La fiecare recenzie fără răspuns, apasă Răspunde.",
+          "Lipește răspunsul pregătit și trimite-l."
+        ],
+        "deep_link": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+        "deep_link_label_ro": "Deschide Profilul tău Google",
+        "where_ro": "Profil › Recenzii › Răspunde",
+        "max_chars": null,
+        "evidence_ro": null
+      }
+    }
+  ],
+  "gemini": {
+    "status": "complete",
+    "score": 49,
+    "weight": 0.1,
+    "mentioned": 5,
+    "total": 12,
+    "last_checked": "2026-11-14T21:52:07.526620+00:00",
+    "top_competitors": [
+      {
+        "name": "Arcade Cafe",
+        "place_id": "ChIJiwrs2z__sUARf76WP4_vBDc",
+        "mentions": 6
+      },
+      {
+        "name": "Artichoke",
+        "place_id": "ChIJ-ZvzMUT_sUARqwr-vOGIOpY",
+        "mentions": 5
+      },
+      {
+        "name": "Cafeneaua ART-AN-TE Universitate, București",
+        "place_id": "ChIJQX1ZW67_sUARt5cO9_W1nPI",
+        "mentions": 4
+      }
+    ],
+    "groups": [
+      {
+        "id": "general",
+        "name_ro": "General",
+        "desc_ro": "Întrebări despre tot orașul",
+        "mentioned": 3,
+        "total": 4,
+        "prompts": [
+          {
+            "text": "cea mai bună cafenea din bucurești",
+            "mentioned": true,
+            "runs_mentioned": 3,
+            "runs": 3,
+            "others": [
+              "Saint Roastery Victoriei",
+              "Human Coffee",
+              "Kopp Specialty Coffee"
+            ],
+            "answer_excerpt": "Bucureștiul are o scenă extraordinară de cafea de specialitate, existând mai multe cafenele foarte apreciate pentru calitate, atmosferă și profesionalismul baristilor. Printre cele mai populare și bine cotate locuri din oraș se numără: * **Origo** (Strada Lipscani 9) – Un adevărat pionier al…",
+            "sources": [
+              {
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
+                "kind": "maps"
+              },
+              {
+                "title": "Kopp Specialty Coffee",
+                "uri": "https://maps.google.com/maps?cid=13427849997641386580",
+                "kind": "maps"
+              },
+              {
+                "title": "Saint Roastery Victoriei",
+                "uri": "https://maps.google.com/maps?cid=11793110354655099568",
+                "kind": "maps"
+              },
+              {
+                "title": "Coftale Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=5701180191491342179",
+                "kind": "maps"
+              },
+              {
+                "title": "Human Coffee",
+                "uri": "https://maps.google.com/maps?cid=6663749903794952092",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenele bune în centrul capitalei",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Cafeneaua ART-AN-TE Universitate, București",
+              "Artichoke",
+              "Grand Café Van Gogh"
+            ],
+            "answer_excerpt": "Iată câteva cafenele apreciate din centrul Bucureștiului: * **Cafeneaua ART-AN-TE Universitate** * **Adresă:** Strada Ion Câmpineanu 3, București * **Rating:** 4.9 (598 recenzii) * **Interval prețuri:** RON 20-40 * **Caracteristici și facilități:** Este o cafenea de specialitate și galerie de artă…",
+            "sources": [
+              {
+                "title": "Cafeneaua ART-AN-TE Universitate, București",
+                "uri": "https://maps.google.com/maps?cid=17482047921561966519",
+                "kind": "maps"
+              },
+              {
+                "title": "Artichoke",
+                "uri": "https://maps.google.com/maps?cid=10825115157458193067",
+                "kind": "maps"
+              },
+              {
+                "title": "Grand Café Van Gogh",
+                "uri": "https://maps.google.com/maps?cid=8429297383496818006",
+                "kind": "maps"
+              },
+              {
+                "title": "Arcade Cafe",
+                "uri": "https://maps.google.com/maps?cid=3964556970519084671",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "unde bem o cafea de specialitate în bucurești",
+            "mentioned": true,
+            "runs_mentioned": 3,
+            "runs": 3,
+            "others": [
+              "Saint Roastery Victoriei",
+              "Artichoke",
+              "Coftale Specialty Coffee Shop"
+            ],
+            "answer_excerpt": "Bucureștiul are o scenă vibrantă de cafea de specialitate, cu numeroase cafenele apreciate pentru boabele de calitate și atmosfera plăcută: * **Origo** (Strada Lipscani 9) – Una dintre cele mai populare cafenele de specialitate din Centrul Vechi, recunoscută pentru cafeaua excelentă ziua și…",
+            "sources": [
+              {
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
+                "kind": "maps"
+              },
+              {
+                "title": "Saint Roastery Victoriei",
+                "uri": "https://maps.google.com/maps?cid=11793110354655099568",
+                "kind": "maps"
+              },
+              {
+                "title": "Kopp Specialty Coffee",
+                "uri": "https://maps.google.com/maps?cid=13427849997641386580",
+                "kind": "maps"
+              },
+              {
+                "title": "Artichoke",
+                "uri": "https://maps.google.com/maps?cid=10825115157458193067",
+                "kind": "maps"
+              },
+              {
+                "title": "Coftale Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=5701180191491342179",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenea liniștită în bucurești",
+            "mentioned": true,
+            "runs_mentioned": 3,
+            "runs": 3,
+            "others": [
+              "Cafeneaua ART-AN-TE Universitate, București",
+              "Twenty Eight",
+              "Wood Cafe"
+            ],
+            "answer_excerpt": "Iată câteva opțiuni de cafenele apreciate pentru o atmosferă liniștită în București: 1. **Cafeneaua ART-AN-TE Universitate** * **Adresă:** Strada Ion Câmpineanu 3, București * **Evaluare:** 4.9 (598 recenzii) * **Interval de preț:** RON 20-40 * **Program:** Luni - Vineri: 09:00–21:00, Sâmbătă:…",
+            "sources": [
+              {
+                "title": "Cafeneaua ART-AN-TE Universitate, București",
+                "uri": "https://maps.google.com/maps?cid=17482047921561966519",
+                "kind": "maps"
+              },
+              {
+                "title": "Twenty Eight",
+                "uri": "https://maps.google.com/maps?cid=11603956000837710539",
+                "kind": "maps"
+              },
+              {
+                "title": "Wood Cafe",
+                "uri": "https://maps.google.com/maps?cid=14524035761939910154",
+                "kind": "maps"
+              },
+              {
+                "title": "Trofic Ion Brezoianu",
+                "uri": "https://maps.google.com/maps?cid=9347737314523027711",
+                "kind": "maps"
+              },
+              {
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
+                "kind": "maps"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cartier",
+        "name_ro": "Cartier",
+        "desc_ro": "Întrebări despre zona ta",
+        "mentioned": 0,
+        "total": 4,
+        "prompts": [
+          {
+            "text": "cafenea în centrul vechi",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Grand Café Van Gogh",
+              "Cafeneaua Veche 9",
+              "Arcade Cafe"
+            ],
+            "answer_excerpt": "Iată câteva cafenele și cafenele-bistrouri populare situate în Centrul Vechi al Bucureștiului: * **Grand Café Van Gogh** * **Adresă:** Strada Smârdan 9, București * **Rating:** 4.2 (13425 recenzii) * **Interval de preț:** RON 20-120 * **Program:** Luni–Miercuri: 08:00–23:00, Marți: 08:00–22:00,…",
+            "sources": [
+              {
+                "title": "Grand Café Van Gogh",
+                "uri": "https://maps.google.com/maps?cid=8429297383496818006",
+                "kind": "maps"
+              },
+              {
+                "title": "Cafeneaua Veche 9",
+                "uri": "https://maps.google.com/maps?cid=17161797604806671645",
+                "kind": "maps"
+              },
+              {
+                "title": "Les Bourgeois",
+                "uri": "https://maps.google.com/maps?cid=500202168191671673",
+                "kind": "maps"
+              },
+              {
+                "title": "Arcade Cafe",
+                "uri": "https://maps.google.com/maps?cid=3964556970519084671",
+                "kind": "maps"
+              },
+              {
+                "title": "Rose's Mystery House",
+                "uri": "https://maps.google.com/maps?cid=2646897079905917701",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenea aproape de piața universității",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Cafeneaua ART-AN-TE Universitate, București",
+              "Cofftails Universitate",
+              "mudi cafe - specialty coffee"
+            ],
+            "answer_excerpt": "Câteva opțiuni populare de cafenele aflate aproape de Piața Universității: * **Cafeneaua ART-AN-TE Universitate** * **Adresă:** Strada Ion Câmpineanu 3, București * **Rating:** 4.9 (598 recenzii) * **Interval preț:** RON 20–40 * **Program:** Luni–Vineri 09:00–21:00, Sâmbătă 10:00–22:00, Duminică…",
+            "sources": [
+              {
+                "title": "Cafeneaua ART-AN-TE Universitate, București",
+                "uri": "https://maps.google.com/maps?cid=17482047921561966519",
+                "kind": "maps"
+              },
+              {
+                "title": "Cofftails Universitate",
+                "uri": "https://maps.google.com/maps?cid=4504332932243058855",
+                "kind": "maps"
+              },
+              {
+                "title": "mudi cafe - specialty coffee",
+                "uri": "https://maps.google.com/maps?cid=2869757571066630481",
+                "kind": "maps"
+              },
+              {
+                "title": "The Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=5663451268142221157",
+                "kind": "maps"
+              },
+              {
+                "title": "Nuba Cafe Downtown",
+                "uri": "https://maps.google.com/maps?cid=12776849855095593774",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cea mai bună cafea din centrul vechi",
+            "mentioned": false,
+            "runs_mentioned": 1,
+            "runs": 3,
+            "others": [
+              "Grand Café Van Gogh",
+              "First Coffee Bucharest",
+              "Star Cohn Coffee Shop"
+            ],
+            "answer_excerpt": "Câteva dintre cele mai apreciate locuri pentru o cafea excelentă în Centrul Vechi din București și în imediata sa apropiere: * **Origo** (Strada Lipscani 9) * **Evaluare:** 4.7 (5098 recenzii) * **Program:** Luni 07:30–20, Marți–Duminică 07:30–00 (vineri și sâmbătă programul se extinde) *…",
+            "sources": [
+              {
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
+                "kind": "maps"
+              },
+              {
+                "title": "First Coffee Bucharest",
+                "uri": "https://maps.google.com/maps?cid=7881925095461069753",
+                "kind": "maps"
+              },
+              {
+                "title": "Grand Café Van Gogh",
+                "uri": "https://maps.google.com/maps?cid=8429297383496818006",
+                "kind": "maps"
+              },
+              {
+                "title": "Star Cohn Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=17003141915532263111",
+                "kind": "maps"
+              },
+              {
+                "title": "Emozia Coffee Manifesto",
+                "uri": "https://maps.google.com/maps?cid=5076397662035262979",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "terase de cafea în centrul vechi",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Arcade Cafe",
+              "Grand Café Van Gogh",
+              "Les Bourgeois"
+            ],
+            "answer_excerpt": "Iată câteva terase și cafenele populare din Centrul Vechi din București unde poți savura o cafea și te poți bucura de atmosferă: * **Grand Café Van Gogh** * **Adresă:** Strada Smârdan 9 * **Evaluare:** 4.2 (13.425 de recenzii) * **Detalii:** Un local clasic, cu o atmosferă artistică și un design…",
+            "sources": [
+              {
+                "title": "Grand Café Van Gogh",
+                "uri": "https://maps.google.com/maps?cid=8429297383496818006",
+                "kind": "maps"
+              },
+              {
+                "title": "Arcade Cafe",
+                "uri": "https://maps.google.com/maps?cid=3964556970519084671",
+                "kind": "maps"
+              },
+              {
+                "title": "Les Bourgeois",
+                "uri": "https://maps.google.com/maps?cid=500202168191671673",
+                "kind": "maps"
+              },
+              {
+                "title": "COSTA’S COFFEE&BAR",
+                "uri": "https://maps.google.com/maps?cid=14006029989196273092",
+                "kind": "maps"
+              },
+              {
+                "title": "Trio | Bar and Lounge",
+                "uri": "https://maps.google.com/maps?cid=5843656616261459809",
+                "kind": "maps"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "situatii",
+        "name_ro": "Situații",
+        "desc_ro": "Ce caută oamenii, nu unde",
+        "mentioned": 2,
+        "total": 4,
+        "prompts": [
+          {
+            "text": "cafenea unde pot veni cu câinele",
+            "mentioned": true,
+            "runs_mentioned": 3,
+            "runs": 3,
+            "others": [
+              "Pâine și Vin",
+              "Lente Arcului",
+              "Animaletto House"
+            ],
+            "answer_excerpt": "Iată câteva cafenele și locuri prietenoase cu animalele de companie (pet-friendly) din București, unde poți veni cu câinele: * **Origo** * **Adresă:** Strada Lipscani 9, București * **Program:** Luni 07:30–20:00; Marți–Vineri 07:30–00:00; Sâmbătă–Duminică 08:00–00:00 * **Evaluare:** 4.7 (5098…",
+            "sources": [
+              {
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
+                "kind": "maps"
+              },
+              {
+                "title": "boteca13",
+                "uri": "https://maps.google.com/maps?cid=14916341928181875966",
+                "kind": "maps"
+              },
+              {
+                "title": "Artichoke",
+                "uri": "https://maps.google.com/maps?cid=10825115157458193067",
+                "kind": "maps"
+              },
+              {
+                "title": "Pâine și Vin",
+                "uri": "https://maps.google.com/maps?cid=17763667849521368696",
+                "kind": "maps"
+              },
+              {
+                "title": "Lente Arcului",
+                "uri": "https://maps.google.com/maps?cid=9296860359100030347",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenea cu terasă pentru grupuri în bucurești",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Serendipity",
+              "Linea | Closer To The Moon",
+              "Arcade Cafe"
+            ],
+            "answer_excerpt": "Iată câteva opțiuni apreciate de cafenele, terase și localuri cu atmosferă relaxată din București, potrivite pentru grupuri: * **Serendipity** * **Adresă:** Strada Dumbrava Roșie 12, București * **Evaluare:** 4.4 (1160 recenzii) * **Detalii:** Un spațiu intim și liniștit, renumit pentru grădina și…",
+            "sources": [
+              {
+                "title": "Serendipity",
+                "uri": "https://maps.google.com/maps?cid=18435640763331032921",
+                "kind": "maps"
+              },
+              {
+                "title": "Linea | Closer To The Moon",
+                "uri": "https://maps.google.com/maps?cid=13558924690007146111",
+                "kind": "maps"
+              },
+              {
+                "title": "Arcade Cafe",
+                "uri": "https://maps.google.com/maps?cid=3964556970519084671",
+                "kind": "maps"
+              },
+              {
+                "title": "Nomad Skybar",
+                "uri": "https://maps.google.com/maps?cid=4090366478112527935",
+                "kind": "maps"
+              },
+              {
+                "title": "Mira",
+                "uri": "https://maps.google.com/maps?cid=12996544113125064565",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenea unde se poate plăti cu cardul",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Artichoke",
+              "Seneca Anticafe",
+              "Meron"
+            ],
+            "answer_excerpt": "Iată câteva cafenele din zonă unde se poate plăti cu cardul: * **Meron Cișmigiu** * **Adresă:** Bulevardul Regina Elisabeta 40, București * **Evaluare:** 4.5 (2362 de recenzii) * **Program:** Luni–Duminică: 09:00 – 20:00 (luni–vineri deschis de la 08:00) * **Facilități și plăți:** Acceptă carduri…",
+            "sources": [
+              {
+                "title": "Meron",
+                "uri": "https://maps.google.com/maps?cid=10430192261531869394",
+                "kind": "maps"
+              },
+              {
+                "title": "Artichoke",
+                "uri": "https://maps.google.com/maps?cid=10825115157458193067",
+                "kind": "maps"
+              },
+              {
+                "title": "mudi cafe - specialty coffee",
+                "uri": "https://maps.google.com/maps?cid=2869757571066630481",
+                "kind": "maps"
+              },
+              {
+                "title": "Seneca Anticafe",
+                "uri": "https://maps.google.com/maps?cid=1933500520211457265",
+                "kind": "maps"
+              },
+              {
+                "title": "Cafeneaua ART-AN-TE Universitate, București",
+                "uri": "https://maps.google.com/maps?cid=17482047921561966519",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenea cu servire la masă în centru",
+            "mentioned": true,
+            "runs_mentioned": 2,
+            "runs": 3,
+            "others": [
+              "Arcade Cafe",
+              "Tag Aperitivo Bar",
+              "Les Bourgeois"
+            ],
+            "answer_excerpt": "Câteva opțiuni centrale de cafenele și cafenele-baruri cu servire la masă în zonă: * **Arcade Cafe** * **Adresă:** Strada Smârdan 30, București * **Rating:** 4.3 (4.150 recenzii) * **Interval de preț:** RON 60-180 * **Program:** Luni – Duminică: 10:00 – 02:00 * **Detalii:** Situată în Centrul…",
+            "sources": [
+              {
+                "title": "Arcade Cafe",
+                "uri": "https://maps.google.com/maps?cid=3964556970519084671",
+                "kind": "maps"
+              },
+              {
+                "title": "Tag Aperitivo Bar",
+                "uri": "https://maps.google.com/maps?cid=17903854312686533400",
+                "kind": "maps"
+              },
+              {
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
+                "kind": "maps"
+              },
+              {
+                "title": "Les Bourgeois",
+                "uri": "https://maps.google.com/maps?cid=500202168191671673",
+                "kind": "maps"
+              },
+              {
+                "title": "STAY Bistro - restaurant centru București",
+                "uri": "https://maps.google.com/maps?cid=14049685486032719847",
+                "kind": "maps"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "id": "profil",
+      "name_ro": "Profilul Google",
+      "intro_ro": "Profilul tău Google e primul loc unde se uită Gemini când cineva caută o cafenea în Centrul Vechi. Cu cât e mai complet, cu atât ai mai multe șanse să fii recomandat.",
+      "where_to_fix_ro": "Aproape totul se face din aplicația Google Maps, din contul cu care ți-ai creat profilul. La fiecare problemă îți arătăm exact unde să apeși.",
+      "score": 83,
+      "weight": 0.2,
+      "possible_points": 17,
+      "overall_gain_if_all_fixed": 3,
+      "has_fixes": true,
+      "problems": [
+        {
+          "check_id": "G08",
+          "chapter_id": "profil",
+          "chapter_name_ro": "Profilul Google",
+          "title_ro": "Fără descriere a afacerii",
+          "why_ro": "Gemini folosește descrierea ca să înțeleagă ce te face special. Fără ea, alege cafenelele care spun mai mult despre ele.",
+          "points": 11,
+          "impact": 2.2,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Deschide Profilul tău Google din aplicația Google Maps.",
+              "Apasă Editează profilul › Descrierea afacerii.",
+              "Lipește textul și salvează."
+            ],
+            "deep_link": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+            "deep_link_label_ro": "Deschide Profilul tău Google",
+            "where_ro": "Profil › Editează profilul › Descrierea afacerii",
+            "max_chars": 750,
+            "evidence_ro": "Ai spus că profilul nu are încă o descriere."
+          }
+        },
+        {
+          "check_id": "G09",
+          "chapter_id": "profil",
+          "chapter_name_ro": "Profilul Google",
+          "title_ro": "Nicio postare în ultimele 30 de zile",
+          "why_ro": "Postările recente arată că afacerea e activă. Una pe săptămână e de ajuns.",
+          "points": 6,
+          "impact": 1.2,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Deschide Profilul tău Google din aplicația Google Maps.",
+              "Apasă Adaugă actualizare.",
+              "Lipește textul, adaugă o fotografie și publică."
+            ],
+            "deep_link": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+            "deep_link_label_ro": "Deschide Profilul tău Google",
+            "where_ro": "Profil › Adaugă actualizare",
+            "max_chars": null,
+            "evidence_ro": "Ai spus că ultima postare e de mai demult."
+          }
+        }
+      ],
+      "solved": [
+        {
+          "check_id": "G02",
+          "title_ro": "Categoria „Cafenea” e setată",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "G03",
+          "title_ro": "Programul e complet pentru toată săptămâna",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "G05",
+          "title_ro": "Ai cel puțin 5 fotografii",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "G06",
+          "title_ro": "Linkul către site e pus",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "G07",
+          "title_ro": "Numărul de telefon e afișat",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "G10",
+          "title_ro": "Detaliile importante sunt completate",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "G11",
+          "title_ro": "Nivelul de preț e setat",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "G12",
+          "title_ro": "Profilul e revendicat de tine",
+          "source": "passed",
+          "points": null
+        }
+      ],
+      "unknown": [
+        {
+          "check_id": "G04",
+          "title_ro": "Programul de sărbători",
+          "reason_ro": "Google arată programul de sărbători doar pentru următoarele 7 zile, așa că nu îl putem verifica dinainte."
+        }
+      ]
+    },
+    {
+      "id": "recenzii",
+      "name_ro": "Recenzii",
+      "intro_ro": "Gemini citește recenziile ca să afle ce cred clienții despre tine. Contează câte ai, cât de noi sunt și dacă le răspunzi.",
+      "where_to_fix_ro": "Din aplicația Google Maps, din contul cu care ți-ai creat profilul: acolo vezi recenziile și le poți răspunde.",
+      "score": 55,
+      "weight": 0.15,
+      "possible_points": 45,
+      "overall_gain_if_all_fixed": 7,
+      "has_fixes": true,
+      "problems": [
+        {
+          "check_id": "R01",
+          "chapter_id": "recenzii",
+          "chapter_name_ro": "Recenzii",
+          "title_ro": "Mai puține recenzii decât cafenelele din jur",
+          "why_ro": "Gemini recomandă mai des locurile cu multe recenzii. Fiecare client mulțumit care scrie una te ajută.",
+          "points": 30,
+          "impact": 4.5,
+          "fix_type": "owner_action",
+          "fix": {
+            "panel": "steps",
+            "steps_ro": [
+              "Deschide Profilul tău Google și apasă Cere recenzii.",
+              "Copiază linkul și trimite-l clienților mulțumiți.",
+              "Pune un cod QR cu linkul la casă sau pe mese."
+            ],
+            "deep_link": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+            "deep_link_label_ro": "Deschide Profilul tău Google",
+            "where_ro": "Profil › Cere recenzii",
+            "max_chars": null,
+            "evidence_ro": "Ai 5098 de recenzii, iar cafenelele din jur au în jur de 25619."
+          }
+        },
+        {
+          "check_id": "R04",
+          "chapter_id": "recenzii",
+          "chapter_name_ro": "Recenzii",
+          "title_ro": "20 din ultimele 20 de recenzii fără răspuns",
+          "why_ro": "Răspunsurile tale arată că îți pasă de clienți, iar Gemini le citește și pe ele.",
+          "points": 15,
+          "impact": 2.25,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Deschide Profilul tău Google › Recenzii.",
+              "La fiecare recenzie fără răspuns, apasă Răspunde.",
+              "Lipește răspunsul pregătit și trimite-l."
+            ],
+            "deep_link": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+            "deep_link_label_ro": "Deschide Profilul tău Google",
+            "where_ro": "Profil › Recenzii › Răspunde",
+            "max_chars": null,
+            "evidence_ro": null
+          }
+        }
+      ],
+      "solved": [
+        {
+          "check_id": "R02",
+          "title_ro": "Nota medie e foarte bună: 4,7",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "R03",
+          "title_ro": "Ai recenzii noi luna aceasta",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "R05",
+          "title_ro": "Ai recenzii și pe TripAdvisor",
+          "source": "passed",
+          "points": null
+        }
+      ],
+      "unknown": []
+    },
+    {
+      "id": "continut",
+      "name_ro": "Conținutul site-ului",
+      "intro_ro": "Gemini citește site-ul ca să afle ce oferi, unde ești și când ești deschis. Cu cât scrie mai clar, cu atât te poate recomanda mai ușor.",
+      "where_to_fix_ro": "Pe site-ul tău. Îți scriem noi textele, iar tu sau persoana care îți face site-ul le pune pe pagină.",
+      "score": 75,
+      "weight": 0.15,
+      "possible_points": 26,
+      "overall_gain_if_all_fixed": 4,
+      "has_fixes": true,
+      "problems": [
+        {
+          "check_id": "C07",
+          "chapter_id": "continut",
+          "chapter_name_ro": "Conținutul site-ului",
+          "title_ro": "Site-ul nu răspunde la întrebările clienților",
+          "why_ro": "Clienții întreabă de parcare, plata cu cardul sau rezervări. Dacă site-ul răspunde, Gemini preia răspunsul.",
+          "points": 10,
+          "impact": 1.5,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Copiază întrebările și răspunsurile pregătite.",
+              "Pune-le pe o pagină „Întrebări frecvente”."
+            ],
+            "deep_link": "https://origocoffee.ro/",
+            "deep_link_label_ro": "Deschide site-ul",
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": "Am găsit răspuns la 0 din 5 întrebări obișnuite."
+          }
+        },
+        {
+          "check_id": "C02",
+          "chapter_id": "continut",
+          "chapter_name_ro": "Conținutul site-ului",
+          "title_ro": "Adresa și cartierul nu apar pe site",
+          "why_ro": "Când cineva caută o cafenea în Centrul Vechi, Gemini caută cuvântul „Centrul Vechi” și pe site-ul tău.",
+          "points": 8,
+          "impact": 1.2,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Copiază textul pregătit cu adresa și cartierul.",
+              "Pune-l pe prima pagină și pe pagina de contact."
+            ],
+            "deep_link": "https://origocoffee.ro/",
+            "deep_link_label_ro": "Deschide site-ul",
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": null
+          }
+        },
+        {
+          "check_id": "C05",
+          "chapter_id": "continut",
+          "chapter_name_ro": "Conținutul site-ului",
+          "title_ro": "Meniul și prețurile nu sunt pe site",
+          "why_ro": "Gemini nu poate citi o poză sau un PDF. Scris ca text, îl poate folosi când cineva întreabă ce oferi și cât costă.",
+          "points": 8,
+          "impact": 1.2,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Copiază textul pregătit.",
+              "Pune-l pe o pagină a site-ului, ca text, nu ca poză.",
+              "Adaugă prețul lângă fiecare produs sau serviciu."
+            ],
+            "deep_link": "https://origocoffee.ro/",
+            "deep_link_label_ro": "Deschide site-ul",
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": "Nu am găsit prețuri lângă produse."
+          }
+        }
+      ],
+      "solved": [
+        {
+          "check_id": "C01",
+          "title_ro": "Numele și ce faci apar pe prima pagină",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "C03",
+          "title_ro": "Programul de pe site e același ca pe Google",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "C04",
+          "title_ro": "Numărul de telefon apare pe site",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "C06",
+          "title_ro": "Fiecare categorie are pagina ei",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "C08",
+          "title_ro": "Site-ul e în română",
+          "source": "passed",
+          "points": null
+        }
+      ],
+      "unknown": []
+    },
+    {
+      "id": "site",
+      "name_ro": "Site-ul, văzut de Gemini",
+      "intro_ro": "Verificăm dacă Gemini poate citi site-ul tău. Aici lucrurile sunt tehnice, așa că le pregătim pentru persoana care îți face site-ul.",
+      "where_to_fix_ro": "La persoana care îți face site-ul. Îi pregătim instrucțiunile exacte.",
+      "score": 78,
+      "weight": 0.1,
+      "possible_points": 22,
+      "overall_gain_if_all_fixed": 2,
+      "has_fixes": true,
+      "problems": [
+        {
+          "check_id": "T06",
+          "chapter_id": "site",
+          "chapter_name_ro": "Site-ul, văzut de Gemini",
+          "title_ro": "Site-ul nu îi spune lui Gemini programul și adresa „pe limba lui”",
+          "why_ro": "Câteva rânduri invizibile pentru clienți îi dau lui Gemini datele exacte. Le pregătim noi pentru cel care îți face site-ul.",
+          "points": 10,
+          "impact": 1.0,
+          "fix_type": "dev_export",
+          "fix": {
+            "panel": "dev_export",
+            "steps_ro": [
+              "Trimite instrucțiunile persoanei care îți face site-ul."
+            ],
+            "deep_link": null,
+            "deep_link_label_ro": null,
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": "Nu am găsit date structurate de tip LocalBusiness pe site."
+          }
+        },
+        {
+          "check_id": "T09",
+          "chapter_id": "site",
+          "chapter_name_ro": "Site-ul, văzut de Gemini",
+          "title_ro": "Gemini nu găsește o pagină cu informațiile de bază",
+          "why_ro": "Adresa, programul și ce oferi sunt împrăștiate sau lipsesc. O singură pagină clară îl ajută pe Gemini să te înțeleagă.",
+          "points": 10,
+          "impact": 1.0,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "info_page",
+            "steps_ro": [
+              "Verifică pagina pregătită și completează ce e marcat cu galben.",
+              "Trimite-o persoanei care îți face site-ul."
+            ],
+            "deep_link": null,
+            "deep_link_label_ro": null,
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": null
+          }
+        },
+        {
+          "check_id": "T07",
+          "chapter_id": "site",
+          "chapter_name_ro": "Site-ul, văzut de Gemini",
+          "title_ro": "Site-ul se încarcă greu pe telefon",
+          "why_ro": "Dacă pagina se deschide greu, Gemini o citește mai rar și mai puțin.",
+          "points": 2,
+          "impact": 0.2,
+          "fix_type": "dev_export",
+          "fix": {
+            "panel": "dev_export",
+            "steps_ro": [
+              "Trimite instrucțiunile persoanei care îți face site-ul."
+            ],
+            "deep_link": null,
+            "deep_link_label_ro": null,
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": "Scorul de viteză pe telefon e 68 din 100."
+          }
+        }
+      ],
+      "solved": [
+        {
+          "check_id": "T01",
+          "title_ro": "Site-ul se deschide sigur, cu HTTPS",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "T02",
+          "title_ro": "Google și Gemini pot citi tot site-ul",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "T03",
+          "title_ro": "Și alți asistenți AI pot citi site-ul",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "T04",
+          "title_ro": "Informațiile se văd fără JavaScript",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "T05",
+          "title_ro": "Site-ul are o hartă pentru Google",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "T08",
+          "title_ro": "Site-ul se vede bine pe telefon",
+          "source": "passed",
+          "points": null
+        }
+      ],
+      "unknown": []
+    },
+    {
+      "id": "info",
+      "name_ro": "Aceleași informații peste tot",
+      "intro_ro": "Gemini compară ce scrie despre tine pe Google, pe site și pe alte platforme. Dacă datele diferă, nu mai știe pe care să le creadă.",
+      "where_to_fix_ro": "Pe fiecare platformă unde apari. Copiază datele de pe Profilul tău Google.",
+      "score": 100,
+      "weight": 0.1,
+      "possible_points": 0,
+      "overall_gain_if_all_fixed": 0,
+      "has_fixes": true,
+      "problems": [],
+      "solved": [
+        {
+          "check_id": "L01",
+          "title_ro": "Apari pe toate platformele potrivite",
+          "source": "passed",
+          "points": null
+        }
+      ],
+      "unknown": [
+        {
+          "check_id": "L02",
+          "title_ro": "Aceleași date pe toate platformele",
+          "reason_ro": "Nu am găsit pe alte platforme date de comparat cu Google."
+        }
+      ]
+    },
+    {
+      "id": "mentiuni",
+      "name_ro": "Mențiuni pe alte site-uri",
+      "intro_ro": "Când alte site-uri vorbesc despre tine, Gemini află că ești cunoscut și de încredere.",
+      "where_to_fix_ro": "În afara site-ului tău: bloguri, presă locală și liste cu recomandări. Îți pregătim mesajele.",
+      "score": 60,
+      "weight": 0.1,
+      "possible_points": 40,
+      "overall_gain_if_all_fixed": 4,
+      "has_fixes": true,
+      "problems": [
+        {
+          "check_id": "M02",
+          "chapter_id": "mentiuni",
+          "chapter_name_ro": "Mențiuni pe alte site-uri",
+          "title_ro": "Nu apari în niciun top",
+          "why_ro": "Când cineva cere „cele mai bune cafenele”, Gemini citește topurile făcute de alții.",
+          "points": 25,
+          "impact": 2.5,
+          "fix_type": "owner_action",
+          "fix": {
+            "panel": "steps",
+            "steps_ro": [
+              "Caută topurile de cafenele din București.",
+              "Scrie-le autorilor un mesaj scurt despre tine."
+            ],
+            "deep_link": null,
+            "deep_link_label_ro": null,
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": null
+          }
+        },
+        {
+          "check_id": "M05",
+          "chapter_id": "mentiuni",
+          "chapter_name_ro": "Mențiuni pe alte site-uri",
+          "title_ro": "Nimeni nu vorbește despre tine pe forumuri",
+          "why_ro": "Gemini citește și discuțiile de pe forumuri și grupuri, unde oamenii își recomandă locurile preferate.",
+          "points": 15,
+          "impact": 1.5,
+          "fix_type": "owner_action",
+          "fix": {
+            "panel": "steps",
+            "steps_ro": [
+              "Răspunde când cineva cere recomandări de cafenele în Centrul Vechi.",
+              "Spune clar că ești proprietarul."
+            ],
+            "deep_link": null,
+            "deep_link_label_ro": null,
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": null
+          }
+        }
+      ],
+      "solved": [
+        {
+          "check_id": "M01",
+          "title_ro": "Multe site-uri vorbesc despre tine",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "M03",
+          "title_ro": "Presa locală a scris despre tine",
+          "source": "passed",
+          "points": null
+        }
+      ],
+      "unknown": []
+    },
+    {
+      "id": "social",
+      "name_ro": "Rețele sociale",
+      "intro_ro": "Gemini se uită și pe Instagram și TikTok ca să afle cine ești și ce servești.",
+      "where_to_fix_ro": "În aplicațiile Instagram și TikTok, din contul afacerii.",
+      "score": 75,
+      "weight": 0.05,
+      "possible_points": 25,
+      "overall_gain_if_all_fixed": 1,
+      "has_fixes": true,
+      "problems": [
+        {
+          "check_id": "S05",
+          "chapter_id": "social",
+          "chapter_name_ro": "Rețele sociale",
+          "title_ro": "Descrierea de pe Instagram nu spune ce faci și unde ești",
+          "why_ro": "Gemini citește descrierea profilului ca să afle ce oferi și în ce cartier ești.",
+          "points": 25,
+          "impact": 1.25,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "În Instagram: Profil › Editează profilul › Biografie, apoi lipește textul și salvează."
+            ],
+            "deep_link": "https://www.instagram.com/origo_coffee/",
+            "deep_link_label_ro": "Copiază și deschide Instagram",
+            "where_ro": "Profil › Editează profilul › Biografie",
+            "max_chars": 150,
+            "evidence_ro": "Descrierea de acum: „Pioneering specialty coffee since 2013 \n#PeopleOfSpecialty™ \n@peopleofspecialty \nCoffee at your door 🚚 🇷🇴 👇”."
+          }
+        }
+      ],
+      "solved": [
+        {
+          "check_id": "S02",
+          "title_ro": "Profilul de Instagram există",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "S03",
+          "title_ro": "Ai postat luna aceasta",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "S04",
+          "title_ro": "Site-ul, Instagram și Profilul Google au linkuri unele către altele",
+          "source": "passed",
+          "points": null
+        }
+      ],
+      "unknown": []
+    },
+    {
+      "id": "cunoaste",
+      "name_ro": "Te cunoaște deja Gemini?",
+      "intro_ro": "L-am întrebat pe Gemini despre tine fără să-l lăsăm să caute pe internet, ca să vedem ce știe deja. Crește pe măsură ce rezolvi restul.",
+      "where_to_fix_ro": null,
+      "score": 100,
+      "weight": 0.05,
+      "possible_points": 0,
+      "overall_gain_if_all_fixed": 0,
+      "has_fixes": false,
+      "problems": [],
+      "solved": [
+        {
+          "check_id": "K01",
+          "title_ro": "Gemini știe că exiști",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "K02",
+          "title_ro": "Gemini știe ce faci și unde ești",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "K03",
+          "title_ro": "Gemini nu spune lucruri greșite despre tine",
+          "source": "passed",
+          "points": null
+        }
+      ],
+      "unknown": []
+    }
+  ],
+  "comparison": {
+    "me": {
+      "name": "Origo",
+      "place_id": "ChIJQbgapEH_sUAR__vch8jUosQ",
+      "review_count": 5098,
+      "rating": 4.7,
+      "photo_count": 10,
+      "photo_count_capped": true,
+      "hours_complete": true
+    },
+    "rivals": [
+      {
+        "name": "Arcade Cafe",
+        "place_id": "ChIJiwrs2z__sUARf76WP4_vBDc",
+        "review_count": 4150,
+        "rating": 4.3,
+        "photo_count": 10,
+        "photo_count_capped": true,
+        "hours_complete": true
+      },
+      {
+        "name": "Artichoke",
+        "place_id": "ChIJ-ZvzMUT_sUARqwr-vOGIOpY",
+        "review_count": 1328,
+        "rating": 4.5,
+        "photo_count": 10,
+        "photo_count_capped": true,
+        "hours_complete": true
+      },
+      {
+        "name": "Cafeneaua ART-AN-TE Universitate, București",
+        "place_id": "ChIJQX1ZW67_sUARt5cO9_W1nPI",
+        "review_count": 598,
+        "rating": 4.9,
+        "photo_count": 10,
+        "photo_count_capped": true,
+        "hours_complete": true
+      }
+    ],
+    "insights_ro": [
+      "Ai o notă mai bună decât ei."
+    ],
+    "actions": []
+  }
+}

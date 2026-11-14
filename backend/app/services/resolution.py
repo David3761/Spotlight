@@ -16,7 +16,16 @@ from app.pipeline.scoring import refresh_report_totals
 from app.pipeline.types import ScanInternal
 
 FIXTURES_DIR = BACKEND_DIR / "fixtures"
-"""The directory holding the demo report and facts."""
+"""The directory holding the demo scan."""
+
+DEMO_REPORT_FILE = FIXTURES_DIR / "demo_report.json"
+"""The demo café's recorded report, replayed in demo mode."""
+
+DEMO_CHECKS_FILE = FIXTURES_DIR / "demo_checks.json"
+"""The check results the demo report was scored from, so resolving works on demo scans."""
+
+DEMO_FACTS_FILE = FIXTURES_DIR / "demo_facts.json"
+"""The demo café's facts, for fix texts and the info page on demo scans."""
 
 edit_lock = threading.Lock()
 """Serializes report edits, so two quick „Am rezolvat” clicks can't overwrite each other."""
@@ -83,7 +92,7 @@ def load_facts(scan_id: str) -> Facts:
         inputs = ScanInputs.model_validate_json(row.inputs)
         internal = ScanInternal.model_validate_json(row.internal)
     if internal.source == "fixture":
-        return Facts.model_validate_json((FIXTURES_DIR / "boema_facts.json").read_text(encoding="utf-8"))
+        return Facts.model_validate_json(DEMO_FACTS_FILE.read_text(encoding="utf-8"))
     return build_facts(inputs, internal)
 
 

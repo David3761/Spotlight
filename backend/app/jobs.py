@@ -49,7 +49,7 @@ from app.pipeline.resolve import search_places
 from app.pipeline.romanian import get_count_phrase
 from app.pipeline.scoring import get_unknown_results
 from app.pipeline.types import CheckResult, ScanInternal
-from app.services.resolution import FIXTURES_DIR
+from app.services.resolution import DEMO_CHECKS_FILE, DEMO_REPORT_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -170,7 +170,7 @@ def start_scan(scan_id: str, inputs: ScanInputs) -> None:
 
 def get_fixture_report(scan_id: str) -> Report:
     """Returns the demo report with a new scan ID and the current time."""
-    report = Report.model_validate_json((FIXTURES_DIR / "boema_report.json").read_text(encoding="utf-8"))
+    report = Report.model_validate_json(DEMO_REPORT_FILE.read_text(encoding="utf-8"))
     report.scan_id = scan_id
     report.checked_at = datetime.now(UTC).isoformat()
     report.gemini.last_checked = report.checked_at
@@ -179,7 +179,7 @@ def get_fixture_report(scan_id: str) -> Report:
 
 def get_fixture_checks() -> list[CheckResult]:
     """Returns the check results the demo report was scored from."""
-    return CHECK_LIST.validate_json((FIXTURES_DIR / "boema_checks.json").read_text(encoding="utf-8"))
+    return CHECK_LIST.validate_json(DEMO_CHECKS_FILE.read_text(encoding="utf-8"))
 
 
 def get_step_details(report: Report) -> list[tuple[StepId, str]]:
