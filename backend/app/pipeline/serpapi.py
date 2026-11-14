@@ -1,14 +1,13 @@
-"""SerpApi requests (free plan, about 250 searches a month), retried on network errors and cached per day."""
+"""SerpApi requests (free plan, about 250 searches a month), retried on network and server errors, cached per day."""
 
 import json
-from datetime import UTC, datetime
 from typing import Any
 
 import httpx
-from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from app import cache
 from app.config import get_settings
+from app.pipeline.retry import SERVER_ERROR_STATUSES, check_status, get_daily_keys, get_fallback, get_retrying, save_answer
 
 SERPAPI_URL = "https://serpapi.com/search.json"
 """The SerpApi search endpoint."""
@@ -21,26 +20,25 @@ class SerpApiError(Exception):
     """Raised when SerpApi refuses a search or returns an error instead of results."""
 
 
-@retry(
-    retry=retry_if_exception_type(httpx.TransportError),
-    stop=stop_after_attempt(3),
-    wait=wait_exponential(multiplier=1, max=4),
-    reraise=True,
-)
 async def send_search(params: dict[str, str | int]) -> httpx.Response:
-    """Sends one SerpApi search, retrying network errors with exponential backoff."""
-    async with httpx.AsyncClient(timeout=SERPAPI_TIMEOUT_SECONDS) as client:
-        return await client.get(SERPAPI_URL, params={**params, "api_key": get_settings().serpapi_api_key})
+    """Sends one SerpApi search, retrying network and server errors with exponential backoff (its 429 means the quota is used up)."""
+    async for attempt in get_retrying(SERVER_ERROR_STATUSES):
+        with attempt:
+            async with httpx.AsyncClient(timeout=SERPAPI_TIMEOUT_SECONDS) as client:
+                response = await client.get(SERPAPI_URL, params={**params, "api_key": get_settings().serpapi_api_key})
+            check_status(response, SERVER_ERROR_STATUSES)
+    return response
 
 
 async def serpapi_search(params: dict[str, str | int]) -> dict[str, Any]:
     """Returns a SerpApi result; the same search on the same day is answered from the cache, so it costs no quota.
 
+    When SerpApi is down (network or server error), the last result ever received for the same search is used.
+
     Raises `SerpApiError` when SerpApi fails or reports an error.
     """
-    today = datetime.now(UTC).date().isoformat()
-    key = ["serpapi", today, json.dumps(params, sort_keys=True)]
-    cached = cache.get(key)
+    keys = get_daily_keys("serpapi", json.dumps(params, sort_keys=True))
+    cached = cache.get(keys[0])
     if cached is not None:
         return cached
     try:
@@ -48,8 +46,11 @@ async def serpapi_search(params: dict[str, str | int]) -> dict[str, Any]:
         response.raise_for_status()
         data = response.json()
     except (httpx.HTTPError, ValueError) as error:
+        fallback = get_fallback(keys, error, SERVER_ERROR_STATUSES)
+        if fallback is not None:
+            return fallback
         raise SerpApiError(str(error)) from error
     if data.get("error"):
         raise SerpApiError(str(data["error"]))
-    cache.set(key, data)
+    save_answer(keys, data)
     return data
