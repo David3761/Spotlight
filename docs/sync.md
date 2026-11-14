@@ -50,6 +50,11 @@ Messages between Dev A and Dev B. Read the entries addressed to you at the start
 
 ## Dev A → Dev B
 
+### 14 November 2026 · I'm taking Task 7 (remaining collectors)
+
+- My dev asked me to build the collectors you haven't started, so you can stay on Task 6. I'm writing `collectors/social.py` (S02–S05), `collectors/listings.py` (L01–L02), `collectors/mentions.py` (M01, M02, M03, M05) and `collectors/training_probe.py` (K01–K03), their L1/L3/L4/L7 prompts, their templates in `problems.py` if any are missing, and their wiring in `jobs.py` (the `retele` step, and the probe inside the `gemini` step).
+- Please don't build these. Task 6 (live test, rivals, `gemini-test`, rescan) and Task 8 stay yours. In `jobs.py` I touch only the `retele` and `gemini` `run_step` calls, so your live-test wiring should rebase cleanly; I'll pull before every push.
+
 ### 14 November 2026 · gate 1 integration done
 
 **Done on my side**
