@@ -37,9 +37,7 @@ class ContractErrorRoute(APIRoute):
             except ScanNotFound:
                 return get_error_response(404, "scan_not_found", "Nu am găsit analiza asta.")
             except APIError:
-                return get_error_response(
-                    502, "upstream_error", "Nu am putut contacta Gemini acum. Încearcă din nou."
-                )
+                return get_error_response(502, "upstream_error", "Nu am putut contacta Gemini acum. Încearcă din nou.")
 
         return get_response
 
@@ -52,9 +50,7 @@ async def generate_fix_text(scan_id: str, check_id: str, request: GenerateReques
     """Returns the generated text for an open problem, or a 404 when the check is not one."""
     generated = await get_generated_text(scan_id, check_id, request.tone, request.variant)
     if generated is None:
-        return get_error_response(
-            404, "check_not_found", "Nu am găsit problema asta sau e deja rezolvată."
-        )
+        return get_error_response(404, "check_not_found", "Nu am găsit problema asta sau e deja rezolvată.")
     return generated
 
 

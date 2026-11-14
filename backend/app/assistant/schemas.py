@@ -7,9 +7,7 @@ from pydantic import BaseModel, Field
 
 from app.models import ScoreUpdate
 
-ChapterId = Literal[
-    "profil", "recenzii", "continut", "site", "info", "mentiuni", "social", "cunoaste"
-]
+ChapterId = Literal["profil", "recenzii", "continut", "site", "info", "mentiuni", "social", "cunoaste"]
 """The ids of the report chapters."""
 
 ConversationKind = Literal["onboarding", "assistant"]

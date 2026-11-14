@@ -52,9 +52,7 @@ def create_conversation(
         title=title or DEFAULT_TITLE,
         chapter_id=chapter_id,
         messages=MESSAGES_ADAPTER.dump_json(messages).decode(),
-        pending_actions=ACTIONS_ADAPTER.dump_json(
-            [message.action for message in messages if message.action]
-        ).decode(),
+        pending_actions=ACTIONS_ADAPTER.dump_json([message.action for message in messages if message.action]).decode(),
         created_at=now,
         updated_at=now,
     )
@@ -156,17 +154,9 @@ def get_summaries(scan_id: str) -> list[ConversationSummary]:
                 kind=row.kind,
                 title=row.title,
                 chapter_id=row.chapter_id,
-                chapter_name_ro=(
-                    ONBOARDING_CHAPTER_NAME
-                    if row.kind == "onboarding"
-                    else chapter_names.get(row.chapter_id)
-                ),
+                chapter_name_ro=(ONBOARDING_CHAPTER_NAME if row.kind == "onboarding" else chapter_names.get(row.chapter_id)),
                 preview=get_preview(messages),
-                solved_count=sum(
-                    len(action.confirmed_check_ids)
-                    for action in actions
-                    if action.status == "confirmed"
-                ),
+                solved_count=sum(len(action.confirmed_check_ids) for action in actions if action.status == "confirmed"),
                 updated_at=row.updated_at.replace(tzinfo=UTC),
             )
         )

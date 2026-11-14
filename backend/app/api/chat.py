@@ -32,9 +32,7 @@ def list_conversations(scan_id: str):
 @router.post("/api/scans/{scan_id}/conversations", response_model=CreateConversationResponse)
 def create_conversation(scan_id: str, request: CreateConversationRequest):
     """Creates a conversation, optionally with a transcript, and returns its id."""
-    cid = store.create_conversation(
-        scan_id, request.kind, request.chapter_id, request.title, request.messages or []
-    )
+    cid = store.create_conversation(scan_id, request.kind, request.chapter_id, request.title, request.messages or [])
     return CreateConversationResponse(cid=cid)
 
 

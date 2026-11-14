@@ -24,7 +24,7 @@ VERIFICATION_BY_CHECK = {
     "T05": "`curl -sI {site}/sitemap.xml` răspunde `200`, iar `{site}/robots.txt` conține linia `Sitemap:` cu adresa lui.",
     "T06": "Lipește pagina în Rich Results Test (search.google.com/test/rich-results): afacerea apare ca „Local business” fără erori.",
     "T07": "Rulează {site} în PageSpeed Insights (pagespeed.web.dev), pe mobil: timpul de încărcare scade față de analiza inițială.",
-    "T08": "`curl -s {site}` conține `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">`.",
+    "T08": '`curl -s {site}` conține `<meta name="viewport" content="width=device-width, initial-scale=1">`.',
 }
 """How to verify each technical check, with `{site}` standing for the site address."""
 
@@ -43,30 +43,21 @@ def get_dev_export(scan_id: str) -> DevExport:
     """Returns the Markdown document for every open developer problem, plus the note for the developer."""
     report = load_report(scan_id)
     facts = load_facts(scan_id)
-    problems = [
-        problem for problem in get_open_problems(report) if problem.fix_type == "dev_export"
-    ]
+    problems = [problem for problem in get_open_problems(report) if problem.fix_type == "dev_export"]
     site = facts.website or SITE_WITHOUT_WEBSITE
 
     blocks = [f"# Instrucțiuni tehnice pentru {facts.name}"]
     if problems:
-        blocks += [
-            get_problem_block(number, problem, facts, site)
-            for number, problem in enumerate(problems, 1)
-        ]
+        blocks += [get_problem_block(number, problem, facts, site) for number, problem in enumerate(problems, 1)]
     else:
         blocks.append("Nu sunt probleme tehnice deschise.")
 
     check_ids = {problem.check_id for problem in problems}
-    crawlers = (GOOGLE_CRAWLERS if "T02" in check_ids else []) + (
-        AI_CRAWLERS if "T03" in check_ids else []
-    )
+    crawlers = (GOOGLE_CRAWLERS if "T02" in check_ids else []) + (AI_CRAWLERS if "T03" in check_ids else [])
     if crawlers:
         robots_lines = "\n\n".join(f"User-agent: {crawler}\nAllow: /" for crawler in crawlers)
         blocks.append(
-            "## Linii pentru robots.txt\n\n"
-            "Adaugă în `robots.txt`, la rădăcina site-ului:\n\n"
-            f"```text\n{robots_lines}\n```"
+            f"## Linii pentru robots.txt\n\nAdaugă în `robots.txt`, la rădăcina site-ului:\n\n```text\n{robots_lines}\n```"
         )
     if "T06" in check_ids:
         blocks.append(
