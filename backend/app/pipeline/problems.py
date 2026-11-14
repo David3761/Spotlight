@@ -107,6 +107,11 @@ CHAPTER_TEXTS: dict[ChapterId, ChapterTexts] = {
 }
 """The name, intro and „Unde se rezolvă” text of each chapter."""
 
+NO_PROFILE_WHERE_TO_FIX_RO = (
+    "În aplicația Google Maps, unde îți creezi gratuit profilul. Pașii sunt mai jos, la „Creează-ți Profilul Google”."
+)
+"""The „Unde se rezolvă” text of the Google profile chapter when the business has no profile yet (G01)."""
+
 GOOGLE_EDIT = ["Deschide Profilul tău Google din aplicația Google Maps."]
 """The first step of every Google profile fix."""
 
@@ -764,7 +769,7 @@ def build_chapter(chapter_id: ChapterId, all_checks: list[CheckResult], business
         id=chapter_id,
         name_ro=texts.name_ro,
         intro_ro=texts.intro_ro.format_map(TextParams(context)),
-        where_to_fix_ro=texts.where_to_fix_ro,
+        where_to_fix_ro=NO_PROFILE_WHERE_TO_FIX_RO if has_no_profile(checks) else texts.where_to_fix_ro,
         score=get_chapter_score(chapter_id, checks, all_checks),
         weight=CHAPTER_WEIGHTS[chapter_id],
         possible_points=0,
@@ -774,6 +779,11 @@ def build_chapter(chapter_id: ChapterId, all_checks: list[CheckResult], business
         solved=solved,
         unknown=unknown,
     )
+
+
+def has_no_profile(checks: list[CheckResult]) -> bool:
+    """Returns whether the business has no Google profile yet: G01 failed with nothing found (a closed profile has a status)."""
+    return any(check.check_id == "G01" and check.evidence.found is None and not check.claimed_fixed for check in checks)
 
 
 def build_chapters(checks: list[CheckResult], business: Business) -> list[Chapter]:
