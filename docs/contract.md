@@ -84,7 +84,6 @@ interface ScanInputs {
   place_id: string | null;              // from search or resolve-link
   maps_url: string | null;
   no_google_profile: boolean;           // owner said "nu am profil Google"
-  facebook_url: string | null;
   instagram_url: string | null;
   tiktok_url: string | null;
   platforms: Platform[] | null;         // null = question skipped, [] = "Nu folosesc altele"
@@ -112,7 +111,7 @@ type ScanEvent =
   | { type: "failed"; message_ro: string };
 ```
 
-- `detail_ro` is set on `done`, e.g. `"Am găsit Profilul tău Google"`, `"Am găsit 38 de recenzii"`, `"Am citit cafeneauaboema.ro"`, `"Am verificat Facebook și Instagram"`, `"I-am pus lui Gemini 12 întrebări"`.
+- `detail_ro` is set on `done`, e.g. `"Am găsit Profilul tău Google"`, `"Am găsit 38 de recenzii"`, `"Am citit cafeneauaboema.ro"`, `"Am verificat Instagram"`, `"I-am pus lui Gemini 12 întrebări"`.
 - Steps can finish in any order; the frontend marks each one independently.
 - Connecting after the scan finished replays every `done` event, then `complete`.
 
@@ -171,7 +170,6 @@ interface Business {
   phone: string | null;
   website: string | null;
   google_maps_uri: string | null;   // "Deschide Profilul tău Google"
-  facebook_url: string | null;
   instagram_url: string | null;
   instagram_handle: string | null;  // "cafeneauaboema", no @
   tiktok_url: string | null;
@@ -319,7 +317,7 @@ interface InfoPage {
   holiday_hours: string | null;     // null → shown as "de completat"
   phone: string | null;             // null → shown as "numărul tău"
   instagram: string | null;         // "@cafeneauaboema"
-  also_on: string[];                // ["Google Maps", "Facebook", "Glovo", "Wolt"]
+  also_on: string[];                // ["Google Maps", "Glovo", "Wolt"]
   menu: string[];
   faq: { q: string; a: string }[];
   to_fill: string[];                // field names highlighted in yellow
@@ -440,7 +438,6 @@ class Facts(BaseModel):                    # what fix texts and the info page ar
     special_hours_ro: list[str]            # upcoming special days as display lines; [] when none
     attributes_ro: list[str]               # true attributes as labels: ["Terasă", "Plata cu cardul", "Câini acceptați"]
     instagram_handle: str | None           # no @
-    facebook_url: str | None
     tiktok_url: str | None
     platforms_ro: list[str]                # where else it's listed: ["Glovo", "Wolt"]
     website_facts: WebsiteFacts | None     # None when there's no website or it couldn't be read

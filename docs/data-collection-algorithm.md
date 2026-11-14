@@ -67,7 +67,7 @@ The full shape is `ScanInputs` in [contract.md](contract.md).
 | `city`, `neighborhood` | București, Cotroceni | yes | search, prompts, location |
 | `has_website`, `website_url` | da, https://… | yes / if da | 3.3 |
 | `place_id` (picked candidate or resolved link) or `no_google_profile` | ChIJ… | yes | 1, 2 |
-| `facebook_url`, `instagram_url`, `tiktok_url` | … | skippable | 3.4, 3.6 |
+| `instagram_url`, `tiktok_url` | … | skippable | 3.4, 3.6 |
 | `platforms[]` | Glovo, Wolt | skippable | 3.2 (R05), 3.4 (L01) |
 | `self_report.profile_claimed` | da / nu / nu știu | skippable | G12 |
 | `self_report.has_google_description` | da / nu / nu știu | skippable | G08 |
@@ -102,7 +102,7 @@ CanonicalProfile {            // normalized, from Place Details
 }
 
 SourceSnapshot {              // one per page/platform read
-  source: "website" | "facebook" | "instagram" | "glovo" | ...,
+  source: "website" | "instagram" | "glovo" | ...,
   url, fetched_at, status: "ok" | "blocked" | "not_found" | "error",
   raw_text_excerpt, rendered: bool, extracted: { name, address, phone, hours, ... }
 }
@@ -281,8 +281,8 @@ Only links the owner gave (onboarding social links and platform links found on t
 
 ```
 expected = platforms expected for business_type
-           (cafenea: Facebook, Instagram, TripAdvisor, plus Glovo/Wolt/Bolt Food if canonical.delivery)
-           (salon: Facebook, Instagram, Booksy · hotel: Facebook, Instagram, Booking)
+           (cafenea: Instagram, TripAdvisor, plus Glovo/Wolt/Bolt Food if canonical.delivery)
+           (salon: Instagram, Booksy · hotel: Instagram, Booking)
 
 for each known URL:
     fetch (raw first; Playwright if empty), L3 extract → { name, address, phone, hours }
@@ -325,23 +325,25 @@ M05 a forum / community mention                                                 
 
 #### 3.6 Social → `social`
 
+Instagram and TikTok only; Facebook is not part of the product.
+
 ```
 links  = onboarding URLs ∪ links found on the website (3.3)
-ig     = Instagram Graph API Business Discovery for the handle:
+ig     = Instagram Graph API Business Discovery for the handle (GET https://graph.facebook.com/v27.0/...):
          GET /{META_IG_USER_ID}?fields=business_discovery.username({handle})
              {biography,website,followers_count,media_count,media.limit(10){timestamp}}
          works only for business/creator accounts; personal account or no token → ig = null
-fb     = httpx GET the Facebook URL: resolves (not 404 / not a "content isn't available" page)
 
-S01 Facebook page exists and resolves                      HTTP
-S02 Instagram profile exists                               ig != null, else HTTP status of the profile URL
-S03 posted in the last 30 days                             newest ig media timestamp; ig null → self_report.last_social_post
-S04 cross-links: website ↔ socials ↔ Google profile        website links to socials, ig.website points to the site,
-                                                           canonical.website set
-S05 Instagram bio says what + where (+ link or hours)      L1-style judge on ig.biography; ig null → unknown
+S02 Instagram profile exists                               ig != null, else HTTP status of the profile URL      (25)
+S03 posted in the last 30 days                             newest ig media timestamp; ig null → self_report.last_social_post   (30)
+S04 cross-links: website ↔ Instagram ↔ Google profile      website links to Instagram, ig.website points to the site,
+                                                           canonical.website set                                 (20)
+S05 Instagram bio says what + where (+ link or hours)      L1-style judge on ig.biography; ig null → unknown     (25)
 ```
 
-Emit `retele` done when 3.4, 3.5 and 3.6 finish: „Am verificat Facebook și Instagram” (name the platforms actually checked).
+(S01, the old Facebook check, is removed; the other IDs stay as they were.)
+
+Emit `retele` done when 3.4, 3.5 and 3.6 finish: „Am verificat Instagram”.
 
 #### 3.7 Training-data probe → `cunoaste`
 
@@ -481,11 +483,10 @@ Check: the design's mock scores (65/50/35/50/35/25/55/20, Gemini 17) give `overa
 | | M02 best-of list | 25 | Search grounding + L4 | owner_action (outreach message) |
 | | M03 local press | 15 | Search grounding + L4 | generate (pitch email) |
 | | M05 forum mention | 15 | Search grounding + L4 | — |
-| social | S01 Facebook | 20 | HTTP | owner_action |
-| | S02 Instagram | 20 | Meta Business Discovery | owner_action |
-| | S03 recent post | 25 | Meta (fallback self-report) | generate (post ideas) |
-| | S04 cross-links | 15 | website links + Meta + Places | owner_action |
-| | S05 Instagram bio | 20 | Meta + judge | generate (Instagram bio) |
+| social | S02 Instagram | 25 | Instagram Business Discovery | owner_action |
+| | S03 recent post | 30 | Instagram (fallback self-report) | generate (post ideas) |
+| | S04 cross-links | 20 | website links + Instagram + Places | owner_action |
+| | S05 Instagram bio | 25 | Instagram + judge | generate (Instagram bio) |
 | cunoaste | K01–K03 | 50/30/20 | Gemini, no tools + L7 | — |
 | gemini | mention rate / position / facts | 70/15/15 | Gemini + Maps & Search grounding | — |
 
@@ -632,7 +633,7 @@ async def run_pipeline(scan_id: str) -> None:
 | info | Name, address, phone, hours per source | Data already collected + fetched owner-provided listing pages |
 | info | Matching | `phonenumbers` + `rapidfuzz` with the §4 rules |
 | mentiuni | Third-party pages mentioning the business | Gemini + Google Search grounding; domains from chunk titles, URLs by following the redirect |
-| social | Instagram / Facebook / TikTok links | Onboarding + website links and JSON-LD `sameAs` |
+| social | Instagram / TikTok links | Onboarding + website links and JSON-LD `sameAs` |
 | social | Instagram bio, website, posts, last post date | Instagram Graph API: Business Discovery |
 | cunoaste | Gemini's answer without search | Gemini API, no tools, 2 prompts × 3 runs |
 | cunoaste | Correct / unknown / wrong verdict | Gemini as judge, compared with Places data |
@@ -646,12 +647,12 @@ async def run_pipeline(scan_id: str) -> None:
 
 - **Places API limits:** at most 5 reviews (by relevance) and 10 photos. SerpApi covers review dates and replies; photo counts above 10 show as "10+".
 - **Owner description and posts aren't in any public API.** The Business Profile API needs access approval (~14 days) and the owner's OAuth consent; v1 uses self-report. Later: „Conectează profilul Google”.
-- **Instagram Business Discovery** only works for business and creator accounts, and needs a Meta app with a token. Personal accounts fall back to self-report and `unknown`.
+- **Instagram Business Discovery** only works for business and creator accounts. It needs a Meta app with Facebook Login and a Facebook Page linked to our own Instagram professional account; that Page is setup only, the product never checks Facebook. Meta's Instagram Login setup (no Page) can't read other accounts. Personal accounts fall back to self-report and `unknown`.
 - **Gemini API ≠ the consumer Gemini app.** Grounded API answers are a close proxy. Say „testat cu Gemini”.
 - **Search grounding links are redirects;** following them costs one request each.
 - **Maps grounding language and API:** Google's Maps grounding page (14 November 2026) says it "currently only supports English language prompts and responses", and its examples use the Interactions API (`client.interactions.create`, tool `{"type": "google_maps", "latitude", "longitude"}`) rather than `generateContent` with `toolConfig.retrievalConfig`. Verify both with a real call before building the live test; if Romanian prompts don't return Maps chunks, report it before changing the design.
 - **To verify:** whether `currentOpeningHours` reliably exposes holiday hours; whether SerpApi accepts `place_id` directly for reviews; how `Google-Extended` affects Gemini grounding.
-- **Not in v1:** Tripadvisor data, Bing Places, Apple Maps, Romanian directories, ChatGPT as a second engine, mention dates (M04).
+- **Not in v1:** Facebook (dropped from the product), Tripadvisor data, Bing Places, Apple Maps, Romanian directories, ChatGPT as a second engine, mention dates (M04).
 
 ---
 

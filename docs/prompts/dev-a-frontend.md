@@ -75,7 +75,7 @@ A scripted chat with the business card beside it (collapsible card on mobile). S
 3. City and neighbourhood.
 4. Website: "Da" + URL, or "Nu".
 5. Google Maps: paste a link (→ `POST /api/places/resolve-link`) or „Caută-mă pe Google” (→ `POST /api/places/search`, candidate cards with „Cel mai probabil”, „Asta sunt eu”, „Nu sunt aici · lipesc eu linkul”), or "Nu am profil Google". A `422 unreadable_link` shows the `Eroare` state („Lipesc alt link”, „Caută-mă pe Google”, „Sar peste, îl adaug mai târziu”; skipping sends `place_id: null`, `no_google_profile: false`). After a place is picked, three quick-reply questions fill `self_report`: „Ai revendicat profilul Google?” (Da / Nu / Nu știu), „Ai o descriere în profilul Google?” (Da / Nu / Nu știu), „Când ai postat ultima dată pe Google?” (Luna asta / Mai demult / Niciodată / Nu știu).
-6. Social links: Facebook, Instagram, TikTok, each skippable. Then „Când ai postat ultima dată pe rețele?” with the same four answers.
+6. Social links: Instagram and TikTok, each skippable („Ai Instagram sau TikTok? Lipește linkurile. Poți sări peste oricare.”). No Facebook anywhere in the app. Then „Când ai postat ultima dată pe rețele?” with the same four answers.
 7. Other platforms: chips TripAdvisor, Glovo, Wolt, Bolt Food, Booking, Booksy, „Nu folosesc altele”. CTA „Gata, analizează afacerea (N platforme)”.
 
 On submit: `POST /api/scans` with `ScanInputs`, then `POST /api/scans/{id}/conversations` with `kind: "onboarding"`, title „Configurarea afacerii”, and the scripted transcript as `messages`, then go to `/scan/{id}/loading`. „Continui mai târziu” can be a no-op.

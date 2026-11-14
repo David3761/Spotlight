@@ -34,8 +34,8 @@ Dev A's backend code imports only `app.models`, `app.db`, `app.llm.client`, `app
 
 - Google Cloud project with billing (needed to enable the APIs; stay inside the free monthly quota): enable Places API (New) and PageSpeed Insights API, one key restricted to those two.
 - SerpApi account and key (free plan).
-- Meta app for Instagram Business Discovery: an Instagram professional account linked to a Facebook Page, a long-lived access token, and that account's IG user ID.
-- `cp backend/.env.example backend/.env`, then paste the keys. The two Gemini keys come from Dev A; the model IDs are already filled in.
+- Two Gemini keys from AI Studio: `GEMINI_API_KEY` from a project with no billing (free tier) and `GEMINI_GROUNDED_API_KEY` from a project with billing (grounding needs the paid tier). Share both with Dev A privately.
+- `cp backend/.env.example backend/.env`, then paste the keys. `META_ACCESS_TOKEN`, `META_IG_USER_ID` and `DEMO_PLACE_ID` come from Dev A; the model IDs are already filled in.
 - `uv` (`powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"` on Windows); uv downloads Python 3.12 itself.
 
 ## Build order
@@ -51,7 +51,7 @@ Push after every task (`git pull --rebase` first). Check the acceptance line bef
 - `app/db.py`: SQLModel engine on `backend/app.db`; `scans` table (`id`, `created_at`, `status`, `inputs`, `internal`, `report`, `error`, JSON columns as text); `ConversationRow` and `get_session()` exactly as in the contract; `create_all` on startup.
 - `app/cache.py`: `get(parts)` / `set(parts, value)` exactly as in the contract.
 - `app/llm/client.py`, first version: `json_call`, `text_call`, `get_client`, `get_model` exactly as in the contract, on the free-tier `GEMINI_API_KEY`, with the model IDs from `.env`. Dev A's endpoints call them from gate 1.
-- `app/services/resolution.py`: `ScanNotFound` and all five functions exactly as in the contract, working on fixture-backed scans. For those, `load_facts` returns `fixtures/boema_facts.json`, a `Facts` for Cafeneaua Boema taken from `FisaInfo.dc.html` (address, hours, Instagram, "Ne găsești și pe", menu, FAQ); phone and special hours stay empty, as the artboard shows them as "de completat".
+- `app/services/resolution.py`: `ScanNotFound` and all five functions exactly as in the contract, working on fixture-backed scans. For those, `load_facts` returns `fixtures/boema_facts.json`, a `Facts` for Cafeneaua Boema taken from `FisaInfo.dc.html` (address, hours, Instagram, "Ne găsești și pe" without Facebook, menu, FAQ); phone and special hours stay empty, as the artboard shows them as "de completat".
 - `fixtures/boema_report.json`: a complete `Report` for Cafeneaua Boema built from the design's mock data:
   - overall 42 with `overall_exact` 42.2
   - chapter scores 65 / 50 / 35 / 50 / 35 / 25 / 55 / 20 in chapter order
@@ -59,6 +59,7 @@ Push after every task (`git pull --rebase` first). Check the acceptance line bef
   - `next_steps` = the three in `Panou.dc.html`
   - Gemini score 17 with 2 of 12 mentions, groups, prompts, competitors and the comparison exactly as in `Gemini.dc.html` (photo counts above 10 → 10 with `photo_count_capped: true`), each prompt with one or two plausible sources
   - problems use catalog `check_id`s and their points; titles and reasons come from the artboards where they exist (`Capitol` for `profil`, `Rezolva` for `social` with `S05` as the Instagram bio, `FisaInfo` for `site` with `T09` as the info page)
+  - no Facebook anywhere (it's dropped from the product): the three `social` problems are S05 (Instagram bio), S04 (Instagram doesn't link to the site) and S03 (no recent post); follow `docs/architecture.md` → "Where the build differs from the design" for the changed copy
   - `solved` items as in `Capitol.dc.html`
 - Stub routes for every scan-side endpoint in the contract (not the Fixes and Assistant ones: those are Dev A's routers, which you register), all returning contract-shaped data built from the fixture:
   - `POST /api/scans` returns a new ID backed by the fixture.
@@ -128,7 +129,7 @@ Then checks C01–C08 and T01–T09, and the T-gate cap. Save the website facts 
 
 - `collectors/training_probe.py` (§3.7): two prompts × 3 runs with no tools, plus one L7 judge call.
 - `collectors/mentions.py` (§3.5): five Search-grounded queries; domains from chunk titles; follow redirects for URLs; filter; L4 classify; M01, M02, M03, M05.
-- `collectors/social.py` (§3.6): Business Discovery for the Instagram handle (personal account or no token → fallbacks), Facebook resolve check, cross-links from the website links, S01–S05.
+- `collectors/social.py` (§3.6): Business Discovery for the Instagram handle (personal account or no token → fallbacks), cross-links from the website links, S02–S05. No Facebook anywhere.
 - `collectors/listings.py` (§3.4): owner and website links only; fetch, L3 extract, normalize, compare; L01, L02 with per-field problems `L02:<source>:<field>`.
 
 ### Task 8 · Demo safety → gate 3 (hour 18–20)
