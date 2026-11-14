@@ -14,9 +14,9 @@ from app.assistant.schemas import (
     ProposedAction,
     ProposedItem,
 )
-from app.fixes.generate import PROMPTS_DIR, get_generated_text, get_open_problems
+from app.fixes.generate import get_generated_text, get_open_problems
 from app.fixes.schemas import Tone
-from app.llm.client import get_client, get_model
+from app.llm.client import PROMPTS_DIR, get_client, get_model
 from app.models import Problem, Report
 from app.services.resolution import load_report, mark_resolved, unmark_resolved
 

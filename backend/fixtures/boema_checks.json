@@ -666,13 +666,11 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": null,
+      "found": "Am găsit mențiuni pe 3 site-uri.",
       "expected": null,
       "url": null
     },
-    "params": {
-      "sites": "3 site-uri"
-    },
+    "params": {},
     "reason_ro": null
   },
   {

@@ -1,15 +1,10 @@
 """Writes the fix texts for open `generate` problems and holds the helpers the other fix modules share."""
 
-from pathlib import Path
-
 from app import cache
 from app.fixes.schemas import GeneratedText, GeneratedTextDraft, Tone
-from app.llm.client import json_call
+from app.llm.client import PROMPTS_DIR, json_call
 from app.models import Facts, Problem, Report, ScanInputs
 from app.services.resolution import load_facts, load_inputs, load_report
-
-PROMPTS_DIR = Path(__file__).resolve().parents[1] / "llm" / "prompts"
-"""The folder that holds every prompt file."""
 
 TONE_INSTRUCTIONS: dict[Tone, str] = {
     "prietenos": "Ton prietenos și cald, ca și cum proprietarul vorbește direct cu clienții.",

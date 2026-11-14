@@ -2,11 +2,10 @@
 
 import asyncio
 import logging
-from pathlib import Path
 
 from pydantic import BaseModel
 
-from app.llm.client import json_call
+from app.llm.client import PROMPTS_DIR, json_call
 from app.models import BusinessType, PostRecency, ScanInputs, YesNoUnknown
 from app.pipeline.canonical import ATTRIBUTE_LABELS_RO, CanonicalProfile
 from app.pipeline.romanian import TYPE_NOUNS, get_count_phrase, get_list_phrase
@@ -14,9 +13,6 @@ from app.pipeline.scoring import get_check_result
 from app.pipeline.types import CheckResult, Evidence
 
 logger = logging.getLogger(__name__)
-
-PROMPTS_DIR = Path(__file__).resolve().parents[2] / "llm" / "prompts"
-"""The directory holding the LLM prompt templates."""
 
 CATEGORY_TIMEOUT_SECONDS = 10
 """The time limit of the category judgement, so a slow Gemini never costs the other profile checks."""

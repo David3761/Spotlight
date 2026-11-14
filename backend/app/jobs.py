@@ -32,7 +32,11 @@ from app.pipeline.assemble import (
 from app.pipeline.canonical import CanonicalProfile, get_canonical
 from app.pipeline.collectors.competitors import NearbyCompetitor, get_nearby_competitors
 from app.pipeline.collectors.google_profile import collect_google_profile
+from app.pipeline.collectors.listings import LISTING_CHECK_IDS, collect_listings
+from app.pipeline.collectors.mentions import MENTION_CHECK_IDS, collect_mentions
 from app.pipeline.collectors.reviews import collect_reviews
+from app.pipeline.collectors.social import SOCIAL_CHECK_IDS, collect_social
+from app.pipeline.collectors.training_probe import PROBE_CHECK_IDS, PROBE_QUESTION_COUNT, collect_training_probe
 from app.pipeline.collectors.website import (
     CONTENT_CHECK_IDS,
     TECH_CHECK_IDS,
@@ -42,7 +46,7 @@ from app.pipeline.collectors.website import (
 )
 from app.pipeline.resolve import search_places
 from app.pipeline.romanian import get_count_phrase
-from app.pipeline.scoring import CATALOG, get_unknown_results
+from app.pipeline.scoring import get_unknown_results
 from app.pipeline.types import CheckResult, ScanInternal
 from app.services.resolution import FIXTURES_DIR
 
@@ -72,11 +76,14 @@ REVIEW_CHECK_IDS = ["R01", "R02", "R03", "R04", "R05"]
 WEBSITE_TIMEOUT_SECONDS = 45
 """The time limit of the website collector (3.3), PageSpeed's 40 s included."""
 
-PENDING_TIMEOUT_SECONDS = 1
-"""The time limit of a collector that isn't built yet and answers at once."""
+PRESENCE_COLLECTOR_TIMEOUT_SECONDS = 30
+"""The time limit of each of the listings, mentions and social collectors (3.4–3.6)."""
 
-PENDING_REASON_RO = "Nu verificăm încă asta."
-"""Why a check of a collector that isn't built yet couldn't run."""
+PRESENCE_TIMEOUT_SECONDS = 80
+"""The time limit of the `retele` step: the website collector it waits for, then its own collectors."""
+
+PROBE_TIMEOUT_SECONDS = 30
+"""The time limit of the training-data probe (3.7)."""
 
 COLLECTOR_ERROR_RO = "Nu am putut verifica acum. Încearcă din nou mai târziu."
 """Why a check couldn't run when its collector failed or took too long."""
@@ -253,15 +260,7 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
         )
         review_count = canonical.review_count if canonical else None
         website = get_website_url(inputs, canonical)
-        review_checks, website_scan, social_checks, gemini_checks = await asyncio.gather(
-            run_step(
-                progress,
-                "recenzii",
-                collect_reviews(inputs, canonical, nearby),
-                REVIEWS_TIMEOUT_SECONDS,
-                get_unknown_results(REVIEW_CHECK_IDS, COLLECTOR_ERROR_RO),
-                lambda _: get_reviews_detail(review_count),
-            ),
+        website_step = asyncio.create_task(
             run_step(
                 progress,
                 "website",
@@ -271,18 +270,36 @@ async def run_pipeline(scan_id: str, inputs: ScanInputs, progress: ScanProgress)
                     checks=get_unknown_results(CONTENT_CHECK_IDS + TECH_CHECK_IDS, COLLECTOR_ERROR_RO), facts=None, links=[]
                 ),
                 lambda scan: get_website_detail(website, has_known(scan.checks, "C")),
+            )
+        )
+        review_checks, website_scan, presence_checks, probe_checks = await asyncio.gather(
+            run_step(
+                progress,
+                "recenzii",
+                collect_reviews(inputs, canonical, nearby),
+                REVIEWS_TIMEOUT_SECONDS,
+                get_unknown_results(REVIEW_CHECK_IDS, COLLECTOR_ERROR_RO),
+                lambda _: get_reviews_detail(review_count),
             ),
+            website_step,
             run_step(
                 progress,
                 "retele",
-                get_pending_checks("LMS"),
-                PENDING_TIMEOUT_SECONDS,
-                [],
+                collect_presence(inputs, canonical, website_step),
+                PRESENCE_TIMEOUT_SECONDS,
+                get_unknown_results(LISTING_CHECK_IDS + MENTION_CHECK_IDS + SOCIAL_CHECK_IDS, COLLECTOR_ERROR_RO),
                 lambda checks: get_social_detail(has_known(checks, "S")),
             ),
-            run_step(progress, "gemini", get_pending_checks("K"), PENDING_TIMEOUT_SECONDS, [], lambda _: get_gemini_detail(0)),
+            run_step(
+                progress,
+                "gemini",
+                collect_training_probe(inputs, canonical),
+                PROBE_TIMEOUT_SECONDS,
+                get_unknown_results(PROBE_CHECK_IDS, COLLECTOR_ERROR_RO),
+                lambda checks: get_gemini_detail(PROBE_QUESTION_COUNT if has_known(checks) else 0),
+            ),
         )
-        all_checks = google_checks + review_checks + website_scan.checks + social_checks + gemini_checks
+        all_checks = google_checks + review_checks + website_scan.checks + presence_checks + probe_checks
         me = (
             get_compare_row(canonical)
             if canonical
@@ -350,9 +367,38 @@ async def run_step[T](
     return result
 
 
-async def get_pending_checks(prefixes: str) -> list[CheckResult]:
-    """Returns the checks of collectors that aren't built yet, by check ID prefix, as `unknown`."""
-    return get_unknown_results([check_id for check_id in CATALOG if check_id[0] in prefixes], PENDING_REASON_RO)
+async def collect_presence(
+    inputs: ScanInputs, canonical: CanonicalProfile | None, website_step: asyncio.Task[WebsiteScan]
+) -> list[CheckResult]:
+    """Runs listings, mentions and social (3.4–3.6), each with its own time limit; a failed one leaves its checks `unknown`.
+
+    Mentions starts at once; listings and social wait for the website's links. The shield keeps this step's
+    time limit from cancelling the website step it waits on.
+    """
+    mentions = asyncio.create_task(
+        run_collector(
+            collect_mentions(inputs, canonical),
+            PRESENCE_COLLECTOR_TIMEOUT_SECONDS,
+            get_unknown_results(MENTION_CHECK_IDS, COLLECTOR_ERROR_RO),
+        )
+    )
+    try:
+        website = await asyncio.shield(website_step)
+        listing_checks, social_checks = await asyncio.gather(
+            run_collector(
+                collect_listings(inputs, canonical, website.links),
+                PRESENCE_COLLECTOR_TIMEOUT_SECONDS,
+                get_unknown_results(LISTING_CHECK_IDS, COLLECTOR_ERROR_RO),
+            ),
+            run_collector(
+                collect_social(inputs, canonical, website.links),
+                PRESENCE_COLLECTOR_TIMEOUT_SECONDS,
+                get_unknown_results(SOCIAL_CHECK_IDS, COLLECTOR_ERROR_RO),
+            ),
+        )
+        return listing_checks + await mentions + social_checks
+    finally:
+        mentions.cancel()
 
 
 def has_known(checks: list[CheckResult], prefixes: str = "") -> bool:

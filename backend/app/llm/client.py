@@ -3,6 +3,7 @@
 import asyncio
 import json
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 
 import httpx
@@ -16,6 +17,9 @@ from app.config import get_settings
 
 Tier = Literal["fast", "smart"]
 """The model tier: `fast` for extraction and judging, `smart` for texts and chat."""
+
+PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
+"""The directory holding the LLM prompt templates."""
 
 GroundingTool = Literal["maps", "search"]
 """What a grounded call looks things up in: Google Maps (live test) or Google Search (mentions)."""
@@ -95,10 +99,13 @@ async def json_call[T: BaseModel](prompt: str, schema: type[T], tier: Tier = "fa
     return value
 
 
-async def text_call(prompt: str, tier: Tier = "smart", system: str | None = None) -> str:
-    """Returns Gemini's plain-text answer; an identical call is answered from the cache."""
+async def text_call(prompt: str, tier: Tier = "smart", system: str | None = None, run: int = 0) -> str:
+    """Returns Gemini's plain-text answer; an identical call is answered from the cache.
+
+    `run` tells repeated asks of the same prompt apart, so each run is cached separately.
+    """
     model = get_model(tier)
-    key = ["text_call", model, system or "", prompt]
+    key = ["text_call", model, system or "", prompt, str(run)]
     cached = cache.get(key)
     if cached is not None:
         return cached

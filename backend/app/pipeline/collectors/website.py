@@ -4,7 +4,6 @@ import asyncio
 import json
 import logging
 import re
-from pathlib import Path
 from typing import Any, Literal
 from urllib.parse import urljoin, urlparse
 from urllib.robotparser import RobotFileParser
@@ -16,7 +15,7 @@ from selectolax.lexbor import LexborHTMLParser
 
 from app import cache
 from app.config import get_settings
-from app.llm.client import json_call
+from app.llm.client import PROMPTS_DIR, json_call
 from app.models import FaqItem, ScanInputs, WebsiteFacts
 from app.pipeline.canonical import CanonicalProfile
 from app.pipeline.fetch import FetchedPage, fetch_page, fetch_raw, get_today, is_empty_shell
@@ -33,9 +32,6 @@ from app.pipeline.scoring import get_check_result, get_unknown_results
 from app.pipeline.types import CheckResult, Evidence
 
 logger = logging.getLogger(__name__)
-
-PROMPTS_DIR = Path(__file__).resolve().parents[2] / "llm" / "prompts"
-"""The directory holding the LLM prompt templates."""
 
 CONTENT_CHECK_IDS = [f"C0{number}" for number in range(1, 9)]
 """The content checks (`continut`)."""

@@ -8,7 +8,7 @@ import httpx
 
 from app.errors import ApiError
 from app.models import PlaceCandidate
-from app.pipeline.normalize import names_match, owner_name_matches
+from app.pipeline.normalize import names_match, names_overlap
 from app.pipeline.places_api import places_request
 
 SEARCH_FIELD_MASK = ",".join(
@@ -55,7 +55,7 @@ async def search_places(business_name: str, city: str, neighborhood: str) -> lis
     data = await places_request("POST", "places:searchText", SEARCH_FIELD_MASK, {"textQuery": query, "pageSize": MAX_CANDIDATES})
     places = data.get("places", [])[:MAX_CANDIDATES]
     return [
-        get_candidate(place, index == 0 and owner_name_matches(business_name, (place.get("displayName") or {}).get("text", "")))
+        get_candidate(place, index == 0 and names_overlap(business_name, (place.get("displayName") or {}).get("text", "")))
         for index, place in enumerate(places)
     ]
 

@@ -85,6 +85,15 @@ CLOSED_WORDS = ("inchis", "closed")
 MINUTES_PER_DAY = 24 * 60
 """Minutes in a day, the closing time of a non-stop interval."""
 
+HOURS_TOKEN_PATTERN = re.compile(
+    r"(?P<open_hour>\d{1,2})(?:[:.](?P<open_minute>\d{2}))?\s*[-–—]\s*(?P<close_hour>\d{1,2})(?:[:.](?P<close_minute>\d{2}))?"
+    rf"|\b(?P<closed>{'|'.join(CLOSED_WORDS)})\b"
+)
+"""A time range („8:00–20:00”, „9-17”) or a closed word, in diacritic-free text."""
+
+HOURS_SEGMENT_PATTERN = re.compile(r"[;\n|]|,(?=\s*[a-z])")
+"""Where hours text splits into parts: „;”, line breaks, „|” and commas followed by a word."""
+
 WeeklyHours = dict[int, list[tuple[int, int]]]
 """Opening intervals per day (0 = Monday), in minutes from midnight; a missing day is unknown, `[]` is closed."""
 
@@ -174,9 +183,9 @@ def names_match(first: str, second: str) -> bool:
     return fuzz.token_sort_ratio(get_name_key(first), get_name_key(second)) >= NAME_MATCH_THRESHOLD
 
 
-def owner_name_matches(typed_name: str, google_name: str) -> bool:
-    """Returns whether the name the owner typed matches a Google name, also when it is only part of it („Boema”)."""
-    return fuzz.token_set_ratio(get_name_key(typed_name), get_name_key(google_name)) >= NAME_MATCH_THRESHOLD
+def names_overlap(first: str, second: str) -> bool:
+    """Returns whether two business names match, also when one is only part of the other („Boema”, „Origo Coffee”)."""
+    return fuzz.token_set_ratio(get_name_key(first), get_name_key(second)) >= NAME_MATCH_THRESHOLD
 
 
 def get_instagram_handle(url: str | None) -> str | None:
@@ -191,6 +200,18 @@ def get_instagram_handle(url: str | None) -> str | None:
     if not segments or segments[0] in INSTAGRAM_RESERVED_PATHS:
         return None
     return segments[0].removeprefix("@")
+
+
+def get_domain(url: str) -> str:
+    """Returns a link's host without `www.`, in lowercase; a bare domain counts as a link."""
+    return urlparse(url if "://" in url else f"https://{url}").netloc.lower().removeprefix("www.")
+
+
+def is_on_host(domain: str, host: str) -> bool:
+    """Returns whether a domain is a host or one of its subdomains; a host ending in a dot („google.”) takes any country ending."""
+    if host.endswith("."):
+        return domain.startswith(host) or f".{host}" in domain
+    return domain == host or domain.endswith(f".{host}")
 
 
 def get_minutes(hour: str, minute: str | None) -> int:
@@ -212,29 +233,37 @@ def get_days(day_text: str) -> list[int]:
 
 
 def parse_hours(text: str) -> WeeklyHours:
-    """Returns the opening intervals per day read from free text such as „L–V 8:00–20:00; S–D închis” or „non-stop”."""
+    """Returns the opening intervals per day read from free text such as „L–V 8:00–20:00; S–D închis” or „non-stop”.
+
+    The text is split at „;”, line breaks and commas before a word; inside each part, a time range applies to the days
+    written just before it, and a range with none (a split shift, „8–12, 14–18”) adds to the previous days. „Închis”
+    applies to the days before it, or after it („închis luni”). A closing time at or before the opening time is on the
+    next day, as in Google's hours, so „7:30–00:00” ends at midnight.
+    """
     normalized = strip_diacritics(text)
     if any(phrase in normalized for phrase in NON_STOP_WORDS):
         return {day: [(0, MINUTES_PER_DAY)] for day in range(7)}
     hours: WeeklyHours = {}
-    time_pattern = re.compile(r"(\d{1,2})(?:[:.](\d{2}))?\s*[-–—]\s*(\d{1,2})(?:[:.](\d{2}))?")
-    for segment in re.split(r"[;\n|]|,(?=\s*[a-z])", normalized):
-        first_time = time_pattern.search(segment)
-        day_text = segment[: first_time.start()] if first_time else segment
-        days = get_days(day_text)
-        if not days:
-            continue
-        if any(word in segment for word in CLOSED_WORDS):
-            intervals: list[tuple[int, int]] = []
-        else:
-            intervals = [
-                (get_minutes(open_hour, open_minute), get_minutes(close_hour, close_minute))
-                for open_hour, open_minute, close_hour, close_minute in time_pattern.findall(segment)
-            ]
-            if not intervals:
+    for segment in HOURS_SEGMENT_PATTERN.split(normalized):
+        tokens = list(HOURS_TOKEN_PATTERN.finditer(segment))
+        days: list[int] = []
+        for index, token in enumerate(tokens):
+            stated_days = get_days(segment[tokens[index - 1].end() if index else 0 : token.start()])
+            if token.group("closed"):
+                next_start = tokens[index + 1].start() if index + 1 < len(tokens) else len(segment)
+                for day in stated_days or get_days(segment[token.end() : next_start]):
+                    hours[day] = []
+                days = []
                 continue
-        for day in days:
-            hours[day] = intervals
+            if stated_days:
+                days = stated_days
+                for day in days:
+                    hours[day] = []
+            opening = get_minutes(token.group("open_hour"), token.group("open_minute"))
+            closing = get_minutes(token.group("close_hour"), token.group("close_minute"))
+            interval = (opening, closing if closing > opening else closing + MINUTES_PER_DAY)
+            for day in days:
+                hours[day].append(interval)
     return hours
 
 

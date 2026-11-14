@@ -1,5 +1,6 @@
 """Turns check results into chapters: Romanian problem cards with fixes, solved items and checks that couldn't run."""
 
+from string import Formatter
 from typing import Literal
 
 from pydantic import BaseModel
@@ -504,7 +505,7 @@ TEMPLATES: dict[str, CheckTemplate] = {
             "Invită bloggerii din {city} care scriu despre {type_plural} să te viziteze.",
             "Roagă-ți partenerii și furnizorii să te menționeze pe site-ul lor.",
         ],
-        evidence_ro="Am găsit mențiuni pe {sites}.",
+        evidence_ro="{found}",
     ),
     "M02": CheckTemplate(
         label_ro="Topuri și recomandări",
@@ -688,7 +689,7 @@ def build_problem(check: CheckResult, chapter_checks: list[CheckResult], busines
     panel = get_panel(check.check_id)
     deep_link, deep_link_label = get_deep_link(template.link, panel, business)
     points = get_problem_points(check, chapter_checks)
-    evidence = template.evidence_ro.format_map(params).strip() if template.evidence_ro else ""
+    evidence = get_evidence(template, params)
     return Problem(
         check_id=check.check_id,
         chapter_id=check.chapter_id,
@@ -705,9 +706,19 @@ def build_problem(check: CheckResult, chapter_checks: list[CheckResult], busines
             deep_link_label_ro=deep_link_label,
             where_ro=template.where_ro,
             max_chars=template.max_chars,
-            evidence_ro=evidence or None,
+            evidence_ro=evidence,
         ),
     )
+
+
+def get_evidence(template: CheckTemplate, params: TextParams) -> str | None:
+    """Returns a problem's evidence line, or `None` when a value it needs is empty, so no card shows a half sentence."""
+    if template.evidence_ro is None:
+        return None
+    names = [name for _, name, _, _ in Formatter().parse(template.evidence_ro) if name]
+    if not all(params[name] for name in names):
+        return None
+    return template.evidence_ro.format_map(params).strip() or None
 
 
 def build_chapter(chapter_id: ChapterId, all_checks: list[CheckResult], business: Business) -> Chapter:
