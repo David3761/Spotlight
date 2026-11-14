@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-plus-jakarta), system-ui, sans-serif;
+}
+
+@theme {
+  --color-surface: #ffffff;
+  --color-page: #f6f8fb;
+  --color-ink: #0f172a;
+  --color-body: #334155;
+  --color-subtle: #475569;
+  --color-muted: #64748b;
+  --color-faint: #94a3b8;
+  --color-border: #e4e9f0;
+  --color-divider: #eef2f6;
+  --color-fill: #f1f4f9;
+  --color-bar: #cbd5e1;
+
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-strong: #1e40af;
+  --color-accent-deep: #1e3a8a;
+  --color-accent-muted: #3b5ba9;
+  --color-accent-soft: #eaf1fe;
+  --color-accent-wash: #f3f7ff;
+  --color-accent-tint: #dce7fd;
+  --color-accent-outline: #c9d8f8;
+  --color-accent-line: #9dbbf7;
+
+  --color-low: #e5484d;
+  --color-low-text: #b42318;
+  --color-low-tint: #fdecec;
+  --color-low-line: #f5c2c2;
+  --color-mid: #f5a524;
+  --color-mid-text: #b45309;
+  --color-mid-tint: #fef4e2;
+  --color-high: #2fb36e;
+  --color-high-text: #157f45;
+  --color-high-tint: #e5f6ec;
+  --color-high-wash: #f3fbf6;
+  --color-high-line: #bfe6cf;
+  --color-ring-track: #e9eef5;
+
+  --color-backdrop: rgb(15 23 42 / 0.32);
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+}
