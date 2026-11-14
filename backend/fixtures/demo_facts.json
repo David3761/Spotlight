@@ -34,9 +34,10 @@
     "TripAdvisor"
   ],
   "website_facts": {
-    "what_it_is": "pioneering specialty coffee since 2013",
+    "what_it_is": "cafenea de specialitate care oferă cafea, ceai, ciocolată și echipamente",
     "menu_items_or_services": [
-      "Cafea Espresso",
+      "Cafea",
+      "Espresso",
       "Filtru",
       "Microlot",
       "Abonamente",
@@ -49,8 +50,7 @@
       "Ciocolată artizanală",
       "Tablete",
       "Ciocolată caldă",
-      "Bundles",
-      "Echipamente"
+      "Bundles"
     ],
     "prices_present": false,
     "faq_items": [],
