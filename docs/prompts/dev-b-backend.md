@@ -28,13 +28,14 @@ Dev A's backend code imports only `app.models`, `app.db`, `app.llm.client`, `app
 
 - Dev A pushes to `main` often. Run `git pull --rebase` before you start and before each task, and again before every push. Never force-push.
 - Run anything that doesn't bill: local servers, tests, free API quotas, cached responses. Before calling a paid service, check its free monthly quota and stay inside it; cache every response so repeats cost nothing. Never upgrade a plan.
-- Every Gemini call uses the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) use `GEMINI_MODEL_LIVE` (`gemini-2.5-flash-lite`), whose free tier allows 500 Maps-grounded and 500 Search-grounded requests a day: cache every grounded response and run real scans only when you need them.
+- Extraction, texts and chat use the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) go through Google Cloud (Vertex AI) on Dev B's free-trial project, with `GEMINI_MODEL_LIVE` (`gemini-3.5-flash-lite`), signed in with Application Default Credentials (`gcloud auth application-default login`) and `GOOGLE_CLOUD_PROJECT`; the trial credit pays, and nothing reaches a card unless someone clicks „Upgrade”. Cache every grounded response and run real scans only when you need them.
 
 ## Before coding (I do these by hand; remind me if a key is missing)
 
 - Google Cloud project with billing (needed to enable the APIs; stay inside the free monthly quota): enable Places API (New) and PageSpeed Insights API, one key restricted to those two.
 - SerpApi account and key (free plan).
 - One Gemini key from AI Studio, created in a project with no billing (free tier): `GEMINI_API_KEY`. Share it with Dev A privately.
+- For grounded calls: the Google Cloud free-trial project with the Agent Platform (Vertex AI) API enabled, `gcloud auth application-default login`, `gcloud auth application-default set-quota-project <project>`, and `GOOGLE_CLOUD_PROJECT=<project>` in `.env`. The organization policy forbids API keys for Vertex AI, so it's the login or nothing.
 - `cp backend/.env.example backend/.env`, then paste the keys. `META_ACCESS_TOKEN`, `META_IG_USER_ID` and `DEMO_PLACE_ID` come from Dev A; the model IDs are already filled in.
 - `uv` (`powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"` on Windows); uv downloads Python 3.12 itself.
 
@@ -74,8 +75,8 @@ Push, then tell me "gate 1 ready" so I can tell Dev A. Acceptance: `uv run uvico
 
 - `app/llm/client.py`, complete:
   - All calls go through one `asyncio.Semaphore(6)` and `tenacity` exponential backoff (3 tries), and are cached with `app.cache`.
-  - `grounded_call(question, tool, lat=None, lng=None)` with `GEMINI_MODEL_LIVE` (`gemini-2.5-flash-lite`) on the free-tier `GEMINI_API_KEY`, `tool` being `"maps"` (live test, with the location) or `"search"` (mentions); this model can't combine both in one call. It sends only the question and no system prompt, and returns the text plus parsed grounding chunks (maps: place ID, title, URI; web: title, URI). Keep its concurrency under the free tier's rate limit.
-  - First check how to send it. Google's Maps grounding page (14 November 2026) says Maps grounding "currently only supports English language prompts and responses", and its examples use the Interactions API (`client.interactions.create`, tool `{"type": "google_maps", "latitude", "longitude"}`) rather than `generateContent` with `toolConfig.retrievalConfig`. Read the installed `google-genai` source for what it supports, then make one real Romanian call (`"cafenea în Cotroceni"`) and check that Maps chunks come back. If they don't, stop and tell me before changing the approach.
+  - `grounded_call(question, tool, lat=None, lng=None, run=0)` with `GEMINI_MODEL_LIVE` (`gemini-3.5-flash-lite`) on Vertex AI (Application Default Credentials, `GOOGLE_CLOUD_PROJECT`, location `global`), `tool` being `"maps"` (live test, with the location) or `"search"` (mentions). It sends only the question and no system prompt, and returns the text plus parsed grounding chunks (maps: place ID, title, URI; web: title, URI). `run` keeps the three runs of a prompt apart in the cache.
+  - Verified 14 November 2026: `generateContent` with the Maps tool and `retrievalConfig` (location, `ro-RO`) on Vertex AI answers „cafenea în Cotroceni” in Romanian with 5 Maps chunks whose place IDs match Places API IDs. `gemini-2.5-flash-lite` is closed to new accounts, and new free-tier keys get no grounding on any model.
 - `app/pipeline/normalize.py`: the §4 rules (address, phone via `phonenumbers`, hours, name via `rapidfuzz`), with tests including "Str." vs "Strada" and the three phone formats.
 - Places: real `POST /api/places/search` and `POST /api/places/resolve-link` (§3 step 1), and `canonical.py` (Place Details with the step 2 field mask → `CanonicalProfile`).
 - `collectors/google_profile.py`: G01–G12.
@@ -146,7 +147,7 @@ Fix what the demo run shows. Re-record the fixture if the data changed.
 
 ## Rules for you
 
-- Nothing may bill. Grounded calls stay inside the free tier's daily quotas (see "Working alongside Dev A").
+- Nothing may bill a card. Grounded calls run on the free-trial credit (see "Working alongside Dev A").
 - Scores come only from `scoring.py`; LLM output is turned into booleans or extracted values before any check uses it.
 - Live-test calls: only the customer's question, no system prompt, no business context.
 - `unknown` is never a fail: excluded from the score and listed in `Chapter.unknown` with a `reason_ro`.

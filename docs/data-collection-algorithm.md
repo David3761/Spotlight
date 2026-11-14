@@ -177,7 +177,8 @@ Pure code on the canonical profile, one LLM call for the category, three self-re
 G01 profile exists and businessStatus == OPERATIONAL   gate: no profile → chapter 0, only problem G01
 G02 primary category fits the business                 L1 judge: business_type (+ website facts if ready) vs primaryType
 G03 regular hours for all 7 days                       regularOpeningHours
-G04 special/holiday hours set                          currentOpeningHours special days in the next 60 days
+G04 special/holiday hours set                          currentOpeningHours specialDays (Google shows only the coming 7 days;
+                                                       none visible → unknown, not fail)
 G05 at least 5 photos                                  len(photos): ≥5 pass, 3–4 partial, <3 fail (API caps at 10)
 G06 website link set                                   websiteUri
 G07 phone set                                          nationalPhoneNumber
@@ -307,7 +308,7 @@ queries = [
   f'top {type_plural} {city}',
   f'"{name}" recenzie',
 ]
-for each query: Gemini + Google Search grounding (live model, free tier: 500 Search-grounded requests/day) → groundingMetadata.groundingChunks
+for each query: Gemini + Google Search grounding (live model on Vertex AI) → groundingMetadata.groundingChunks
     chunk.web.title is the domain; chunk.web.uri is a vertexaisearch redirect
     → follow the redirect (GET, follow_redirects, read no body) to get the real URL for display
 
@@ -368,9 +369,8 @@ no direct fixes → chapter card shows "Crește pe măsură ce rezolvi restul"
    cartier  : "cafenea în Cotroceni", "cafenea lângă Palatul Cotroceni", ...
    situatii : "cafenea unde pot lucra cu laptopul", "cafenea unde pot veni cu câinele", ...
 
-2. Run each prompt 3 times (36 calls, live model on the free tier: 500 Maps-grounded requests/day;
-   keep concurrency under the free tier's rate limit):
-   tools = [Google Maps grounding]   (gemini-2.5-flash-lite can't add Search grounding in the same call)
+2. Run each prompt 3 times (36 calls, live model on Vertex AI, semaphore 6):
+   tools = [Google Maps grounding]
    toolConfig.retrievalConfig = { latLng: neighborhood/business location, languageCode: "ro-RO" }
    no system prompt, no business context: only the customer's question
 
@@ -399,7 +399,7 @@ nearby  = Places Nearby Search (New): includedTypes for business_type, circle(lo
           rankPreference = POPULARITY, top 3 → feeds R01 right after step 2
 rivals  = top 3 from the live test (3.8) → Place Details (same fields as step 2)
 compare rows (me + rivals): review_count, rating, photo_count (capped at 10 → "10+"),
-                            hours_complete (7 days + special days)
+                            hours_complete (hours for the whole week; holiday hours aren't visible ahead)
 insights_ro / actions: code templates comparing me vs the rivals' median
 ```
 
@@ -531,7 +531,7 @@ report = Report (contract.md), saved as JSON on the scan row
 
 ## 4. LLM calls
 
-All structured JSON output except L8. Tiers: `fast` (`gemini-3.5-flash-lite`) for extraction and judging; `smart` (`gemini-3.8-flash`) for texts and chat; all on the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) use the `live` model (`gemini-2.5-flash-lite`), the newest model with grounding on the free tier (500 Maps-grounded and 500 Search-grounded requests a day).
+All structured JSON output except L8. Tiers: `fast` (`gemini-3.5-flash-lite`) for extraction and judging; `smart` (`gemini-3.8-flash`) for texts and chat; both on the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) use the `live` model (`gemini-3.5-flash-lite`) on Vertex AI in the free-trial project, because new free-tier keys get no grounding.
 
 | ID | Purpose | Tier | Output |
 |---|---|---|---|
@@ -650,7 +650,8 @@ async def run_pipeline(scan_id: str) -> None:
 - **Instagram Business Discovery** only works for business and creator accounts. It needs a Meta app with Facebook Login and a Facebook Page linked to our own Instagram professional account; that Page is setup only, the product never checks Facebook. Meta's Instagram Login setup (no Page) can't read other accounts. Personal accounts fall back to self-report and `unknown`.
 - **Gemini API ≠ the consumer Gemini app.** Grounded API answers are a close proxy. Say „testat cu Gemini”.
 - **Search grounding links are redirects;** following them costs one request each.
-- **Maps grounding language and API:** Google's Maps grounding page (14 November 2026) says it "currently only supports English language prompts and responses", and its examples use the Interactions API (`client.interactions.create`, tool `{"type": "google_maps", "latitude", "longitude"}`) rather than `generateContent` with `toolConfig.retrievalConfig`. Verify both with a real call before building the live test; if Romanian prompts don't return Maps chunks, report it before changing the design.
+- **Maps grounding:** verified 14 November 2026 with `generateContent` on Vertex AI: Romanian prompts return Romanian answers and Maps chunks whose place IDs match Places API IDs.
+- **Holiday hours:** `currentOpeningHours.specialDays` covers only the coming 7 days, so G04 can't see holidays further ahead; with none visible it is `unknown`.
 - **To verify:** whether `currentOpeningHours` reliably exposes holiday hours; whether SerpApi accepts `place_id` directly for reviews; how `Google-Extended` affects Gemini grounding.
 - **Not in v1:** Facebook (dropped from the product), Tripadvisor data, Bing Places, Apple Maps, Romanian directories, ChatGPT as a second engine, mention dates (M04).
 

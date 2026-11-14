@@ -7,6 +7,7 @@ Hackathon project: a Romanian web app that audits how visible a local business i
 - `docs/architecture.md` — the plan, the team split, file ownership, build order and gates.
 - `docs/contract.md` — every endpoint, response shape and shared Python interface. Code must match it exactly.
 - `docs/data-collection-algorithm.md` — checks, data sources, points, weights, pipeline.
+- `docs/sync.md` — messages between the two devs: read the entries addressed to you at the start of every task, answer there.
 - `design/README.md` and `design/*.dc.html` — layout, Romanian copy and tokens (UI work).
 - Your own prompt: `docs/prompts/dev-a-frontend.md` or `docs/prompts/dev-b-backend.md`.
 
@@ -36,7 +37,7 @@ A guessed value, behaviour, name or requirement costs a rework when it's caught 
 
 - Run anything that doesn't bill: local servers, tests, free API quotas, cached responses.
 - Before calling a paid service, check its free quota and stay inside it; cache every response so repeats cost nothing. Never upgrade a plan.
-- Every Gemini call uses the free-tier `GEMINI_API_KEY` (an AI Studio project with no billing). Grounded calls (live test, mentions) use `GEMINI_MODEL_LIVE` (`gemini-2.5-flash-lite`), whose free tier allows 500 Maps-grounded and 500 Search-grounded requests a day: cache every grounded response and run real scans only when you need them.
+- Extraction, texts and chat use the free-tier `GEMINI_API_KEY` (an AI Studio project with no billing). Grounded calls (live test, mentions) go through Google Cloud (Vertex AI) on Dev B's free-trial project, with `GEMINI_MODEL_LIVE` (`gemini-3.5-flash-lite`), signed in with Application Default Credentials (`gcloud auth application-default login`) and `GOOGLE_CLOUD_PROJECT`; the trial credit pays, and nothing reaches a card unless someone clicks „Upgrade”. Cache every grounded response and run real scans only when you need them.
 
 ### Agents
 
