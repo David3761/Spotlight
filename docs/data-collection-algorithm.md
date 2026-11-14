@@ -531,7 +531,7 @@ report = Report (contract.md), saved as JSON on the scan row
 
 ## 4. LLM calls
 
-All structured JSON output except L8. Tiers: `fast` (`gemini-3.5-flash-lite`) for extraction and judging; `smart` (`gemini-3.8-flash`) for texts and chat; both on the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) use the `live` model (`gemini-3.5-flash-lite`) on Vertex AI in the free-trial project, because new free-tier keys get no grounding.
+All structured JSON output except L8. Tiers: `fast` (`gemini-3.5-flash-lite`) for extraction and judging; `smart` (`gemini-3.6-flash`) for texts and chat; both on the free-tier `GEMINI_API_KEY`. Grounded calls (live test, mentions) use the `live` model (`gemini-3.5-flash-lite`) on Vertex AI in the free-trial project, because new free-tier keys get no grounding.
 
 | ID | Purpose | Tier | Output |
 |---|---|---|---|

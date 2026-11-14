@@ -1,6 +1,6 @@
 """Runs the assistant: a Gemini function-calling loop over the report, plus the message and action flows."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import uuid4
 
@@ -93,7 +93,7 @@ async def send_message(cid: str, text: str) -> Message | None:
     if conversation is None:
         return None
     user_message = Message(
-        id=uuid4().hex, role="user", text=text, created_at=datetime.now(timezone.utc)
+        id=uuid4().hex, role="user", text=text, created_at=datetime.now(UTC)
     )
     reply = await get_reply(conversation.scan_id, conversation.messages, text)
     store.append_messages(cid, [user_message, reply])
@@ -146,7 +146,7 @@ async def get_reply(scan_id: str, history: list[Message], text: str) -> Message:
         id=uuid4().hex,
         role="assistant",
         text=reply_text or FALLBACK_REPLY,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
         action=proposed_actions[-1] if proposed_actions else None,
     )
 
@@ -333,6 +333,6 @@ def get_followup(text: str, chips: list[str]) -> Message:
         id=uuid4().hex,
         role="assistant",
         text=text,
-        created_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
         chips=chips,
     )

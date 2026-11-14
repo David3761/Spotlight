@@ -7,7 +7,7 @@ from app import cache
 from app.fixes.generate import get_facts_text, get_prompt
 from app.fixes.schemas import InfoPage, InfoPageDraft
 from app.llm.client import json_call
-from app.models import FaqItem, Facts
+from app.models import Facts, FaqItem
 from app.services.resolution import load_facts
 
 MAX_FAQ_QUESTIONS = 5
@@ -33,6 +33,11 @@ async def get_info_page(scan_id: str) -> InfoPage:
     prompt = get_prompt("fix_info_page").format(
         facts=get_facts_text(facts, facts.type_label_ro),
         suggested_url=suggested_url or "afacerea nu are încă site",
+        placement_request=(
+            "o rogi să o pună pe site la adresa propusă, cu link din meniu"
+            if suggested_url
+            else "o rogi să facă un site simplu pornind de la ea, pentru că afacerea nu are încă site"
+        ),
         questions="\n".join(f"{number}. {question}" for number, question in enumerate(questions, 1)),
     )
     draft = await json_call(prompt, InfoPageDraft, tier="smart")
@@ -62,7 +67,7 @@ async def get_info_page(scan_id: str) -> InfoPage:
         menu=facts.website_facts.menu_items_or_services if facts.website_facts else [],
         faq=[
             FaqItem(q=question, a=answer)
-            for question, answer in zip(questions, draft.faq_answers)
+            for question, answer in zip(questions, draft.faq_answers, strict=False)
         ],
         to_fill=to_fill,
         message_ro=draft.message_ro,

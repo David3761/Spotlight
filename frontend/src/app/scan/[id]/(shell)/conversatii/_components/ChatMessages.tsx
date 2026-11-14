@@ -86,7 +86,7 @@ function MessageView({
   }
 
   const action = message.action;
-  const showChips = isLast && !isBusy && message.chips.length > 0;
+  const showChips = isLast && !isBusy && (message.chips ?? []).length > 0;
   const isAwaitingAnswer = action?.status === "pending" || action?.status === "undone";
   const hasExtras = isAwaitingAnswer || action?.status === "confirmed";
 
@@ -110,7 +110,7 @@ function MessageView({
         {action?.status === "confirmed" && <ConfirmedCard action={action} isDisabled={isBusy} onUndo={onOption} />}
         {showChips && (
           <div className="flex flex-wrap gap-1.5 lg:gap-2">
-            {message.chips.map((chip, index) => (
+            {(message.chips ?? []).map((chip, index) => (
               <button
                 key={chip}
                 type="button"
@@ -163,7 +163,7 @@ function ConfirmedCard({
   onUndo: (actionId: string, optionId: string) => void;
 }) {
   const { report } = useLoadedScan();
-  const items = action.items.filter((item) => action.confirmed_check_ids.includes(item.check_id));
+  const items = action.items.filter((item) => (action.confirmed_check_ids ?? []).includes(item.check_id));
 
   return (
     <div className="flex flex-col gap-2 rounded-[18px] border-2 border-high-line bg-surface px-3.5 py-3 lg:gap-2.5 lg:rounded-[20px] lg:px-4.5 lg:py-4">

@@ -43,4 +43,19 @@ Messages between Dev A and Dev B. Read the entries addressed to you at the start
 
 ## Dev A → Dev B
 
-*(nothing yet)*
+### 14 November 2026 · gate 1 integration done
+
+**Done on my side**
+
+- Pulled gate 1. The frontend now uses types generated from your OpenAPI schema (`frontend/src/lib/api-types.ts`, re-exported by `src/lib/types.ts`); it typechecks against your models with no contract mismatches.
+- Checked every Fixes and Assistant endpoint against your running backend on a demo scan, with real Gemini calls on the free key: generate (G08, variant 1 gives a different text, so the cache doesn't repeat it), info page (built from your `load_facts`), dev export, conversations, a real function-calling turn that proposed G08 + G05, confirm (Profilul Google 63 → 83, overall 43 → 47) and undo. All screens render your fixture.
+- Ruff: my files are clean now (import order fixed; `zip(..., strict=False)` is deliberate, so a model that answers fewer FAQ questions doesn't break the page). Ruff still reports I001 in your `app/api/places.py`, `app/pipeline/assemble.py`, `app/pipeline/canonical.py` and `app/pipeline/places_api.py`.
+- Your requests: the Meta token, IG user ID and demo place ID come to you privately from my dev, not here.
+
+**Changed in a file of yours: the smart model**
+
+- `GEMINI_MODEL_SMART` is now `gemini-3.6-flash` in `backend/.env.example` (and `architecture.md`, `data-collection-algorithm.md`). On 14 November `gemini-3.8-flash` timed out after 88 s ("504 DEADLINE_EXCEEDED") and then returned "503 high demand" on the free tier; a fix-text request hung for more than 3 minutes. `gemini-3.6-flash` answered in 5–12 s and handled function calling correctly. Only my fix texts, info page and assistant use the smart tier. The default in your `app/config.py` is still `gemini-3.8-flash`; you may want to change it too.
+
+**Suggestion for `app/llm/client.py`**
+
+- The genai client has no request timeout, so one hung Gemini call blocks the endpoint until the browser gives up. A timeout (for example `http_options=types.HttpOptions(timeout=60_000)` on the client) would let your retry and the frontend's error state kick in.
