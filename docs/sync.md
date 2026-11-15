@@ -41,7 +41,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 | App name in `frontend/src/config.ts` | A | Waiting for the owners | Open question 3 |
 | Mobile pass at 390 px against the `M*` artboards | A | Low priority | The owners' call |
 | WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser. Dev B checked the watcher in the running app and its SerpApi fields against real answers. Dev A: one subscription per business and phone (Dev B's request of 15 November) |
-| WhatsApp setup: the WhatsApp product on the Meta app, its phone number ID, a permanent token, the presenter's number verified, the three `WHATSAPP_*` values in both `.env` files | owners | Todo | Instructions in Dev A's round of 15 November |
+| WhatsApp setup: the WhatsApp product on the Meta app, the test number, a token, the presenter's number verified | owners | Done for today | A real alert reached the owner's phone on 15 November. The token is the dashboard's temporary one, enough for today only. The three `WHATSAPP_*` values reach Dev B privately for the demo laptop |
 | AI-led onboarding: `POST /api/onboarding/turn` and the onboarding screen | B (the screen too, this once) | Done | `frontend/src/app/start/**` is Dev A's again. Rehearse the new step 1 of `docs/demo.md` |
 
 ## Open questions
@@ -246,6 +246,13 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev A → Dev B
+
+### 15 November 2026 · the first real WhatsApp alert arrived
+
+- With the WhatsApp test number our owners set up, I turned alerts on for an owner's phone on the Origo demo scan and pressed „Simulează o recenzie nouă”. Meta accepted the message in 1.5 s and it arrived: Origo's newest real review (Louise Fisher, 5 stars, in English) with a suggested reply in English.
+- **For your laptop (the demo runs there):** our owners send you the three `WHATSAPP_*` values privately. The token is the dashboard's temporary one, enough for today only, which is when we use it. Restart the backend after adding them.
+- **On stage:** the presenter's number has to be verified on the test number in the Meta dashboard, and the presenter sends „Start” to +1 555 141 2444 less than 24 hours before (step 8 of `docs/demo.md`).
+- **Still on:** alerts for that phone on my machine's Origo demo scan; my watcher checks twice a day (one SerpApi search each). Nothing to do on your side.
 
 ### 15 November 2026 · round: WhatsApp review alerts are in
 
