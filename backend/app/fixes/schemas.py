@@ -70,3 +70,33 @@ class DevExport(BaseModel):
 
     markdown: str
     message_ro: str
+
+
+class ReviewAlertsRequest(BaseModel):
+    """The body of a request that turns on WhatsApp review alerts."""
+
+    phone: str = Field(max_length=40)
+
+
+class ReviewAlerts(BaseModel):
+    """The WhatsApp review alerts of a scan's business."""
+
+    enabled: bool
+    phone: str | None
+    whatsapp_link: str | None
+    delivery_problem_ro: str | None
+    can_simulate: bool
+
+
+class ReviewAlertSent(BaseModel):
+    """The review a WhatsApp alert was just sent for, with the suggested reply."""
+
+    author: str
+    rating: float | None
+    reply_ro: str
+
+
+class ReviewReplyDraft(BaseModel):
+    """What the language model returns when it writes a reply to a review."""
+
+    reply: str

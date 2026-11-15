@@ -244,6 +244,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/scans/{scan_id}/review-alerts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Review Alerts
+         * @description Returns the scan's WhatsApp review alerts.
+         */
+        get: operations["read_review_alerts_api_scans__scan_id__review_alerts_get"];
+        /**
+         * Turn On Review Alerts
+         * @description Turns on WhatsApp review alerts for the owner's phone number.
+         */
+        put: operations["turn_on_review_alerts_api_scans__scan_id__review_alerts_put"];
+        post?: never;
+        /**
+         * Turn Off Review Alerts
+         * @description Turns off the scan's WhatsApp review alerts.
+         */
+        delete: operations["turn_off_review_alerts_api_scans__scan_id__review_alerts_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scans/{scan_id}/review-alerts/simulate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send Simulated Review Alert
+         * @description Sends the alert for the newest review now, as if it had just arrived.
+         */
+        post: operations["send_simulated_review_alert_api_scans__scan_id__review_alerts_simulate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/scans/{scan_id}/conversations": {
         parameters: {
             query?: never;
@@ -593,7 +641,7 @@ export interface components {
              * Code
              * @enum {string}
              */
-            code: "unreadable_link" | "place_not_found" | "scan_not_found" | "scan_running" | "check_not_found" | "upstream_error";
+            code: "unreadable_link" | "place_not_found" | "scan_not_found" | "scan_running" | "check_not_found" | "upstream_error" | "invalid_phone" | "alerts_off" | "no_reviews";
             /** Message Ro */
             message_ro: string;
         };
@@ -1039,6 +1087,42 @@ export interface components {
         ResolveLinkRequest: {
             /** Url */
             url: string;
+        };
+        /**
+         * ReviewAlertSent
+         * @description The review a WhatsApp alert was just sent for, with the suggested reply.
+         */
+        ReviewAlertSent: {
+            /** Author */
+            author: string;
+            /** Rating */
+            rating: number | null;
+            /** Reply Ro */
+            reply_ro: string;
+        };
+        /**
+         * ReviewAlerts
+         * @description The WhatsApp review alerts of a scan's business.
+         */
+        ReviewAlerts: {
+            /** Enabled */
+            enabled: boolean;
+            /** Phone */
+            phone: string | null;
+            /** Whatsapp Link */
+            whatsapp_link: string | null;
+            /** Delivery Problem Ro */
+            delivery_problem_ro: string | null;
+            /** Can Simulate */
+            can_simulate: boolean;
+        };
+        /**
+         * ReviewAlertsRequest
+         * @description The body of a request that turns on WhatsApp review alerts.
+         */
+        ReviewAlertsRequest: {
+            /** Phone */
+            phone: string;
         };
         /**
          * ScanCreated
@@ -1858,6 +1942,134 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DevExport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_review_alerts_api_scans__scan_id__review_alerts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewAlerts"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    turn_on_review_alerts_api_scans__scan_id__review_alerts_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewAlertsRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewAlerts"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    turn_off_review_alerts_api_scans__scan_id__review_alerts_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewAlerts"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    send_simulated_review_alert_api_scans__scan_id__review_alerts_simulate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewAlertSent"];
                 };
             };
             /** @description Validation Error */

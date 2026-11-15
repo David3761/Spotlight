@@ -41,6 +41,9 @@ ErrorCode = Literal[
     "scan_running",
     "check_not_found",
     "upstream_error",
+    "invalid_phone",
+    "alerts_off",
+    "no_reviews",
 ]
 """The error codes the API returns."""
 

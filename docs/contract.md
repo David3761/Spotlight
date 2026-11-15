@@ -11,7 +11,7 @@ Conventions:
 - Base URL `http://localhost:8000` (`NEXT_PUBLIC_API_URL`). JSON everywhere, `snake_case` keys, ISO 8601 UTC timestamps.
 - User-facing text fields end in `_ro` and are ready to display.
 - Scores are integers 0–100. `overall_exact` keeps the unrounded value so deltas add up (42.2 + 3.6 → 46, not 42 + 3.6 → 45.6 → 46 by luck).
-- Errors: HTTP status plus `{ "error": { "code": "<code>", "message_ro": "<text>" } }`. Codes: `unreadable_link` (422), `place_not_found` (404), `scan_not_found` (404), `scan_running` (409), `check_not_found` (404), `upstream_error` (502).
+- Errors: HTTP status plus `{ "error": { "code": "<code>", "message_ro": "<text>" } }`. Codes: `unreadable_link` (422), `place_not_found` (404), `scan_not_found` (404), `scan_running` (409), `check_not_found` (404), `upstream_error` (502), `invalid_phone` (422), `alerts_off` (409), `no_reviews` (404).
 
 ---
 
@@ -379,6 +379,27 @@ interface DevExport { markdown: string; message_ro: string; }
 ```
 
 One Markdown document with every `dev_export` problem: what's wrong, evidence, exact fix (robots.txt lines, filled JSON-LD snippet, …), how to verify.
+
+### WhatsApp review alerts
+
+When a new Google review arrives, the owner gets a suggested reply on WhatsApp. A watcher checks each subscribed business's newest reviews on SerpApi every twelve hours; reviews already there when alerts were turned on never send a message, and an alert that didn't go through is tried again at the next check. Plain WhatsApp text reaches the owner only for 24 hours after they last wrote to our number, so the owner sends „Start” once through `whatsapp_link`.
+
+```ts
+interface ReviewAlerts {
+  enabled: boolean;
+  phone: string | null;             // "0722 123 456" when enabled
+  whatsapp_link: string | null;     // wa.me link to our number with „Start” typed in; null when WhatsApp isn't set up on the server
+  delivery_problem_ro: string | null; // why the last message didn't go through and what to do; null when it did
+  can_simulate: boolean;            // demo scans: shows „Simulează o recenzie nouă”
+}
+
+interface ReviewAlertSent { author: string; rating: number | null; reply_ro: string; }
+```
+
+- `GET /api/scans/{scan_id}/review-alerts` → `ReviewAlerts`.
+- `PUT /api/scans/{scan_id}/review-alerts` with `{ "phone": string }` → `ReviewAlerts`. Errors: `422 invalid_phone`; `404 place_not_found` when the business has no Google profile; `502 upstream_error` when WhatsApp isn't set up or the current reviews can't be read.
+- `DELETE /api/scans/{scan_id}/review-alerts` → `ReviewAlerts` with `enabled: false`.
+- `POST /api/scans/{scan_id}/review-alerts/simulate` → `ReviewAlertSent`: sends the alert for the newest review now, as if it had just arrived. It works on any scan with alerts on; the UI offers it on demo scans (`can_simulate`). Errors: `409 alerts_off`, `404 no_reviews`, `502 upstream_error` when WhatsApp refuses the message.
 
 ---
 

@@ -1,9 +1,11 @@
-"""Routes for generated fix texts, the info page and the developer export."""
+"""Routes for generated fix texts, the info page, the developer export and the WhatsApp review alerts."""
 
-from collections.abc import Callable, Coroutine
+import asyncio
+from collections.abc import AsyncIterator, Callable, Coroutine
+from contextlib import asynccontextmanager
 from typing import Any
 
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter, FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
 from google.genai.errors import APIError
@@ -11,7 +13,22 @@ from google.genai.errors import APIError
 from app.fixes.dev_export import get_dev_export
 from app.fixes.generate import get_generated_text
 from app.fixes.info_page import get_info_page
-from app.fixes.schemas import DevExport, GeneratedText, GenerateRequest, InfoPage
+from app.fixes.review_alerts import (
+    disable_review_alerts,
+    enable_review_alerts,
+    get_review_alerts,
+    simulate_review_alert,
+    watch_reviews,
+)
+from app.fixes.schemas import (
+    DevExport,
+    GeneratedText,
+    GenerateRequest,
+    InfoPage,
+    ReviewAlerts,
+    ReviewAlertSent,
+    ReviewAlertsRequest,
+)
 from app.services.resolution import ScanNotFound
 
 
@@ -42,7 +59,15 @@ class ContractErrorRoute(APIRoute):
         return get_response
 
 
-router = APIRouter(route_class=ContractErrorRoute)
+@asynccontextmanager
+async def run_review_watcher(_: FastAPI) -> AsyncIterator[None]:
+    """Runs the WhatsApp review watcher while the app runs; FastAPI merges this into the app's lifespan."""
+    task = asyncio.create_task(watch_reviews())
+    yield
+    task.cancel()
+
+
+router = APIRouter(route_class=ContractErrorRoute, lifespan=run_review_watcher)
 
 
 @router.post("/api/scans/{scan_id}/fixes/{check_id}/generate", response_model=GeneratedText)
@@ -64,3 +89,27 @@ async def read_info_page(scan_id: str):
 def read_dev_export(scan_id: str):
     """Returns the developer export for the scan."""
     return get_dev_export(scan_id)
+
+
+@router.get("/api/scans/{scan_id}/review-alerts", response_model=ReviewAlerts)
+def read_review_alerts(scan_id: str):
+    """Returns the scan's WhatsApp review alerts."""
+    return get_review_alerts(scan_id)
+
+
+@router.put("/api/scans/{scan_id}/review-alerts", response_model=ReviewAlerts)
+async def turn_on_review_alerts(scan_id: str, request: ReviewAlertsRequest):
+    """Turns on WhatsApp review alerts for the owner's phone number."""
+    return await enable_review_alerts(scan_id, request.phone)
+
+
+@router.delete("/api/scans/{scan_id}/review-alerts", response_model=ReviewAlerts)
+def turn_off_review_alerts(scan_id: str):
+    """Turns off the scan's WhatsApp review alerts."""
+    return disable_review_alerts(scan_id)
+
+
+@router.post("/api/scans/{scan_id}/review-alerts/simulate", response_model=ReviewAlertSent)
+async def send_simulated_review_alert(scan_id: str):
+    """Sends the alert for the newest review now, as if it had just arrived."""
+    return await simulate_review_alert(scan_id)

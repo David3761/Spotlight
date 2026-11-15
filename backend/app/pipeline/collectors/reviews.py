@@ -81,16 +81,19 @@ async def get_google_review_checks(
 
 async def get_recent_reviews(place_id: str) -> list[dict[str, Any]]:
     """Returns the newest reviews of a place from SerpApi, newest first, each with `iso_date` and `response` when answered."""
-    data = await serpapi_search(
-        {
-            "engine": "google_maps_reviews",
-            "place_id": place_id,
-            "sort_by": "newestFirst",
-            "hl": "ro",
-            "num": RECENT_REVIEWS_COUNT,
-        }
-    )
+    data = await serpapi_search(get_recent_reviews_search(place_id))
     return data.get("reviews", [])
+
+
+def get_recent_reviews_search(place_id: str) -> dict[str, str | int]:
+    """Returns the SerpApi search for a place's newest reviews, shared with the WhatsApp review watcher."""
+    return {
+        "engine": "google_maps_reviews",
+        "place_id": place_id,
+        "sort_by": "newestFirst",
+        "hl": "ro",
+        "num": RECENT_REVIEWS_COUNT,
+    }
 
 
 def get_count_check(business_type: BusinessType, canonical: CanonicalProfile, nearby: list[NearbyCompetitor]) -> CheckResult:

@@ -12,6 +12,9 @@ ERROR_STATUS: dict[ErrorCode, int] = {
     "scan_running": 409,
     "check_not_found": 404,
     "upstream_error": 502,
+    "invalid_phone": 422,
+    "alerts_off": 409,
+    "no_reviews": 404,
 }
 """The HTTP status of each error code."""
 
@@ -22,6 +25,9 @@ ERROR_MESSAGES_RO: dict[ErrorCode, str] = {
     "scan_running": "Analiza încă rulează. Încearcă din nou peste câteva secunde.",
     "check_not_found": "Nu am găsit această problemă.",
     "upstream_error": "Un serviciu de care depindem nu a răspuns. Încearcă din nou.",
+    "invalid_phone": "Numărul de telefon nu pare corect. Scrie-l așa: 0722 123 456.",
+    "alerts_off": "Pornește mai întâi mesajele pe WhatsApp.",
+    "no_reviews": "Nu am găsit încă nicio recenzie pe Google.",
 }
 """The default Romanian message of each error code."""
 
