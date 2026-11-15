@@ -60,7 +60,7 @@ def get_comparison(me: CompareRow, rivals: list[CompareRow], checks: list[CheckR
     insights = [insight for insight in [get_rating_insight(me, rivals)] if insight]
     gaps = get_gaps(me, rivals)
     if gaps:
-        insights.append(f"Îți lipsesc {get_list_phrase(gaps)}, iar Gemini se uită exact la acestea.")
+        insights.append(f"Îți lipsesc {get_list_phrase(gaps)}, iar LLM-ul se uită exact la acestea.")
     open_checks = {check.check_id for check in checks if check.status in ("fail", "partial") and not check.claimed_fixed}
     actions = []
     for gap in gaps:

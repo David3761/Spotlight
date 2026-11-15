@@ -9,7 +9,7 @@ export function TabBar({ scanId, active }: { scanId: string; active: Tab }) {
   const base = `/scan/${scanId}`;
   const tabs = [
     { key: "acasa", name: "Acasă", href: base, icon: iconPath.home },
-    { key: "gemini", name: "Gemini", href: `${base}/gemini`, icon: iconPath.geminiBubble },
+    { key: "gemini", name: "LLM", href: `${base}/gemini`, icon: iconPath.geminiBubble },
     { key: "capitole", name: "Capitole", href: `${base}/profil`, icon: iconPath.grid },
     { key: "asistent", name: "Asistent", href: `${base}/conversatii`, icon: iconPath.chat },
   ];

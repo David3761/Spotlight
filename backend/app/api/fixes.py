@@ -54,7 +54,7 @@ class ContractErrorRoute(APIRoute):
             except ScanNotFound:
                 return get_error_response(404, "scan_not_found", "Nu am găsit analiza asta.")
             except APIError:
-                return get_error_response(502, "upstream_error", "Nu am putut contacta Gemini acum. Încearcă din nou.")
+                return get_error_response(502, "upstream_error", "Nu am putut contacta LLM-ul acum. Încearcă din nou.")
 
         return get_response
 

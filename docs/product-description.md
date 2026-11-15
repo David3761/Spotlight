@@ -2,6 +2,8 @@
 
 *Hackathon v1, built 14–15 November 2026. Every number in [§8](#8-the-demo-case-cafetăria-miciurin) comes from a real scan of Cafetăria Miciurin, a specialty café in Bucharest, recorded on 15 November 2026.*
 
+*On screen, the app calls the AI assistant „LLM-ul” ("the LLM"). The live test behind it runs on Gemini, so this document names Gemini where it explains how the test works.*
+
 The product is in Romanian. Screen labels are quoted in Romanian, with an English translation where it helps.
 
 ---
@@ -71,7 +73,7 @@ Shorter: *"Find out if Gemini recommends you, and fix it in minutes."*
   - **Recenzii** (Reviews): „Am găsit 452 de recenzii” ("Found 452 reviews")
   - **Website**: „Am citit cafetaria.ro” ("Read cafetaria.ro")
   - **Rețele sociale** (Social media): „Am verificat Instagram” ("Checked Instagram")
-  - **Gemini**: „I-am pus lui Gemini 12 întrebări” ("Asked Gemini 12 questions")
+  - **Gemini**: „I-am pus LLM-ului 12 întrebări” ("Asked Gemini 12 questions")
 - When it's done, the desktop moves on by itself; on a phone the owner taps „Vezi rezultatele” ("See the results").
 
 ### Screen 2 · Dashboard (Panou principal)
@@ -79,7 +81,7 @@ Shorter: *"Find out if Gemini recommends you, and fix it in minutes."*
 - **Overall score** in a ring that animates up to the number. The ring is red under 40, amber from 40 to 69 and green from 70.
 - A **one-line verdict** under it, such as „Ești pe drumul bun. Câteva lucruri simple te pot aduce mai sus.” ("You're on the right track. A few simple things can take you higher.")
 - A count of open problems ("20 de probleme de rezolvat") across 8 chapters.
-- **Gemini visibility card:** „Apari în 1 din 12 răspunsuri” ("You appear in 1 of 12 answers"), plus „În locul tău, Gemini recomandă:” ("Instead of you, Gemini recommends:") with the three competitors it names most, and in how many answers.
+- **Gemini visibility card:** „Apari în 1 din 12 răspunsuri” ("You appear in 1 of 12 answers"), plus „În locul tău, LLM-ul recomandă:” ("Instead of you, Gemini recommends:") with the three competitors it names most, and in how many answers.
 - **„Următorii pași”** ("Next steps"): the three fixes that add the most points overall, each with its points badge (+100, +30, +56).
 - **8 chapter cards**, each with its own score.
 - **Assistant card:** „Spune-i asistentului ce ai făcut și îl marchează ca rezolvat. Îl poți întreba și ce să faci mai departe.” ("Tell the assistant what you did and it marks it as done. You can also ask it what to do next.")
@@ -98,7 +100,7 @@ Shorter: *"Find out if Gemini recommends you, and fix it in minutes."*
 
 The fix opens in a side panel on desktop or a bottom sheet on a phone. There are four kinds (see §6.5): generated text, info page, developer instructions and step-by-step guide. Every panel ends with **„Am rezolvat”** ("Done"). The chapter score animates up at once, a toast shows the points gained, and the sidebar's problem count drops.
 
-### Screen 5 · Visibility in Gemini (Vizibilitate în Gemini)
+### Screen 5 · Visibility in Gemini (Vizibilitate în LLM)
 
 - The Gemini score and „Apari în X din 12 răspunsuri”.
 - The 12 questions in three groups:
@@ -106,7 +108,7 @@ The fix opens in a side panel on desktop or a bottom sheet on a phone. There are
   - **Cartier** (Neighbourhood): „Întrebări despre zona ta” (questions about your area), e.g. „cafenea de specialitate în domenii”.
   - **Situații** (Situations): „Ce caută oamenii, nu unde” (what people want, not where), e.g. „cafenea unde pot veni cu câinele” ("a café where I can bring my dog").
 - For each question: whether you appeared, how many of the 3 runs named you, who Gemini recommended instead, an excerpt of its answer, and the Google Maps places it used as sources („Surse: Google Maps”).
-- **„De ce îi alege Gemini pe ei?”** ("Why does Gemini choose them?"): a side-by-side table of you and the top 3 rivals (reviews, rating, photos, full opening hours), plain-language conclusions, and buttons that jump straight to the matching fix.
+- **„De ce îi alege LLM-ul pe ei?”** ("Why does Gemini choose them?"): a side-by-side table of you and the top 3 rivals (reviews, rating, photos, full opening hours), plain-language conclusions, and buttons that jump straight to the matching fix.
 - **„Testează din nou”** ("Test again") reruns only the Gemini test, in under a minute.
 
 ### Screen 6 · Conversations (Conversații) with the assistant
@@ -153,16 +155,16 @@ The fix opens in a side panel on desktop or a bottom sheet on a phone. There are
 | Profilul Google | Google profile | Profile exists and is open, right category, full weekly hours, holiday hours, at least 5 photos, website link, phone, owner description, a post in the last 30 days, key attributes (terrace, card payments…), price range, profile claimed | 20% |
 | Recenzii | Reviews | Number of reviews compared with nearby rivals, average rating, how recent the newest reviews are, share of reviews with an owner reply, reviews on a second platform (TripAdvisor, Booking or Booksy, by type) | 15% |
 | Conținutul site-ului | Website content | Name and what you do on the homepage, address and neighbourhood, hours matching Google, phone, menu and prices as text (not a PDF or photo), a page per main service, answers to common questions (Wi-Fi, parking, pets, reservations), Romanian content | 15% |
-| Site-ul, văzut de Gemini | The website, as Gemini sees it | HTTPS, Google and AI crawlers allowed in robots.txt, content readable without JavaScript, sitemap, business data in structured form (LocalBusiness), mobile speed, mobile layout, one page with all the basics | 10% |
+| Site-ul, văzut de LLM | The website, as Gemini sees it | HTTPS, Google and AI crawlers allowed in robots.txt, content readable without JavaScript, sitemap, business data in structured form (LocalBusiness), mobile speed, mobile layout, one page with all the basics | 10% |
 | Aceleași informații peste tot | Same information everywhere | Present on the platforms expected for the type (Instagram, TripAdvisor, delivery apps…); name, address, phone and hours on those platforms match Google | 10% |
 | Mențiuni pe alte site-uri | Mentions on other sites | How many other sites mention you, whether you're in a "best of" list, local press, forum and community mentions | 10% |
 | Rețele sociale | Social media | Instagram profile exists, a post in the last 30 days, website, Instagram and Google profile link to each other, the Instagram bio says what you do and where | 5% |
-| Te cunoaște deja Gemini? | Does Gemini already know you? | Asked without internet search: does Gemini know you exist, does it know your type and area, does it say anything wrong? This chapter has no direct fixes; it „Crește pe măsură ce rezolvi restul” ("grows as you fix the rest") | 5% |
-| *Vizibilitate în Gemini* | *Visibility in Gemini* | *The live test in §6.2 (its own screen, not a chapter)* | *10%* |
+| Te cunoaște deja LLM-ul? | Does Gemini already know you? | Asked without internet search: does Gemini know you exist, does it know your type and area, does it say anything wrong? This chapter has no direct fixes; it „Crește pe măsură ce rezolvi restul” ("grows as you fix the rest") | 5% |
+| *Vizibilitate în LLM* | *Visibility in Gemini* | *The live test in §6.2 (its own screen, not a chapter)* | *10%* |
 
 ### 6.4 Problems you can act on
 
-- **Plain Romanian, no jargon.** For example: „Site-ul nu îi spune lui Gemini programul și adresa „pe limba lui”” ("Your website doesn't tell Gemini your hours and address 'in its own language'") instead of "Missing LocalBusiness JSON-LD".
+- **Plain Romanian, no jargon.** For example: „Site-ul nu îi spune LLM-ului programul și adresa „pe limba lui”” ("Your website doesn't tell Gemini your hours and address 'in its own language'") instead of "Missing LocalBusiness JSON-LD".
 - **Problems show what we found:** „Ai 452 de recenzii, iar cafenelele din jur au în jur de 3504” ("You have 452 reviews; the cafés around you have about 3,504"), „Am găsit răspuns la 0 din 5 întrebări obișnuite” ("We found answers to 0 of 5 common questions"), or your current Instagram bio, quoted.
 - **Every problem shows its value:** "+N" is how much the chapter score rises when it's fixed. The dashboard ranks everything by how much it lifts the **overall** score.
 - **Only real mismatches count.** "Str." and "Strada" are the same street, and "0721…" and "+40 721…" are the same phone number. Small formatting differences never become a problem card.
@@ -221,7 +223,7 @@ The fix opens in a side panel on desktop or a bottom sheet on a phone. There are
 | 7 | business owner | know whether Gemini actually recommends me | I know whether I have a problem at all | 12 customer questions × 3 runs: „Apari în X din 12 răspunsuri” |
 | 8 | business owner | see who Gemini recommends instead of me | I know who I'm losing customers to | The top 3 competitors and how many answers name them |
 | 9 | sceptical owner | read the real questions, answers and sources | I can see it's real and not made up | Every question with Gemini's answer excerpt and its Google Maps sources |
-| 10 | business owner | understand why Gemini picks my competitors | I know what to change | „De ce îi alege Gemini pe ei?”: side-by-side numbers, conclusions, links to fixes |
+| 10 | business owner | understand why Gemini picks my competitors | I know what to change | „De ce îi alege LLM-ul pe ei?”: side-by-side numbers, conclusions, links to fixes |
 
 ### Knowing what to fix first
 
@@ -291,18 +293,18 @@ The fix opens in a side panel on desktop or a bottom sheet on a phone. There are
   - Situații (situations): 0 of 4
 - For „cafenea de specialitate în domenii”, Gemini recommended KUMO Specialty Coffee, Onest Coffee and Dose Specialty Coffee.
 - It isn't named for „cafenea unde pot veni cu câinele” ("a café where I can bring my dog") either, although Google lists it as dog-friendly.
-- **„Te cunoaște deja Gemini?”: 100.** Gemini knows the café exists and what it is. It just doesn't recommend it.
+- **„Te cunoaște deja LLM-ul?”: 100.** Gemini knows the café exists and what it is. It just doesn't recommend it.
 
 | Chapter | Score |
 | --- | --- |
 | Profilul Google | 83 |
 | Recenzii | 45 |
 | Conținutul site-ului | 40 |
-| Site-ul, văzut de Gemini | 75 |
+| Site-ul, văzut de LLM | 75 |
 | Aceleași informații peste tot | 0 |
 | Mențiuni pe alte site-uri | 55 |
 | Rețele sociale | 22 |
-| Te cunoaște deja Gemini? | 100 |
+| Te cunoaște deja LLM-ul? | 100 |
 
 ### What the scan found (20 open problems)
 
@@ -338,7 +340,7 @@ The fix opens in a side panel on desktop or a bottom sheet on a phone. There are
 1. **Setup:** type „Cafetăria Miciurin, o cafenea de specialitate în Domenii, București” and watch the card fill in. Confirm the website and the Google card, tap a few chips, and say there's no Instagram or TikTok.
 2. **Analysis:** five steps tick off.
 3. **Dashboard:** 51, „Apari în 1 din 12 răspunsuri” and the three cafés Gemini recommends instead.
-4. **Visibility in Gemini:** open „cafenea de specialitate în domenii”, where Cafetăria Miciurin is missing, with the Google Maps sources. Then show „De ce îi alege Gemini pe ei?”.
+4. **Visibility in Gemini:** open „cafenea de specialitate în domenii”, where Cafetăria Miciurin is missing, with the Google Maps sources. Then show „De ce îi alege LLM-ul pe ei?”.
 5. **Generated fix:** generate the Google description in the „Profesionist” tone and press „Am rezolvat”: 83 → 94.
 6. **Info page:** the chain's site doesn't show this shop's details, so here's a ready page with them and a yellow field to fill in. Then „Trimite persoanei care îți face site-ul”.
 7. **Assistant:** „Am răspuns la recenziile de pe Google” → „Da, marchează-l” → the score rises → it suggests the next step. Show „Anulează”.

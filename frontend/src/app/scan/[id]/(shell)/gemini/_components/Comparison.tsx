@@ -46,7 +46,7 @@ export function Comparison({ scanId, comparison }: ComparisonProps) {
     >
       <div className="flex flex-col gap-1 lg:flex-row lg:flex-wrap lg:items-baseline lg:justify-between lg:gap-2">
         <h2 id="comparison-title" className="text-lg font-extrabold lg:text-[22px] lg:tracking-[-0.01em]">
-          De ce îi alege Gemini pe ei?
+          De ce îi alege LLM-ul pe ei?
         </h2>
         <span className="text-[13px] text-muted lg:text-sm">
           <span className="lg:hidden">Tu față de cele {rivals.length} afaceri recomandate cel mai des</span>

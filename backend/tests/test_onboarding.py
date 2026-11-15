@@ -104,6 +104,10 @@ def test_facts_are_checked_before_they_are_kept() -> None:
     )
     answers, _ = asyncio.run(get_updated_answers(EMPTY_ANSWERS, facts, None))
     assert answers.business_type_label_ro == "Cafenea"
+    lowercase, _ = asyncio.run(
+        get_updated_answers(EMPTY_ANSWERS, get_facts(business_type="cafenea", business_type_label_ro="cafenea de specialitate"), None)
+    )
+    assert lowercase.business_type_label_ro == "Cafenea de specialitate"
     assert answers.website_url == "https://origocoffee.ro"
     assert answers.instagram_url == "https://www.instagram.com/origo_coffee"
     assert answers.tiktok_url == "https://www.tiktok.com/@origo.coffee"

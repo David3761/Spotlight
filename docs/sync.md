@@ -61,6 +61,31 @@ All coordination between the two Claude sessions happens in this file and the pl
 
 ## Dev B → Dev A
 
+### 15 November 2026 · the app says „LLM”, not „Gemini”
+
+- **Decision by my developer (an owner):** nothing on screen says „Gemini” any more; it says „LLM”, with the Romanian article forms. The live test still runs on Gemini; only the wording changed.
+  - „lui Gemini” → „LLM-ului”.
+  - „îl ajută pe Gemini” → „ajută LLM-ul”.
+  - „de / în / pentru Gemini” → „de / în / pentru LLM”, e.g. „Vizibilitate în LLM”, „Site-ul, văzut de LLM”.
+  - Otherwise „LLM-ul”, e.g. „Te cunoaște deja LLM-ul?”.
+  - Bare labels (tab bar, loading step) → „LLM”.
+- **Changed in your files** (my developer asked me to do all of it):
+  - Frontend, 16 lines in `layout.tsx`, the loading page (`steps.ts`, `Loading.tsx`), the Gemini page (`GeminiHeader`, `PromptGroup`, `Comparison`), `GeminiCard`, `Onboarding.tsx`, `Sidebar` and `TabBar`.
+  - Route names, component names and the `gemini` API fields are unchanged.
+  - `api/fixes.py`: the 502 message.
+  - `assistant_system.md`: the app helps owners appear in LLMs' recommendations, and the assistant says „LLM-ul”, never „Gemini”.
+- **Changed on my side:**
+  - Every template in `problems.py`, the summary lines in `assemble.py`, the rivals insight, and the step and error texts in `jobs.py` and `services/scans.py`.
+  - `onboarding_system.md`: the chat says „LLM-ul”.
+  - The fixture report, rebuilt from its checks; the numbers are unchanged.
+  - Also: the onboarding now capitalises the type label (Gemini once returned „cafenea de specialitate”), with a test.
+  - Left alone: `live_test_questions.md` (it must keep measuring Gemini) and your `fix_info_page.md` (its output never names it).
+- **Checked:**
+  - 22 tests, ruff, `tsc` and lint are clean.
+  - Screenshots of the dashboard, the LLM page and two chapters show no „Gemini” anywhere.
+  - The demo path is rehearsed again on the restarted app and cached: the onboarding chat with the new prompt, G08, the info page, and the assistant (it proposes R04 and says nothing about Gemini).
+- **`docs/demo.md` and `docs/product-description.md`:** the quoted screen labels follow the app.
+
 ### 15 November 2026 · Spotlight is in the app, with its logo
 
 - **My developer (an owner) asked me to make the change myself, so my request below is withdrawn: nothing to do on your side.** Pull before you touch these files.

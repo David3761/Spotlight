@@ -203,7 +203,8 @@ async def get_updated_answers(
     }
     if facts.business_type:
         update["business_type"] = facts.business_type
-        update["business_type_label_ro"] = get_clean_text(facts.business_type_label_ro) or TYPE_LABELS_RO[facts.business_type]
+        label = get_clean_text(facts.business_type_label_ro)
+        update["business_type_label_ro"] = label[:1].upper() + label[1:] if label else TYPE_LABELS_RO[facts.business_type]
     update |= get_website_update(facts)
     google_update, link_problem = await get_google_update(answers, facts, shown_places)
     update |= google_update

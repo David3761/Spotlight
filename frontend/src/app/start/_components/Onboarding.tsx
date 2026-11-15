@@ -49,7 +49,7 @@ export function Onboarding() {
             <AssistantAvatar className="size-10" />
             <div className="flex flex-col gap-0.5">
               <span className="text-[15px] font-bold">Asistentul tău</span>
-              <span className="text-[13px] text-muted">Te ajut să apari în recomandările lui Gemini</span>
+              <span className="text-[13px] text-muted">Te ajut să apari în recomandările LLM-ului</span>
             </div>
           </div>
           <MobileBusinessCard answers={answers} fields={fields} doneCount={doneCount} />

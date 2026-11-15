@@ -224,8 +224,8 @@ def get_social_detail(was_checked: bool) -> str:
 def get_gemini_detail(questions: int) -> str:
     """Returns the Gemini step's done text: how many questions Gemini answered."""
     if not questions:
-        return "Nu am putut întreba Gemini acum"
-    return f"I-am pus lui Gemini {get_count_phrase(questions, 'întrebare', 'întrebări')}"
+        return "Nu am putut întreba LLM-ul acum"
+    return f"I-am pus LLM-ului {get_count_phrase(questions, 'întrebare', 'întrebări')}"
 
 
 async def replay_fixture(scan_id: str, progress: ScanProgress) -> None:

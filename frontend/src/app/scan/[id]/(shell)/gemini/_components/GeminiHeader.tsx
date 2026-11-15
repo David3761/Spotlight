@@ -50,15 +50,15 @@ export function GeminiHeader({ scanId, gemini, isTesting, hasRetested, error, on
           <ScoreRing score={gemini.score} size={128} thick={14} />
         </div>
         <div className="contents lg:flex lg:flex-1 lg:basis-90 lg:flex-col lg:gap-2">
-          <h1 className="mt-1 text-2xl font-extrabold tracking-[-0.02em] lg:m-0 lg:text-[30px]">Vizibilitate în Gemini</h1>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-[-0.02em] lg:m-0 lg:text-[30px]">Vizibilitate în LLM</h1>
           {gemini.status === "complete" ? (
             <>
               <span className="text-base font-bold text-accent-deep lg:text-lg">{getMentionSummary(gemini)}</span>
               <p className="max-w-155 text-sm leading-normal text-subtle lg:hidden">
-                I-am pus lui Gemini 12 întrebări, cum le-ar pune clienții tăi.
+                I-am pus LLM-ului 12 întrebări, cum le-ar pune clienții tăi.
               </p>
               <p className="hidden max-w-155 text-[15px] leading-[1.55] text-subtle lg:block">
-                I-am pus lui Gemini 12 întrebări, exact cum le-ar pune clienții tăi. Mai jos vezi ce a răspuns și pe cine a
+                I-am pus LLM-ului 12 întrebări, exact cum le-ar pune clienții tăi. Mai jos vezi ce a răspuns și pe cine a
                 recomandat.
               </p>
             </>

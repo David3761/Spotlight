@@ -20,7 +20,7 @@ export function GeminiCard({ scanId, gemini }: { scanId: string; gemini: GeminiB
   return (
     <Link
       href={`/scan/${scanId}/gemini`}
-      aria-label={`Vizibilitate în Gemini: ${summary.toLowerCase()}. Vezi detaliile.`}
+      aria-label={`Vizibilitate în LLM: ${summary.toLowerCase()}. Vezi detaliile.`}
       className="flex min-w-0 flex-col gap-4 rounded-[28px] border-2 border-accent-outline bg-accent-soft p-5 text-ink lg:flex-[1_1_380px] lg:gap-4.5 lg:p-7"
     >
       <div className="flex items-center justify-between gap-3">
@@ -47,13 +47,13 @@ export function GeminiCard({ scanId, gemini }: { scanId: string; gemini: GeminiB
           <ScoreRing score={gemini.score} size={96} />
         </span>
         <div className="flex min-w-0 flex-col gap-1">
-          <span className="text-lg font-extrabold lg:text-xl lg:tracking-[-0.01em]">Vizibilitate în Gemini</span>
+          <span className="text-lg font-extrabold lg:text-xl lg:tracking-[-0.01em]">Vizibilitate în LLM</span>
           <span className="text-sm font-semibold text-accent-deep lg:text-base">{summary}</span>
         </div>
       </div>
       {competitors.length > 0 && (
         <div className="flex flex-col gap-2.5 rounded-[18px] bg-surface px-3.5 py-3 lg:rounded-[20px] lg:px-4 lg:py-3.5">
-          <span className="text-xs font-semibold text-subtle lg:text-[13px]">În locul tău, Gemini recomandă:</span>
+          <span className="text-xs font-semibold text-subtle lg:text-[13px]">În locul tău, LLM-ul recomandă:</span>
           {competitors.map((competitor, index) => (
             <div key={competitor.name} className="flex items-center gap-2.5">
               <span className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-fill text-xs font-extrabold text-subtle lg:size-6.5 lg:rounded-[9px] lg:text-[13px]">

@@ -12,7 +12,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 /** The document metadata shared by every page. */
 export const metadata: Metadata = {
   title: APP_NAME,
-  description: "Te ajut să apari în recomandările lui Gemini",
+  description: "Te ajut să apari în recomandările LLM-ului",
 };
 
 /** The root layout: Romanian document, app font and page background. */

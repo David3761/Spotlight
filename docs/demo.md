@@ -15,30 +15,30 @@ Cafetăria Miciurin – Specialty Coffee Shop is a specialty café at Bulevardul
 
 ## The path
 
-1. **Onboarding (`/start`).** Gemini leads the chat. Type and click exactly this, in this order: offline, only the rehearsed chat replays.
+1. **Onboarding (`/start`).** The LLM leads the chat. Type and click exactly this, in this order: offline, only the rehearsed chat replays.
    - Type „Cafetăria Miciurin, o cafenea de specialitate în Domenii, București”. Name, type and location fill in on the card at once.
    - Type „da, cafetaria.ro”.
    - Press „Asta sunt eu” on the „Cafetăria Miciurin - Specialty Coffee Shop” card.
    - Chips: „Da” (claimed), „Nu” (description: this keeps G08 open for step 5), „Mai demult” (last Google post).
    - Type „n-avem instagram sau tiktok, doar site-ul”.
    - „Nu folosesc altele”, then „Gata, analizează afacerea”.
-   - Say: you just talk to it like to a person. Gemini understands loose answers, asks only what's missing, and the card on the right fills in as you go.
-2. **Loading.** The five steps tick off in about 8 seconds (Google, Recenzii, Website, Rețele sociale, Gemini).
-   - Say: we read the Google profile, the reviews, the website and the social links, and we ask Gemini 12 questions a customer would ask.
+   - Say: you just talk to it like to a person. The LLM understands loose answers, asks only what's missing, and the card on the right fills in as you go.
+2. **Loading.** The five steps tick off in about 8 seconds (Google, Recenzii, Website, Rețele sociale, LLM).
+   - Say: we read the Google profile, the reviews, the website and the social links, and we ask the LLM 12 questions a customer would ask.
 3. **Dashboard.** Point at:
    - The overall score, 51.
-   - „Apari în 1 din 12 răspunsuri”, and the three cafés Gemini recommends instead: Saint Roastery Victoriei, Mad Goat, MABO ONE.
+   - „Apari în 1 din 12 răspunsuri”, and the three cafés the LLM recommends instead: Saint Roastery Victoriei, Mad Goat, MABO ONE.
    - „Următorii pași”: not on Instagram, TripAdvisor or the delivery apps, and fewer reviews than the cafés nearby.
-4. **Vizibilitate în Gemini.**
+4. **Vizibilitate în LLM.**
    - Open „Vezi răspunsurile”.
-   - In „Cartier”, show „cafenea de specialitate în domenii”: Cafetăria Miciurin is a specialty café in Domenii, yet it isn't in any of the 3 answers. Gemini recommended KUMO Specialty Coffee, Onest Coffee and Dose Specialty Coffee, with the Google Maps sources under it.
-   - Scroll to „De ce îi alege Gemini pe ei?”: a 5.0 rating, as good as theirs, and more reviews than MABO ONE (452 to 403).
+   - In „Cartier”, show „cafenea de specialitate în domenii”: Cafetăria Miciurin is a specialty café in Domenii, yet it isn't in any of the 3 answers. The LLM recommended KUMO Specialty Coffee, Onest Coffee and Dose Specialty Coffee, with the Google Maps sources under it.
+   - Scroll to „De ce îi alege LLM-ul pe ei?”: a 5.0 rating, as good as theirs, and more reviews than MABO ONE (452 to 403).
 5. **Fix with generated text.**
    - Open „Profilul Google” in the sidebar, then „Rezolvă” on „Fără descriere a afacerii”.
    - Switch the tone to „Profesionist” and press „Generează din nou”.
    - Press „Am rezolvat”: the chapter goes from 83 to 94, the toast shows the points, and the sidebar count drops.
 6. **Info page for the website.**
-   - Open „Site-ul, văzut de Gemini”, then the problem „Gemini nu găsește o pagină cu informațiile de bază”.
+   - Open „Site-ul, văzut de LLM”, then the problem „LLM-ul nu găsește o pagină cu informațiile de bază”.
    - Say: the website belongs to the chain, so this shop's address, hours and phone aren't on it. Here is a page with all of them.
    - Show the page with the yellow field to fill in (holiday hours), then „Trimite persoanei care îți face site-ul”.
 7. **Assistant.**
@@ -53,5 +53,5 @@ Cafetăria Miciurin – Specialty Coffee Shop is a specialty café at Bulevardul
 ## If something breaks
 
 - **A live scan of a judge's business errors or stalls:** go back to the Cafetăria Miciurin dashboard tab without comment.
-- **A fix text or the info page shows „Nu am putut contacta Gemini acum”:** the free key's daily quota is used up, or there's no internet. Skip to the next step. Steps 1–4 and „Am rezolvat” don't call Gemini.
+- **A fix text or the info page shows „Nu am putut contacta LLM-ul acum”:** the free key's daily quota is used up, or there's no internet. Skip to the next step. Steps 1–4 and „Am rezolvat” don't call Gemini.
 - **The page doesn't load:** restart with `npm run dev` (a few seconds).

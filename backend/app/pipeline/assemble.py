@@ -20,9 +20,9 @@ PLATFORM_LABELS: dict[Platform, str] = {
 """The display name of each platform."""
 
 SUMMARIES_RO = [
-    (70, "Gemini te poate recomanda. Mai sunt câteva detalii de pus la punct."),
+    (70, "LLM-ul te poate recomanda. Mai sunt câteva detalii de pus la punct."),
     (40, "Ești pe drumul bun. Câteva lucruri simple te pot aduce mai sus."),
-    (0, "Gemini te recomandă rar deocamdată. Multe se rezolvă în câteva minute."),
+    (0, "LLM-ul te recomandă rar deocamdată. Multe se rezolvă în câteva minute."),
 ]
 """The line under the score ring, by the lowest overall score it applies to."""
 

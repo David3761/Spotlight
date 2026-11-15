@@ -104,7 +104,7 @@ async def run_gemini_test(scan_id: str) -> Report:
         collect_live_test(inputs, internal.canonical, round_number), jobs.LIVE_TEST_TIMEOUT_SECONDS, None
     )
     if live is None:
-        raise ApiError("upstream_error", "Nu am putut întreba Gemini acum. Încearcă din nou peste un minut.")
+        raise ApiError("upstream_error", "Nu am putut întreba LLM-ul acum. Încearcă din nou peste un minut.")
     rival_rows = await jobs.run_collector(get_rival_rows(live.rivals), jobs.RIVALS_TIMEOUT_SECONDS, [])
     with edit_report(scan_id) as (report, internal):
         report.gemini = live.block

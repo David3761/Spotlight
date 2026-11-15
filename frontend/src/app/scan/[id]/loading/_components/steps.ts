@@ -20,8 +20,8 @@ export const steps: StepTexts[] = [
   { id: "retele", title: "Rețele sociale", active: "Verificăm Instagram…", pending: "Instagram" },
   {
     id: "gemini",
-    title: "Gemini",
-    active: "Îi punem lui Gemini 12 întrebări…",
+    title: "LLM",
+    active: "Îi punem LLM-ului 12 întrebări…",
     pending: "12 întrebări ca ale clienților tăi",
   },
 ];

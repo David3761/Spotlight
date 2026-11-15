@@ -78,7 +78,7 @@ function PromptRow({ prompt }: { prompt: GeminiPrompt }) {
             ) : (
               <>
                 <span className="lg:hidden">Recomandate:</span>
-                <span className="hidden lg:inline">Gemini a recomandat:</span>
+                <span className="hidden lg:inline">LLM-ul a recomandat:</span>
               </>
             )}{" "}
             <b className="font-bold text-ink">{prompt.others.join(", ")}</b>

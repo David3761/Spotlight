@@ -15,7 +15,7 @@ export function Sidebar({ report, active }: { report: Report; active: SidebarSec
     { key: "panou", name: "Panou principal", href: base, icon: iconPath.home, meta: null },
     {
       key: "gemini",
-      name: "Vizibilitate în Gemini",
+      name: "Vizibilitate în LLM",
       href: `${base}/gemini`,
       icon: iconPath.target,
       meta: gemini.status === "complete" ? `${gemini.mentioned}/${gemini.total}` : null,

@@ -86,7 +86,7 @@ export function Loading() {
               Durează cam un minut.
               <span className="hidden lg:inline">
                 {" "}
-                Ne uităm unde apare {business?.name ?? "afacerea ta"} și ce află Gemini despre ea.
+                Ne uităm unde apare {business?.name ?? "afacerea ta"} și ce află LLM-ul despre ea.
               </span>
             </p>
           </div>
@@ -116,7 +116,7 @@ export function Loading() {
         <div className="flex flex-col gap-2.5 rounded-3xl bg-accent-soft p-6">
           <span className="text-xs font-bold tracking-[0.08em] text-accent-strong uppercase">Știai că?</span>
           <p className="text-[15px] leading-[1.55] text-accent-deep">
-            Gemini citește și ce scriu clienții în recenzii, de exemplu „cafea bună” sau „loc liniștit pentru laptop”, ca să
+            LLM-ul citește și ce scriu clienții în recenzii, de exemplu „cafea bună” sau „loc liniștit pentru laptop”, ca să
             știe pe cine să recomande.
           </p>
         </div>
@@ -131,7 +131,7 @@ export function Loading() {
       <div className="mt-auto flex flex-col gap-2 rounded-[20px] bg-accent-soft px-4.5 py-4 lg:hidden">
         <span className="text-xs font-bold tracking-[0.08em] text-accent-strong uppercase">Știai că?</span>
         <p className="text-sm leading-normal text-accent-deep">
-          Gemini citește și ce scriu clienții în recenzii, ca să știe pe cine să recomande.
+          LLM-ul citește și ce scriu clienții în recenzii, ca să știe pe cine să recomande.
         </p>
       </div>
       {outcome === "complete" && (
