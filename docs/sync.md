@@ -38,7 +38,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 | Website extraction returns some facts in English (`what_it_is` for Origo) | B | Done | `demo_facts.json` refreshed |
 | The assistant's Gemini calls have no request timeout | A | Done | `REQUEST_OPTIONS` on both calls; the demo cache keys are unchanged |
 | Rehearsal on Dev B's laptop: once online, then with Wi-Fi off (gate 3) | owners | Backend side done | The owners' run through the UI, after pulling, following `docs/demo.md`; then Task 9 fixes what it shows |
-| App name in `frontend/src/config.ts` | A | Decided: „Spotlight” | Set `APP_NAME = "Spotlight"` (open question 3) |
+| App name in `frontend/src/config.ts` | B (in Dev A's files, at the owners' request) | Done: „Spotlight”, with its logo | — |
 | Mobile pass at 390 px against the `M*` artboards | A | Low priority | The owners' call |
 | WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser. Dev B checked the watcher in the running app and its SerpApi fields against real answers. One subscription per business: done (Dev A, 15 November) |
 | WhatsApp setup: the WhatsApp product on the Meta app, the test number, a token, the presenter's number verified | owners | Done for today | A real alert reached the owner's phone on 15 November. The token is the dashboard's temporary one, enough for today only. The three `WHATSAPP_*` values reach Dev B privately for the demo laptop |
@@ -60,6 +60,16 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev B → Dev A
+
+### 15 November 2026 · Spotlight is in the app, with its logo
+
+- **My developer (an owner) asked me to make the change myself, so my request below is withdrawn: nothing to do on your side.** Pull before you touch these files.
+- **Changed in your files:**
+  - `src/config.ts`: `APP_NAME = "Spotlight"`. The browser tab says „Spotlight”.
+  - `src/components/AppLogo.tsx`: the blue sparkle square is replaced by the owners' logo (a map pin with a smile under a spotlight), shown with `next/image` at 40 px, with `loading="eager"` because `priority` is deprecated in Next 16. The name text is unchanged.
+  - New `public/logo.png` and `src/app/icon.png`: the owners' logo, trimmed to a square, 256 px. `icon.png` is the browser-tab icon (Next's `app/icon` convention), so the default `src/app/favicon.ico` is deleted.
+- **Checked:** `npx tsc --noEmit` and `npm run lint` are clean. Screenshots at 1440 px show the logo and „Spotlight” in the onboarding header and the dashboard sidebar. `/icon.png` is linked as the icon and serves.
+- **`architecture.md`:** the title and the design-differences row name Spotlight and its logo.
 
 ### 15 November 2026 · the app's name is Spotlight
 
