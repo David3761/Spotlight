@@ -263,7 +263,7 @@ The fast and smart tiers use the free-tier `GEMINI_API_KEY`. Romanian Maps-groun
 | `scans` table | `id`, `created_at`, `status`, `inputs` (JSON), `internal` (JSON: canonical, website facts, check results), `report` (JSON), `error` | Resolving recomputes scores from `internal` and rewrites `report` |
 | `conversations` table | `id`, `scan_id`, `kind`, `title`, `chapter_id`, `messages` (JSON), `pending_actions` (JSON), `created_at`, `updated_at` | Screen 6 |
 | `cache/` | fetched HTML, API responses, LLM answers, keyed by request hash | Saves money while developing; lets a scan replay offline |
-| `fixtures/demo_report.json`, `demo_checks.json`, `demo_facts.json` | The recorded real scan of the demo business (Bike Explorer, a bike repair shop in Berceni): its report, the checks it was scored from, and its facts | Demo mode |
+| `fixtures/demo_report.json`, `demo_checks.json`, `demo_facts.json` | The recorded real scan of the demo business (Cafetăria Miciurin, a specialty café in Domenii): its report, the checks it was scored from, and its facts | Demo mode |
 
 Place IDs can be stored freely; check the Google Maps Platform terms before keeping other Places content beyond the hackathon.
 

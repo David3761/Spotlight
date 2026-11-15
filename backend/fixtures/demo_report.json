@@ -1,32 +1,32 @@
 {
-  "scan_id": "6e74de8e9c9940be95575b872ee79115",
-  "checked_at": "2026-11-15T08:27:09.762462+00:00",
+  "scan_id": "e6a1b87347324348ba39265f34e31549",
+  "checked_at": "2026-11-15T08:50:11.606423+00:00",
   "business": {
-    "name": "Bike Explorer",
-    "initials": "BE",
-    "type": "altceva",
-    "type_label_ro": "Service de biciclete",
+    "name": "Cafetăria Miciurin - Specialty Coffee Shop",
+    "initials": "CM",
+    "type": "cafenea",
+    "type_label_ro": "Cafenea de specialitate",
     "city": "București",
-    "neighborhood": "Berceni",
-    "place_id": "ChIJO0dkNFD-sUARiznQlhEdZcM",
-    "address": "Strada Mihail Petrescu 2A, 041274 București",
-    "phone": "0745 776 176",
-    "website": "http://www.bikexplorer.ro/",
-    "google_maps_uri": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+    "neighborhood": "Domenii",
+    "place_id": "ChIJvzgIZGgDskARq96996ZdIJg",
+    "address": "Bulevardul Ion Mihalache 111, 011177 București",
+    "phone": "0721 285 293",
+    "website": "https://cafetaria.ro/ro/",
+    "google_maps_uri": "https://maps.google.com/?cid=10961864464722157227&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
     "instagram_url": null,
     "instagram_handle": null,
     "tiktok_url": null
   },
-  "overall": 55,
-  "overall_exact": 55.45,
+  "overall": 51,
+  "overall_exact": 50.65,
   "summary_ro": "Ești pe drumul bun. Câteva lucruri simple te pot aduce mai sus.",
-  "open_problem_count": 19,
+  "open_problem_count": 20,
   "next_steps": [
     {
       "check_id": "L01",
       "chapter_id": "info",
       "chapter_name_ro": "Aceleași informații peste tot",
-      "title_ro": "Nu apari pe Instagram",
+      "title_ro": "Nu apari pe Instagram, TripAdvisor, Glovo, Wolt și Bolt Food",
       "why_ro": "Clienții și Gemini caută și pe aceste platforme. Cu cât apari în mai multe locuri potrivite, cu atât ești mai ușor de găsit.",
       "points": 100,
       "impact": 10.0,
@@ -34,14 +34,37 @@
       "fix": {
         "panel": "steps",
         "steps_ro": [
-          "Creează profilul pe Instagram.",
+          "Creează profilul pe Instagram, TripAdvisor, Glovo, Wolt și Bolt Food.",
           "Folosește aceleași date ca pe Profilul tău Google."
         ],
         "deep_link": null,
         "deep_link_label_ro": null,
         "where_ro": null,
         "max_chars": null,
-        "evidence_ro": "Apari pe 0 din 1 platforme potrivite."
+        "evidence_ro": "Apari pe 0 din 5 platforme potrivite."
+      }
+    },
+    {
+      "check_id": "R01",
+      "chapter_id": "recenzii",
+      "chapter_name_ro": "Recenzii",
+      "title_ro": "Mai puține recenzii decât cafenelele din jur",
+      "why_ro": "Gemini recomandă mai des locurile cu multe recenzii. Fiecare client mulțumit care scrie una te ajută.",
+      "points": 30,
+      "impact": 4.5,
+      "fix_type": "owner_action",
+      "fix": {
+        "panel": "steps",
+        "steps_ro": [
+          "Deschide Profilul tău Google și apasă Cere recenzii.",
+          "Copiază linkul și trimite-l clienților mulțumiți.",
+          "Pune un cod QR cu linkul la casă sau pe mese."
+        ],
+        "deep_link": "https://maps.google.com/?cid=10961864464722157227&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+        "deep_link_label_ro": "Deschide Profilul tău Google",
+        "where_ro": "Profil › Cere recenzii",
+        "max_chars": null,
+        "evidence_ro": "Ai 452 de recenzii, iar cafenelele din jur au în jur de 3504."
       }
     },
     {
@@ -65,52 +88,30 @@
         "max_chars": null,
         "evidence_ro": "Nu ai dat un link de Instagram și nu am găsit niciunul pe site."
       }
-    },
-    {
-      "check_id": "M02",
-      "chapter_id": "mentiuni",
-      "chapter_name_ro": "Mențiuni pe alte site-uri",
-      "title_ro": "Nu apari în niciun top",
-      "why_ro": "Când cineva cere „cele mai bune afaceri”, Gemini citește topurile făcute de alții.",
-      "points": 25,
-      "impact": 2.5,
-      "fix_type": "owner_action",
-      "fix": {
-        "panel": "steps",
-        "steps_ro": [
-          "Caută topurile de afaceri din București.",
-          "Scrie-le autorilor un mesaj scurt despre tine."
-        ],
-        "deep_link": null,
-        "deep_link_label_ro": null,
-        "where_ro": null,
-        "max_chars": null,
-        "evidence_ro": null
-      }
     }
   ],
   "gemini": {
     "status": "complete",
-    "score": 56,
+    "score": 22,
     "weight": 0.1,
-    "mentioned": 6,
+    "mentioned": 1,
     "total": 12,
-    "last_checked": "2026-11-15T08:27:08.542292+00:00",
+    "last_checked": "2026-11-15T08:50:11.311347+00:00",
     "top_competitors": [
       {
-        "name": "Fix Your Bike",
-        "place_id": "ChIJ8cR9Ou7_sUAR4CkH6dk3gEc",
-        "mentions": 9
+        "name": "Saint Roastery Victoriei",
+        "place_id": "ChIJ0ZZGAPUBskARsLoyjmKLqaM",
+        "mentions": 6
       },
       {
-        "name": "COBI Custom Bicycle",
-        "place_id": "ChIJ60cEKnECskAR7yiChkma2a8",
-        "mentions": 8
+        "name": "Mad Goat",
+        "place_id": "ChIJpz7PGZj_sUARwpwQqJJX31Y",
+        "mentions": 6
       },
       {
-        "name": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-        "place_id": "ChIJxTBApiIBskARF4_ozClN1o0",
-        "mentions": 7
+        "name": "MABO ONE - Specialty Coffee Shop",
+        "place_id": "ChIJyaR2ylQBskARlGmxnUtOwj4",
+        "mentions": 5
       }
     ],
     "groups": [
@@ -118,156 +119,161 @@
         "id": "general",
         "name_ro": "General",
         "desc_ro": "Întrebări despre tot orașul",
-        "mentioned": 1,
+        "mentioned": 0,
         "total": 4,
         "prompts": [
           {
-            "text": "service de biciclete bucuresti",
+            "text": "cea mai bună cafenea de specialitate din bucurești",
             "mentioned": false,
             "runs_mentioned": 0,
             "runs": 3,
             "others": [
-              "COBI Custom Bicycle",
-              "Fix Your Bike",
-              "FreeRideBikes"
+              "MABO ONE - Specialty Coffee Shop",
+              "Saint Roastery Victoriei",
+              "Origo"
             ],
-            "answer_excerpt": "C câteva ateliere și service-uri de biciclete apreciate în București: * **COBI Custom Bicycle** * **Adresă:** Strada Cuțitul de Argint 64, Sector 4 (vizavi de intrarea în Parcul Carol) * **Telefon:** +40 771 470 482 * **Program:** Luni–Joi: 12:00–19:00, Vineri: 12:00–18:00, Sâmbătă: 12:00–15:00,…",
+            "answer_excerpt": "Bucureștiul are o comunitate vibrantă de cafea de specialitate, iar mai multe cafenele se remarcă prin calitatea excepțională a preparatelor, prăjitoria proprie sau atmosfera apreciată de localnici și turiști: * **MABO ONE - Specialty Coffee Shop** (Strada Petru Rareș 12) – Evaluată cu **4.9 (403…",
             "sources": [
               {
-                "title": "COBI Custom Bicycle",
-                "uri": "https://maps.google.com/maps?cid=12671328667163568367",
+                "title": "MABO ONE - Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=4522263062508562836",
                 "kind": "maps"
               },
               {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
+                "title": "Saint Roastery Victoriei",
+                "uri": "https://maps.google.com/maps?cid=11793110354655099568",
                 "kind": "maps"
               },
               {
-                "title": "FreeRideBikes",
-                "uri": "https://maps.google.com/maps?cid=9983974643121498706",
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
                 "kind": "maps"
               },
               {
-                "title": "Funky Bike",
-                "uri": "https://maps.google.com/maps?cid=13273468458676449073",
+                "title": "Mad Goat",
+                "uri": "https://maps.google.com/maps?cid=6259818294464781506",
+                "kind": "maps"
+              },
+              {
+                "title": "Caf'tory",
+                "uri": "https://maps.google.com/maps?cid=10559311169163757292",
                 "kind": "maps"
               }
             ]
           },
           {
-            "text": "unde repar bicicleta in bucuresti",
-            "mentioned": false,
-            "runs_mentioned": 1,
-            "runs": 3,
-            "others": [
-              "COBI Custom Bicycle",
-              "FreeRideBikes",
-              "Funky Bike"
-            ],
-            "answer_excerpt": "Iată câteva ateliere bine cotate pentru repararea bicicletelor în București: * **Bike XCS** * **Adresă:** Strada Baba Novac 11A, București * **Rating:** 4.4 (306 recenzii) * **Program:** Luni–Vineri: 10:00–13:30, 14:15–19:00; Sâmbătă: 10:00–14:00; Duminică: Închis * **Detalii:** Unul dintre cele…",
-            "sources": [
-              {
-                "title": "COBI Custom Bicycle",
-                "uri": "https://maps.google.com/maps?cid=12671328667163568367",
-                "kind": "maps"
-              },
-              {
-                "title": "FreeRideBikes",
-                "uri": "https://maps.google.com/maps?cid=9983974643121498706",
-                "kind": "maps"
-              },
-              {
-                "title": "Funky Bike",
-                "uri": "https://maps.google.com/maps?cid=13273468458676449073",
-                "kind": "maps"
-              },
-              {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
-                "kind": "maps"
-              },
-              {
-                "title": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-                "uri": "https://maps.google.com/maps?cid=10220441246290710295",
-                "kind": "maps"
-              }
-            ]
-          },
-          {
-            "text": "atelier biciclete bun bucuresti",
-            "mentioned": true,
-            "runs_mentioned": 2,
-            "runs": 3,
-            "others": [
-              "COBI Custom Bicycle",
-              "FreeRideBikes",
-              "Fix Your Bike"
-            ],
-            "answer_excerpt": "Iată câteva dintre cele mai apreciate ateliere și service-uri de biciclete din București, bazate pe recenzii bune și pe experiența clienților: * **COBI Custom Bicycle** * **Adresă:** Strada Cuțitul de Argint 64 (vizaví de intrarea în Parcul Carol) * **Rating:** 4.7 (217 recenzii) * **Program:**…",
-            "sources": [
-              {
-                "title": "COBI Custom Bicycle",
-                "uri": "https://maps.google.com/maps?cid=12671328667163568367",
-                "kind": "maps"
-              },
-              {
-                "title": "Bike Explorer",
-                "uri": "https://maps.google.com/maps?cid=14079691771425601931",
-                "kind": "maps"
-              },
-              {
-                "title": "FreeRideBikes",
-                "uri": "https://maps.google.com/maps?cid=9983974643121498706",
-                "kind": "maps"
-              },
-              {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
-                "kind": "maps"
-              },
-              {
-                "title": "Funky Bike",
-                "uri": "https://maps.google.com/maps?cid=13273468458676449073",
-                "kind": "maps"
-              }
-            ]
-          },
-          {
-            "text": "reparatii biciclete bucuresti non stop",
+            "text": "unde bem o cafea bună în bucurești",
             "mentioned": false,
             "runs_mentioned": 0,
             "runs": 3,
             "others": [
-              "Service Biciclete La Antonio",
-              "FreeRideBikes",
-              "Atelier Obor Reparații biciclete"
+              "Origo",
+              "MABO ONE - Specialty Coffee Shop",
+              "Saint Roastery Victoriei"
             ],
-            "answer_excerpt": "În București nu există în prezent service-uri de biciclete dedicate care să funcționeze în regim non-stop. Majoritatea atelierelor și magazinelor de biciclete au program fix, de zi (în general deschise între orele 09:00/10:00 și 18:00/20:00). Dacă ai o urgență în afara programului de lucru (de…",
+            "answer_excerpt": "Bucureștiul are o scenă extrem de vibrantă de cafenele de specialitate. Câteva dintre locurile apreciate pentru o cafea excelentă includ: * **Origo** (Strada Lipscani 9) – O cafenea de referință în Centrul Vechi, cunoscută pentru cafeaua de specialitate servită ziua și transformarea în bar de…",
             "sources": [
               {
-                "title": "Service Biciclete La Antonio",
-                "uri": "https://maps.google.com/maps?cid=14800517712118726982",
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
                 "kind": "maps"
               },
               {
-                "title": "FreeRideBikes",
-                "uri": "https://maps.google.com/maps?cid=9983974643121498706",
+                "title": "MABO ONE - Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=4522263062508562836",
                 "kind": "maps"
               },
               {
-                "title": "Atelier Obor Reparații biciclete",
-                "uri": "https://maps.google.com/maps?cid=6795382526068575983",
+                "title": "Dose Specialty Coffee",
+                "uri": "https://maps.google.com/maps?cid=14627055060924175099",
                 "kind": "maps"
               },
               {
-                "title": "Auto Nico Simo S.R.L.",
-                "uri": "https://maps.google.com/maps?cid=16367812746656936573",
+                "title": "Saint Roastery Victoriei",
+                "uri": "https://maps.google.com/maps?cid=11793110354655099568",
                 "kind": "maps"
               },
               {
-                "title": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-                "uri": "https://maps.google.com/maps?cid=10220441246290710295",
+                "title": "STEAM Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=12473781750882352058",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenele bune de specialitate bucurești",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Origo",
+              "Saint Roastery Victoriei",
+              "MABO ONE - Specialty Coffee Shop"
+            ],
+            "answer_excerpt": "Câteva dintre cele mai apreciate cafenele de specialitate din București includ: * **Origo** * **Adresă:** Strada Lipscani 9 * **Program:** Luni 07:30–20:00, Marți–Vineri 07:30–00:00, Sâmbătă 08:00–00:00, Duminică 08:00–00:00 * **Detalii:** Unul dintre pionierii cafelei de specialitate din Centrul…",
+            "sources": [
+              {
+                "title": "Origo",
+                "uri": "https://maps.google.com/maps?cid=14169121335398956031",
+                "kind": "maps"
+              },
+              {
+                "title": "Saint Roastery Victoriei",
+                "uri": "https://maps.google.com/maps?cid=11793110354655099568",
+                "kind": "maps"
+              },
+              {
+                "title": "MABO ONE - Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=4522263062508562836",
+                "kind": "maps"
+              },
+              {
+                "title": "Human Coffee",
+                "uri": "https://maps.google.com/maps?cid=6663749903794952092",
+                "kind": "maps"
+              },
+              {
+                "title": "NOMONYM Coffee Roastery",
+                "uri": "https://maps.google.com/maps?cid=18027763417414265626",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenea cu cafea de specialitate în bucurești",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Saint Roastery Victoriei",
+              "MABO ONE - Specialty Coffee Shop",
+              "Dose Specialty Coffee"
+            ],
+            "answer_excerpt": "Bucureștiul are o comunitate vibrantă de cafenele de specialitate. Iată câteva opțiuni apreciate: * **Saint Roastery Victoriei** * **Adresă:** Strada Maltopol 26 bis, București * **Rating:** 4.8 (1.905 recenzii) * **Interval de preț:** 20–40 RON * **Program:** Luni–Vineri: 07:30–19:00,…",
+            "sources": [
+              {
+                "title": "Saint Roastery Victoriei",
+                "uri": "https://maps.google.com/maps?cid=11793110354655099568",
+                "kind": "maps"
+              },
+              {
+                "title": "MABO ONE - Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=4522263062508562836",
+                "kind": "maps"
+              },
+              {
+                "title": "Dose Specialty Coffee",
+                "uri": "https://maps.google.com/maps?cid=14627055060924175099",
+                "kind": "maps"
+              },
+              {
+                "title": "Eight Coffee & Wine",
+                "uri": "https://maps.google.com/maps?cid=4327251205534658896",
+                "kind": "maps"
+              },
+              {
+                "title": "Mad Goat",
+                "uri": "https://maps.google.com/maps?cid=6259818294464781506",
                 "kind": "maps"
               }
             ]
@@ -278,128 +284,161 @@
         "id": "cartier",
         "name_ro": "Cartier",
         "desc_ro": "Întrebări despre zona ta",
-        "mentioned": 2,
+        "mentioned": 1,
         "total": 4,
         "prompts": [
           {
-            "text": "service de biciclete in berceni",
+            "text": "cafenea în domeniile bucurești",
             "mentioned": false,
             "runs_mentioned": 1,
             "runs": 3,
             "others": [
-              "COBI Custom Bicycle",
-              "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-              "Auto Nico Simo S.R.L."
+              "Butter - Domenii",
+              "I’m coffee",
+              "ESQ Coffee"
             ],
-            "answer_excerpt": "Cele mai apropiate opțiuni de service pentru biciclete în zona Berceni și în apropiere includ: * **Bike Explorer** * **Adresă:** Strada Mihail Petrescu 2A, București * **Telefon:** +40 745 776 176 * **Evaluare:** 5 (195 recenzii) * **Program:** Marți – Vineri: 13:00 – 19:00; Luni, Sâmbătă și…",
+            "answer_excerpt": "Câteva opțiuni populare de cafenele în zona Domenii din București: * **Butter - Domenii** * **Adresă:** Strada Alexandru Constantinescu 43, București * **Rating:** 4.7 (352 recenzii) * **Interval de preț:** RON 20–40 * **Program:** Luni–Vineri: 07:30–18:00, Sâmbătă–Duminică: 08:30–18:00 *…",
             "sources": [
               {
-                "title": "Bike Explorer",
-                "uri": "https://maps.google.com/maps?cid=14079691771425601931",
+                "title": "Butter - Domenii",
+                "uri": "https://maps.google.com/maps?cid=10204734784181239814",
                 "kind": "maps"
               },
               {
-                "title": "COBI Custom Bicycle",
-                "uri": "https://maps.google.com/maps?cid=12671328667163568367",
+                "title": "ESQ Coffee",
+                "uri": "https://maps.google.com/maps?cid=15356922287181325705",
                 "kind": "maps"
               },
               {
-                "title": "Auto Nico Simo S.R.L.",
-                "uri": "https://maps.google.com/maps?cid=16367812746656936573",
+                "title": "I’m coffee",
+                "uri": "https://maps.google.com/maps?cid=12441360075192683403",
                 "kind": "maps"
               },
               {
-                "title": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-                "uri": "https://maps.google.com/maps?cid=10220441246290710295",
+                "title": "ADESSO Specialty Coffee",
+                "uri": "https://maps.google.com/maps?cid=13790531145758561947",
                 "kind": "maps"
               },
               {
-                "title": "Mv electric service trotinete",
-                "uri": "https://maps.google.com/maps?cid=18433121848577095730",
+                "title": "Burger Show",
+                "uri": "https://maps.google.com/maps?cid=9756612738090527373",
                 "kind": "maps"
               }
             ]
           },
           {
-            "text": "reparatii biciclete metrou piata sudului",
-            "mentioned": true,
-            "runs_mentioned": 2,
-            "runs": 3,
-            "others": [
-              "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-              "Fix Your Bike"
-            ],
-            "answer_excerpt": "Cel mai apropiat și apreciat service de biciclete din zona Piața Sudului este: * **Bike Explorer** * **Adresă:** Strada Mihail Petrescu 2A, București * **Telefon:** +40 745 776 176 * **Evaluare:** 5.0 (din 195 recenzii) * **Program:** Marți – Vineri: 13:00 – 19:00 (Luni, Sâmbătă și Duminică este…",
-            "sources": [
-              {
-                "title": "Bike Explorer",
-                "uri": "https://maps.google.com/maps?cid=14079691771425601931",
-                "kind": "maps"
-              },
-              {
-                "title": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-                "uri": "https://maps.google.com/maps?cid=10220441246290710295",
-                "kind": "maps"
-              },
-              {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
-                "kind": "maps"
-              }
-            ]
-          },
-          {
-            "text": "atelier biciclete oltenitei",
+            "text": "cafenea de specialitate în domenii",
             "mentioned": false,
             "runs_mentioned": 0,
             "runs": 3,
             "others": [
-              "BooMag.ro Magazin si service biciclete & trotinete electrice"
+              "KUMO SPECIALTY COFFEE",
+              "Onest Coffee",
+              "Dose Specialty Coffee"
             ],
-            "answer_excerpt": "**BooMag.ro Magazin si service biciclete & trotinete electrice** * **Adresă:** Șoseaua Olteniței 21B, 077160 Popești-Leordeni * **Rating:** 4.8 (396 recenzii) * **Telefon:** +40 723 479 263 * **Program:** * Luni – Vineri: 09:30–18:30 * Sâmbătă – Duminică: Închis * **Servicii și facilități:**…",
+            "answer_excerpt": "Iată câteva cafenele de specialitate apreciate din zona Dorobanți: * **Onest Coffee** * **Adresă:** Calea Dorobanți 220-222, București * **Rating:** 4.9 (259 recenzii) * **Program:** Luni–Vineri: 08:00–18:00, Sâmbătă: 09:00–17:00, Duminică: 09:00–17:00 * **Descriere:** O cafenea liniștită,…",
             "sources": [
               {
-                "title": "BooMag.ro Magazin si service biciclete & trotinete electrice",
-                "uri": "https://maps.google.com/maps?cid=18078620802878721246",
+                "title": "Onest Coffee",
+                "uri": "https://maps.google.com/maps?cid=2791457640770588993",
+                "kind": "maps"
+              },
+              {
+                "title": "KUMO SPECIALTY COFFEE",
+                "uri": "https://maps.google.com/maps?cid=13393285847509765781",
+                "kind": "maps"
+              },
+              {
+                "title": "Dose Specialty Coffee",
+                "uri": "https://maps.google.com/maps?cid=14627055060924175099",
+                "kind": "maps"
+              },
+              {
+                "title": "OTOTO Store Dorobanti",
+                "uri": "https://maps.google.com/maps?cid=3688770598768067645",
+                "kind": "maps"
+              },
+              {
+                "title": "Butter - Dorobanți",
+                "uri": "https://maps.google.com/maps?cid=18439192505580487189",
                 "kind": "maps"
               }
             ]
           },
           {
-            "text": "magazin service biciclete sector 4",
+            "text": "unde beau o cafea bună în cartierul domenii",
             "mentioned": true,
             "runs_mentioned": 3,
             "runs": 3,
             "others": [
-              "COBI Custom Bicycle",
-              "Fix Your Bike",
-              "Service HubWorks"
+              "Butter - Domenii",
+              "Ame Specialty Coffee Shop",
+              "ESQ Coffee"
             ],
-            "answer_excerpt": "Iată câteva opțiuni de magazine și service-uri pentru biciclete în Sectorul 4 din București: * **COBI Custom Bicycle** * **Adresă:** Strada Cuțitul de Argint 64, București * **Telefon:** +40 771 470 482 * **Program:** Luni–Joi 12:00–19:00, Vineri 12:00–18:00, Sâmbătă 12:00–15:00, Duminică închis *…",
+            "answer_excerpt": "În cartierul Domenii din București ai mai multe opțiuni apreciate pentru o cafea bună de specialitate, atmosferă plăcută și deserturi sau produse de patiserie: * **Mad Goat** (Strada Alexandru Constantinescu 41) – O cafenea mică și cochetă, foarte apreciată pentru cafeaua de specialitate, vibe-ul…",
             "sources": [
               {
-                "title": "COBI Custom Bicycle",
-                "uri": "https://maps.google.com/maps?cid=12671328667163568367",
+                "title": "Mad Goat",
+                "uri": "https://www.google.com/maps/reviews/data=!4m6!14m5!1m4!2m3!1sCi9DQUlRQUNvZENodHljRjlvT2xWa05uUlNSR05EWDNJNFJEZ3RNVmxyVjFoTlRWRRAB!2m1!1s0x40b1ff9819cf3ea7:0x56df5792a8109cc2",
                 "kind": "maps"
               },
               {
-                "title": "Bike Explorer",
-                "uri": "https://maps.google.com/maps?cid=14079691771425601931",
+                "title": "Butter - Domenii",
+                "uri": "https://maps.google.com/maps?cid=10204734784181239814",
                 "kind": "maps"
               },
               {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
+                "title": "Cafetăria Miciurin - Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=10961864464722157227",
                 "kind": "maps"
               },
               {
-                "title": "Service HubWorks",
-                "uri": "https://maps.google.com/maps?cid=10746002429210147797",
+                "title": "Ame Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=11381063599530733458",
                 "kind": "maps"
               },
               {
-                "title": "Auto Nico Simo S.R.L.",
-                "uri": "https://maps.google.com/maps?cid=16367812746656936573",
+                "title": "ESQ Coffee",
+                "uri": "https://maps.google.com/maps?cid=15356922287181325705",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenea aproape de piața domenii",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Butter - Domenii",
+              "Caf'tory",
+              "Ame Specialty Coffee Shop"
+            ],
+            "answer_excerpt": "Iată câteva cafenele apreciate situate în apropiere de Piața Domenii: * **Butter - Domenii** * **Adresă:** Strada Alexandru Constantinescu 43, București * **Evaluare:** 4.7 (352 recenzii) * **Interval de preț:** RON 20-40 * **Program:** Luni–Joi 07:30–18:00, Vineri 07:30–18:00, Sâmbătă–Duminică…",
+            "sources": [
+              {
+                "title": "Butter - Domenii",
+                "uri": "https://maps.google.com/maps?cid=10204734784181239814",
+                "kind": "maps"
+              },
+              {
+                "title": "Caf'tory",
+                "uri": "https://maps.google.com/maps?cid=10559311169163757292",
+                "kind": "maps"
+              },
+              {
+                "title": "Ame Specialty Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=11381063599530733458",
+                "kind": "maps"
+              },
+              {
+                "title": "Mad Goat",
+                "uri": "https://maps.google.com/maps?cid=6259818294464781506",
+                "kind": "maps"
+              },
+              {
+                "title": "Burger Show",
+                "uri": "https://maps.google.com/maps?cid=9756612738090527373",
                 "kind": "maps"
               }
             ]
@@ -410,156 +449,161 @@
         "id": "situatii",
         "name_ro": "Situații",
         "desc_ro": "Ce caută oamenii, nu unde",
-        "mentioned": 3,
+        "mentioned": 0,
         "total": 4,
         "prompts": [
           {
-            "text": "service biciclete revizie completa",
-            "mentioned": true,
-            "runs_mentioned": 3,
-            "runs": 3,
-            "others": [
-              "COBI Custom Bicycle",
-              "Fix Your Bike",
-              "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov"
-            ],
-            "answer_excerpt": "Iată câteva opțiuni de service-uri de biciclete pentru revizie completă: * **Bike Explorer** * **Adresă:** Strada Mihail Petrescu 2A, 041274 București, România * **Telefon:** +40 745 776 176 * **Rating:** 5 (195 recenzii) * **Program:** Marți – Vineri: 13:00–19:00 (Luni, Sâmbătă, Duminică: Închis)…",
-            "sources": [
-              {
-                "title": "Bike Explorer",
-                "uri": "https://maps.google.com/maps?cid=14079691771425601931",
-                "kind": "maps"
-              },
-              {
-                "title": "COBI Custom Bicycle",
-                "uri": "https://maps.google.com/maps?cid=12671328667163568367",
-                "kind": "maps"
-              },
-              {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
-                "kind": "maps"
-              },
-              {
-                "title": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-                "uri": "https://maps.google.com/maps?cid=10220441246290710295",
-                "kind": "maps"
-              }
-            ]
-          },
-          {
-            "text": "unde schimb cauciucul la bicicleta",
+            "text": "cafenea unde pot veni cu câinele",
             "mentioned": false,
             "runs_mentioned": 0,
             "runs": 3,
             "others": [
-              "COBI Custom Bicycle",
-              "Fix Your Bike",
-              "Service Biciclete La Antonio"
+              "Garage Cafe Kiseleff",
+              "Saint Roastery Victoriei",
+              "Noi2 Cafe"
             ],
-            "answer_excerpt": "Iată câteva ateliere și servicii de reparații biciclete unde poți merge pentru a schimba sau a repara un cauciuc / o cameră: * **COBI Custom Bicycle** * **Adresă:** Strada Cuțitul de Argint 64, București * **Program:** Luni–Vineri 12:00–19:00, Sâmbătă 12:00–15:00, Duminică: Închis * **Telefon:**…",
+            "answer_excerpt": "Iată câteva cafenele de specialitate prietenoase cu animalele de companie (pet-friendly), unde poți merge împreună cu câinele tău: * **Garage Cafe Kiseleff** (Strada Barbu Delavrancea 7) * **Rating:** 4.8 (666 recenzii) * **Program:** Luni–Duminică: 07:30–22:00 (Sâmbătă–Duminică: deschidere la…",
             "sources": [
               {
-                "title": "COBI Custom Bicycle",
-                "uri": "https://maps.google.com/maps?cid=12671328667163568367",
+                "title": "Garage Cafe Kiseleff",
+                "uri": "https://maps.google.com/maps?cid=2608727644908462891",
                 "kind": "maps"
               },
               {
-                "title": "Service Biciclete La Antonio",
-                "uri": "https://maps.google.com/maps?cid=14800517712118726982",
+                "title": "Saint Roastery Victoriei",
+                "uri": "https://maps.google.com/maps?cid=11793110354655099568",
                 "kind": "maps"
               },
               {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
+                "title": "BASE Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=8114166265167191025",
                 "kind": "maps"
               },
               {
-                "title": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-                "uri": "https://maps.google.com/maps?cid=10220441246290710295",
+                "title": "Work’s Coffee Shop",
+                "uri": "https://maps.google.com/maps?cid=15833254497149618387",
                 "kind": "maps"
               },
               {
-                "title": "FreeRideBikes",
-                "uri": "https://maps.google.com/maps?cid=9983974643121498706",
+                "title": "Caf'tory",
+                "uri": "https://maps.google.com/maps?cid=10559311169163757292",
                 "kind": "maps"
               }
             ]
           },
           {
-            "text": "centrat roti bicicleta urgent",
-            "mentioned": true,
-            "runs_mentioned": 3,
+            "text": "cafenea cu mic dejun bun și terasă",
+            "mentioned": false,
+            "runs_mentioned": 0,
             "runs": 3,
             "others": [
-              "Doctor Bike",
-              "Fix Your Bike",
-              "Funky Bike"
+              "Frudisiac",
+              "Ou | Breakfast & Brunch",
+              "Fior di Latte"
             ],
-            "answer_excerpt": "Iată câteva service-uri de biciclete unde poți merge pentru centratul roților: * **Bike Explorer** * **Adresă:** Strada Mihail Petrescu 2A, București * **Telefon:** +40 745 776 176 * **Program:** Marți – Vineri: 13:00–19:00 (Luni, Sâmbătă, Duminică: Închis) * **Detalii:** Recenziile menționează…",
+            "answer_excerpt": "Iată câteva opțiuni apreciate de cafenele și locuri de mic dejun cu terasă: * **Frudisiac** (Intrarea Bitolia 4) * **Evaluare:** 4.5 (2878 recenzii) * **Caracteristici:** O cafenea în stil nordic, cunoscută pentru preparatele sănătoase de mic dejun și brunch (cum ar fi clătite cu lămâie și ricotta,…",
             "sources": [
               {
-                "title": "Bike Explorer",
-                "uri": "https://maps.google.com/maps?cid=14079691771425601931",
+                "title": "Frudisiac",
+                "uri": "https://maps.google.com/maps?cid=11711862192228983442",
                 "kind": "maps"
               },
               {
-                "title": "Doctor Bike",
-                "uri": "https://maps.google.com/maps?cid=2743307567390612607",
+                "title": "Ou | Breakfast & Brunch",
+                "uri": "https://maps.google.com/maps?cid=2251062751869587288",
                 "kind": "maps"
               },
               {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
+                "title": "Black Habit",
+                "uri": "https://maps.google.com/maps?cid=1287347152411539768",
                 "kind": "maps"
               },
               {
-                "title": "Funky Bike",
-                "uri": "https://maps.google.com/maps?cid=13273468458676449073",
+                "title": "Fior di Latte",
+                "uri": "https://maps.google.com/maps?cid=11339867141530465671",
                 "kind": "maps"
               },
               {
-                "title": "Service Biciclete La Antonio",
-                "uri": "https://maps.google.com/maps?cid=14800517712118726982",
+                "title": "Petite",
+                "uri": "https://maps.google.com/maps?cid=1147343590402103078",
                 "kind": "maps"
               }
             ]
           },
           {
-            "text": "reparatie frane hidraulice bicicleta",
-            "mentioned": true,
-            "runs_mentioned": 2,
+            "text": "cafenea cu terasă în bucurești",
+            "mentioned": false,
+            "runs_mentioned": 0,
             "runs": 3,
             "others": [
-              "Fix Your Bike",
-              "COBI Custom Bicycle",
-              "FreeRideBikes"
+              "Art Deco Café",
+              "Grand Café de Bucarest",
+              "Moon"
             ],
-            "answer_excerpt": "Pentru reparația și întreținerea frânelor hidraulice de bicicletă (aerisire/bleed, schimbarea uleiului mineral sau a lichidului DOT, înlocuirea plăcuțelor sau a etrierilor), poți apela la următoarele service-uri specializate din București: * **COBI Custom Bicycle** * **Adresă:** Strada Cuțitul de…",
+            "answer_excerpt": "Câteva opțiuni populare de cafenele și terase în București: * **Art Deco Café** * **Adresă:** Strada Polonă 19, București * **Evaluare:** 4.6 (239 recenzii) * **Program:** Luni–Joi: 10:00–19:00, Vineri: 10:00–19:00, Sâmbătă: 10:00–21:00, Duminică: 10:00–21:00 * **Detalii:** Situată în Vila…",
             "sources": [
               {
-                "title": "COBI Custom Bicycle",
-                "uri": "https://maps.google.com/maps?cid=12671328667163568367",
+                "title": "Art Deco Café",
+                "uri": "https://maps.google.com/maps?cid=7906882984047399388",
                 "kind": "maps"
               },
               {
-                "title": "Fix Your Bike",
-                "uri": "https://maps.google.com/maps?cid=5152179382768839136",
+                "title": "Grand Café de Bucarest",
+                "uri": "https://maps.google.com/maps?cid=4401906416832573074",
                 "kind": "maps"
               },
               {
-                "title": "Bike Explorer",
-                "uri": "https://maps.google.com/maps?cid=14079691771425601931",
+                "title": "Manufaktura Aviatorilor",
+                "uri": "https://maps.google.com/maps?cid=9519047410140593125",
                 "kind": "maps"
               },
               {
-                "title": "FreeRideBikes",
-                "uri": "https://maps.google.com/maps?cid=9983974643121498706",
+                "title": "Moon",
+                "uri": "https://maps.google.com/maps?cid=18167143621365330844",
                 "kind": "maps"
               },
               {
-                "title": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-                "uri": "https://maps.google.com/maps?cid=10220441246290710295",
+                "title": "Arcade Cafe",
+                "uri": "https://maps.google.com/maps?cid=3964556970519084671",
+                "kind": "maps"
+              }
+            ]
+          },
+          {
+            "text": "cafenea unde se poate plăti cu cardul",
+            "mentioned": false,
+            "runs_mentioned": 0,
+            "runs": 3,
+            "others": [
+              "Level Up Speciality Coffee",
+              "Twenty Eight",
+              "Maison des Crêpes Aviatorilor"
+            ],
+            "answer_excerpt": "Iată câteva opțiuni de cafenele și locații unde poți plăti cu cardul (inclusiv carduri de credit, debit și plăti mobile NFC): * **Level Up Speciality Coffee** * **Adresă:** Strada Ceahlăul, 060378 București * **Program:** Luni – Vineri: 07:00–18:00, Sâmbătă – Duminică: 08:00–17:00 * **Evaluare:**…",
+            "sources": [
+              {
+                "title": "Level Up Speciality Coffee",
+                "uri": "https://maps.google.com/maps?cid=1748015643137093676",
+                "kind": "maps"
+              },
+              {
+                "title": "Twenty Eight",
+                "uri": "https://maps.google.com/maps?cid=11603956000837710539",
+                "kind": "maps"
+              },
+              {
+                "title": "Maison des Crêpes Aviatorilor",
+                "uri": "https://maps.google.com/maps?cid=13801376685841842094",
+                "kind": "maps"
+              },
+              {
+                "title": "Maison 38",
+                "uri": "https://maps.google.com/maps?cid=6974358533502390616",
+                "kind": "maps"
+              },
+              {
+                "title": "Cafeneaua ART-AN-TE Universitate, București",
+                "uri": "https://maps.google.com/maps?cid=17482047921561966519",
                 "kind": "maps"
               }
             ]
@@ -572,43 +616,20 @@
     {
       "id": "profil",
       "name_ro": "Profilul Google",
-      "intro_ro": "Profilul tău Google e primul loc unde se uită Gemini când cineva caută o afacere în Berceni. Cu cât e mai complet, cu atât ai mai multe șanse să fii recomandat.",
+      "intro_ro": "Profilul tău Google e primul loc unde se uită Gemini când cineva caută o cafenea în Domenii. Cu cât e mai complet, cu atât ai mai multe șanse să fii recomandat.",
       "where_to_fix_ro": "Aproape totul se face din aplicația Google Maps, din contul cu care ți-ai creat profilul. La fiecare problemă îți arătăm exact unde să apeși.",
-      "score": 61,
+      "score": 83,
       "weight": 0.2,
-      "possible_points": 40,
-      "overall_gain_if_all_fixed": 8,
+      "possible_points": 17,
+      "overall_gain_if_all_fixed": 3,
       "has_fixes": true,
       "problems": [
-        {
-          "check_id": "G02",
-          "chapter_id": "profil",
-          "chapter_name_ro": "Profilul Google",
-          "title_ro": "Categoria de pe Google nu se potrivește",
-          "why_ro": "Gemini folosește categoria ca să știe la ce întrebări să te recomande. Dacă e greșită, nu apari când cineva caută o afacere.",
-          "points": 11,
-          "impact": 2.2,
-          "fix_type": "owner_action",
-          "fix": {
-            "panel": "steps",
-            "steps_ro": [
-              "Deschide Profilul tău Google din aplicația Google Maps.",
-              "Apasă Editează profilul › Categoria afacerii.",
-              "Alege „Service de biciclete” ca primă categorie și salvează."
-            ],
-            "deep_link": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
-            "deep_link_label_ro": "Deschide Profilul tău Google",
-            "where_ro": "Profil › Editează profilul › Categoria afacerii",
-            "max_chars": null,
-            "evidence_ro": "Categoria de acum: Servicii."
-          }
-        },
         {
           "check_id": "G08",
           "chapter_id": "profil",
           "chapter_name_ro": "Profilul Google",
           "title_ro": "Fără descriere a afacerii",
-          "why_ro": "Gemini folosește descrierea ca să înțeleagă ce te face special. Fără ea, alege afacerile care spun mai mult despre ele.",
+          "why_ro": "Gemini folosește descrierea ca să înțeleagă ce te face special. Fără ea, alege cafenelele care spun mai mult despre ele.",
           "points": 11,
           "impact": 2.2,
           "fix_type": "generate",
@@ -619,7 +640,7 @@
               "Apasă Editează profilul › Descrierea afacerii.",
               "Lipește textul și salvează."
             ],
-            "deep_link": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+            "deep_link": "https://maps.google.com/?cid=10961864464722157227&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
             "deep_link_label_ro": "Deschide Profilul tău Google",
             "where_ro": "Profil › Editează profilul › Descrierea afacerii",
             "max_chars": 750,
@@ -642,61 +663,21 @@
               "Apasă Adaugă actualizare.",
               "Lipește textul, adaugă o fotografie și publică."
             ],
-            "deep_link": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+            "deep_link": "https://maps.google.com/?cid=10961864464722157227&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
             "deep_link_label_ro": "Deschide Profilul tău Google",
             "where_ro": "Profil › Adaugă actualizare",
             "max_chars": null,
             "evidence_ro": "Ai spus că ultima postare e de mai demult."
           }
-        },
-        {
-          "check_id": "G10",
-          "chapter_id": "profil",
-          "chapter_name_ro": "Profilul Google",
-          "title_ro": "Lipsesc câteva detalii despre afacere",
-          "why_ro": "Detalii ca terasa sau plata cu cardul îl ajută pe Gemini să te recomande când cineva caută exact asta.",
-          "points": 6,
-          "impact": 1.2,
-          "fix_type": "owner_action",
-          "fix": {
-            "panel": "steps",
-            "steps_ro": [
-              "Deschide Profilul tău Google din aplicația Google Maps.",
-              "Apasă Editează profilul › Mai multe.",
-              "Bifează tot ce se potrivește: plata cu cardul și intrare accesibilă cu scaunul cu rotile."
-            ],
-            "deep_link": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
-            "deep_link_label_ro": "Deschide Profilul tău Google",
-            "where_ro": "Profil › Editează profilul › Mai multe",
-            "max_chars": null,
-            "evidence_ro": "Lipsesc: plata cu cardul și intrare accesibilă cu scaunul cu rotile."
-          }
-        },
-        {
-          "check_id": "G11",
-          "chapter_id": "profil",
-          "chapter_name_ro": "Profilul Google",
-          "title_ro": "Lipsește nivelul de preț",
-          "why_ro": "Mulți întreabă de locuri ieftine sau mai speciale. Cu prețurile setate, Gemini știe când să te recomande.",
-          "points": 6,
-          "impact": 1.2,
-          "fix_type": "owner_action",
-          "fix": {
-            "panel": "steps",
-            "steps_ro": [
-              "Deschide Profilul tău Google din aplicația Google Maps.",
-              "Apasă Editează profilul › Mai multe › Prețuri.",
-              "Alege intervalul de prețuri și salvează."
-            ],
-            "deep_link": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
-            "deep_link_label_ro": "Deschide Profilul tău Google",
-            "where_ro": "Profil › Editează profilul › Mai multe › Prețuri",
-            "max_chars": null,
-            "evidence_ro": null
-          }
         }
       ],
       "solved": [
+        {
+          "check_id": "G02",
+          "title_ro": "Categoria „Cafenea” e setată",
+          "source": "passed",
+          "points": null
+        },
         {
           "check_id": "G03",
           "title_ro": "Programul e complet pentru toată săptămâna",
@@ -722,6 +703,18 @@
           "points": null
         },
         {
+          "check_id": "G10",
+          "title_ro": "Detaliile importante sunt completate",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "G11",
+          "title_ro": "Nivelul de preț e setat",
+          "source": "passed",
+          "points": null
+        },
+        {
           "check_id": "G12",
           "title_ro": "Profilul e revendicat de tine",
           "source": "passed",
@@ -741,12 +734,81 @@
       "name_ro": "Recenzii",
       "intro_ro": "Gemini citește recenziile ca să afle ce cred clienții despre tine. Contează câte ai, cât de noi sunt și dacă le răspunzi.",
       "where_to_fix_ro": "Din aplicația Google Maps, din contul cu care ți-ai creat profilul: acolo vezi recenziile și le poți răspunde.",
-      "score": 100,
+      "score": 45,
       "weight": 0.15,
-      "possible_points": 0,
-      "overall_gain_if_all_fixed": 0,
+      "possible_points": 55,
+      "overall_gain_if_all_fixed": 8,
       "has_fixes": true,
-      "problems": [],
+      "problems": [
+        {
+          "check_id": "R01",
+          "chapter_id": "recenzii",
+          "chapter_name_ro": "Recenzii",
+          "title_ro": "Mai puține recenzii decât cafenelele din jur",
+          "why_ro": "Gemini recomandă mai des locurile cu multe recenzii. Fiecare client mulțumit care scrie una te ajută.",
+          "points": 30,
+          "impact": 4.5,
+          "fix_type": "owner_action",
+          "fix": {
+            "panel": "steps",
+            "steps_ro": [
+              "Deschide Profilul tău Google și apasă Cere recenzii.",
+              "Copiază linkul și trimite-l clienților mulțumiți.",
+              "Pune un cod QR cu linkul la casă sau pe mese."
+            ],
+            "deep_link": "https://maps.google.com/?cid=10961864464722157227&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+            "deep_link_label_ro": "Deschide Profilul tău Google",
+            "where_ro": "Profil › Cere recenzii",
+            "max_chars": null,
+            "evidence_ro": "Ai 452 de recenzii, iar cafenelele din jur au în jur de 3504."
+          }
+        },
+        {
+          "check_id": "R04",
+          "chapter_id": "recenzii",
+          "chapter_name_ro": "Recenzii",
+          "title_ro": "20 din ultimele 20 de recenzii fără răspuns",
+          "why_ro": "Răspunsurile tale arată că îți pasă de clienți, iar Gemini le citește și pe ele.",
+          "points": 15,
+          "impact": 2.25,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Deschide Profilul tău Google › Recenzii.",
+              "La fiecare recenzie fără răspuns, apasă Răspunde.",
+              "Lipește răspunsul pregătit și trimite-l."
+            ],
+            "deep_link": "https://maps.google.com/?cid=10961864464722157227&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+            "deep_link_label_ro": "Deschide Profilul tău Google",
+            "where_ro": "Profil › Recenzii › Răspunde",
+            "max_chars": null,
+            "evidence_ro": null
+          }
+        },
+        {
+          "check_id": "R05",
+          "chapter_id": "recenzii",
+          "chapter_name_ro": "Recenzii",
+          "title_ro": "Nu ai recenzii pe TripAdvisor",
+          "why_ro": "Gemini se uită și la recenziile de pe alte site-uri, nu doar pe Google.",
+          "points": 10,
+          "impact": 1.5,
+          "fix_type": "owner_action",
+          "fix": {
+            "panel": "steps",
+            "steps_ro": [
+              "Creează profilul pe TripAdvisor.",
+              "Roagă câțiva clienți fideli să lase o recenzie și acolo."
+            ],
+            "deep_link": null,
+            "deep_link_label_ro": null,
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": null
+          }
+        }
+      ],
       "solved": [
         {
           "check_id": "R02",
@@ -759,52 +821,63 @@
           "title_ro": "Ai recenzii noi luna aceasta",
           "source": "passed",
           "points": null
-        },
-        {
-          "check_id": "R04",
-          "title_ro": "Răspunzi la recenzii",
-          "source": "passed",
-          "points": null
         }
       ],
-      "unknown": [
-        {
-          "check_id": "R01",
-          "title_ro": "Numărul de recenzii",
-          "reason_ro": "Nu am găsit afaceri în apropiere cu care să te comparăm."
-        }
-      ]
+      "unknown": []
     },
     {
       "id": "continut",
       "name_ro": "Conținutul site-ului",
       "intro_ro": "Gemini citește site-ul ca să afle ce oferi, unde ești și când ești deschis. Cu cât scrie mai clar, cu atât te poate recomanda mai ușor.",
       "where_to_fix_ro": "Pe site-ul tău. Îți scriem noi textele, iar tu sau persoana care îți face site-ul le pune pe pagină.",
-      "score": 65,
+      "score": 40,
       "weight": 0.15,
-      "possible_points": 36,
-      "overall_gain_if_all_fixed": 5,
+      "possible_points": 61,
+      "overall_gain_if_all_fixed": 9,
       "has_fixes": true,
       "problems": [
         {
-          "check_id": "C06",
+          "check_id": "C02",
           "chapter_id": "continut",
           "chapter_name_ro": "Conținutul site-ului",
-          "title_ro": "Nu ai câte o pagină pentru fiecare categorie",
-          "why_ro": "O pagină separată pentru fiecare categorie îl ajută pe Gemini să te recomande pentru fiecare.",
-          "points": 10,
-          "impact": 1.5,
-          "fix_type": "dev_export",
+          "title_ro": "Adresa și cartierul nu apar pe site",
+          "why_ro": "Când cineva caută o cafenea în Domenii, Gemini caută cuvântul „Domenii” și pe site-ul tău.",
+          "points": 15,
+          "impact": 2.25,
+          "fix_type": "generate",
           "fix": {
-            "panel": "dev_export",
+            "panel": "generate_text",
             "steps_ro": [
-              "Trimite instrucțiunile persoanei care îți face site-ul."
+              "Copiază textul pregătit cu adresa și cartierul.",
+              "Pune-l pe prima pagină și pe pagina de contact."
             ],
-            "deep_link": null,
-            "deep_link_label_ro": null,
+            "deep_link": "https://cafetaria.ro/ro/",
+            "deep_link_label_ro": "Deschide site-ul",
             "where_ro": null,
             "max_chars": null,
             "evidence_ro": null
+          }
+        },
+        {
+          "check_id": "C03",
+          "chapter_id": "continut",
+          "chapter_name_ro": "Conținutul site-ului",
+          "title_ro": "Programul lipsește de pe site sau e altul decât pe Google",
+          "why_ro": "Gemini răspunde des la întrebări ca „ce e deschis acum”. Fără programul corect pe site, nu are de unde să știe.",
+          "points": 15,
+          "impact": 2.25,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Copiază programul pregătit.",
+              "Pune-l pe prima pagină și pe pagina de contact."
+            ],
+            "deep_link": "https://cafetaria.ro/ro/",
+            "deep_link_label_ro": "Deschide site-ul",
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": "Pe Google: Luni: 07:00–17:00; Marți: 07:00–17:00; Miercuri: 07:00–17:00; Joi: 07:00–17:00; Vineri: 07:00–17:00; Sâmbătă: 10:00–16:00; Duminică: Închis. Pe site: lipsește."
           }
         },
         {
@@ -822,7 +895,7 @@
               "Copiază întrebările și răspunsurile pregătite.",
               "Pune-le pe o pagină „Întrebări frecvente”."
             ],
-            "deep_link": "http://www.bikexplorer.ro/",
+            "deep_link": "https://cafetaria.ro/ro/",
             "deep_link_label_ro": "Deschide site-ul",
             "where_ro": null,
             "max_chars": null,
@@ -830,21 +903,21 @@
           }
         },
         {
-          "check_id": "C02",
+          "check_id": "C01",
           "chapter_id": "continut",
           "chapter_name_ro": "Conținutul site-ului",
-          "title_ro": "Adresa și cartierul nu apar pe site",
-          "why_ro": "Când cineva caută o afacere în Berceni, Gemini caută cuvântul „Berceni” și pe site-ul tău.",
+          "title_ro": "Prima pagină nu spune clar cine ești și ce faci",
+          "why_ro": "Gemini citește prima pagină ca să afle ce fel de loc ești. Dacă nu scrie clar, ghicește sau te sare.",
           "points": 8,
           "impact": 1.2,
           "fix_type": "generate",
           "fix": {
             "panel": "generate_text",
             "steps_ro": [
-              "Copiază textul pregătit cu adresa și cartierul.",
-              "Pune-l pe prima pagină și pe pagina de contact."
+              "Copiază textul pregătit.",
+              "Pune-l la începutul primei pagini a site-ului."
             ],
-            "deep_link": "http://www.bikexplorer.ro/",
+            "deep_link": "https://cafetaria.ro/ro/",
             "deep_link_label_ro": "Deschide site-ul",
             "where_ro": null,
             "max_chars": null,
@@ -852,44 +925,55 @@
           }
         },
         {
-          "check_id": "C03",
+          "check_id": "C05",
           "chapter_id": "continut",
           "chapter_name_ro": "Conținutul site-ului",
-          "title_ro": "Programul lipsește de pe site sau e altul decât pe Google",
-          "why_ro": "Gemini răspunde des la întrebări ca „ce e deschis acum”. Fără programul corect pe site, nu are de unde să știe.",
+          "title_ro": "Meniul și prețurile nu sunt pe site",
+          "why_ro": "Gemini nu poate citi o poză sau un PDF. Scris ca text, îl poate folosi când cineva întreabă ce oferi și cât costă.",
           "points": 8,
           "impact": 1.2,
           "fix_type": "generate",
           "fix": {
             "panel": "generate_text",
             "steps_ro": [
-              "Copiază programul pregătit.",
-              "Pune-l pe prima pagină și pe pagina de contact."
+              "Copiază textul pregătit.",
+              "Pune-l pe o pagină a site-ului, ca text, nu ca poză.",
+              "Adaugă prețul lângă fiecare produs sau serviciu."
             ],
-            "deep_link": "http://www.bikexplorer.ro/",
+            "deep_link": "https://cafetaria.ro/ro/",
             "deep_link_label_ro": "Deschide site-ul",
             "where_ro": null,
             "max_chars": null,
-            "evidence_ro": "Pe Google: Luni: Închis; Marți: 13:00–19:00; Miercuri: 13:00–19:00; Joi: 13:00–19:00; Vineri: 13:00–19:00; Sâmbătă: Închis; Duminică: Închis. Pe site: LUNI: Deschis doar pt. programari prestabilite MARTI-VINERI: 13:00-19:00 SAMBATA-DUMINICA: Inchis."
+            "evidence_ro": "Nu am găsit prețuri lângă produse."
+          }
+        },
+        {
+          "check_id": "C04",
+          "chapter_id": "continut",
+          "chapter_name_ro": "Conținutul site-ului",
+          "title_ro": "Numărul de telefon nu apare pe site",
+          "why_ro": "Un număr de telefon pe site îl ajută pe Gemini să confirme că e aceeași afacere ca pe Google.",
+          "points": 5,
+          "impact": 0.75,
+          "fix_type": "generate",
+          "fix": {
+            "panel": "generate_text",
+            "steps_ro": [
+              "Copiază textul pregătit.",
+              "Pune-l pe pagina de contact și în subsolul site-ului."
+            ],
+            "deep_link": "https://cafetaria.ro/ro/",
+            "deep_link_label_ro": "Deschide site-ul",
+            "where_ro": null,
+            "max_chars": null,
+            "evidence_ro": null
           }
         }
       ],
       "solved": [
         {
-          "check_id": "C01",
-          "title_ro": "Numele și ce faci apar pe prima pagină",
-          "source": "passed",
-          "points": null
-        },
-        {
-          "check_id": "C04",
-          "title_ro": "Numărul de telefon apare pe site",
-          "source": "passed",
-          "points": null
-        },
-        {
-          "check_id": "C05",
-          "title_ro": "Lista de servicii și prețurile sunt pe site, ca text",
+          "check_id": "C06",
+          "title_ro": "Fiecare categorie are pagina ei",
           "source": "passed",
           "points": null
         },
@@ -907,9 +991,9 @@
       "name_ro": "Site-ul, văzut de Gemini",
       "intro_ro": "Verificăm dacă Gemini poate citi site-ul tău. Aici lucrurile sunt tehnice, așa că le pregătim pentru persoana care îți face site-ul.",
       "where_to_fix_ro": "La persoana care îți face site-ul. Îi pregătim instrucțiunile exacte.",
-      "score": 78,
+      "score": 75,
       "weight": 0.1,
-      "possible_points": 22,
+      "possible_points": 25,
       "overall_gain_if_all_fixed": 2,
       "has_fixes": true,
       "problems": [
@@ -957,13 +1041,13 @@
           }
         },
         {
-          "check_id": "T07",
+          "check_id": "T05",
           "chapter_id": "site",
           "chapter_name_ro": "Site-ul, văzut de Gemini",
-          "title_ro": "Site-ul se încarcă greu pe telefon",
-          "why_ro": "Dacă pagina se deschide greu, Gemini o citește mai rar și mai puțin.",
-          "points": 2,
-          "impact": 0.2,
+          "title_ro": "Lipsește harta site-ului pentru Google",
+          "why_ro": "Harta site-ului (sitemap) îi arată lui Google toate paginile, ca să nu rateze nimic.",
+          "points": 5,
+          "impact": 0.5,
           "fix_type": "dev_export",
           "fix": {
             "panel": "dev_export",
@@ -974,7 +1058,7 @@
             "deep_link_label_ro": null,
             "where_ro": null,
             "max_chars": null,
-            "evidence_ro": "Scorul de viteză pe telefon e 64 din 100."
+            "evidence_ro": null
           }
         }
       ],
@@ -1004,8 +1088,8 @@
           "points": null
         },
         {
-          "check_id": "T05",
-          "title_ro": "Site-ul are o hartă pentru Google",
+          "check_id": "T07",
+          "title_ro": "Site-ul se încarcă repede pe telefon",
           "source": "passed",
           "points": null
         },
@@ -1033,7 +1117,7 @@
           "check_id": "L01",
           "chapter_id": "info",
           "chapter_name_ro": "Aceleași informații peste tot",
-          "title_ro": "Nu apari pe Instagram",
+          "title_ro": "Nu apari pe Instagram, TripAdvisor, Glovo, Wolt și Bolt Food",
           "why_ro": "Clienții și Gemini caută și pe aceste platforme. Cu cât apari în mai multe locuri potrivite, cu atât ești mai ușor de găsit.",
           "points": 100,
           "impact": 10.0,
@@ -1041,14 +1125,14 @@
           "fix": {
             "panel": "steps",
             "steps_ro": [
-              "Creează profilul pe Instagram.",
+              "Creează profilul pe Instagram, TripAdvisor, Glovo, Wolt și Bolt Food.",
               "Folosește aceleași date ca pe Profilul tău Google."
             ],
             "deep_link": null,
             "deep_link_label_ro": null,
             "where_ro": null,
             "max_chars": null,
-            "evidence_ro": "Apari pe 0 din 1 platforme potrivite."
+            "evidence_ro": "Apari pe 0 din 5 platforme potrivite."
           }
         }
       ],
@@ -1066,34 +1150,12 @@
       "name_ro": "Mențiuni pe alte site-uri",
       "intro_ro": "Când alte site-uri vorbesc despre tine, Gemini află că ești cunoscut și de încredere.",
       "where_to_fix_ro": "În afara site-ului tău: bloguri, presă locală și liste cu recomandări. Îți pregătim mesajele.",
-      "score": 30,
+      "score": 55,
       "weight": 0.1,
-      "possible_points": 70,
-      "overall_gain_if_all_fixed": 7,
+      "possible_points": 45,
+      "overall_gain_if_all_fixed": 4,
       "has_fixes": true,
       "problems": [
-        {
-          "check_id": "M02",
-          "chapter_id": "mentiuni",
-          "chapter_name_ro": "Mențiuni pe alte site-uri",
-          "title_ro": "Nu apari în niciun top",
-          "why_ro": "Când cineva cere „cele mai bune afaceri”, Gemini citește topurile făcute de alții.",
-          "points": 25,
-          "impact": 2.5,
-          "fix_type": "owner_action",
-          "fix": {
-            "panel": "steps",
-            "steps_ro": [
-              "Caută topurile de afaceri din București.",
-              "Scrie-le autorilor un mesaj scurt despre tine."
-            ],
-            "deep_link": null,
-            "deep_link_label_ro": null,
-            "where_ro": null,
-            "max_chars": null,
-            "evidence_ro": null
-          }
-        },
         {
           "check_id": "M01",
           "chapter_id": "mentiuni",
@@ -1106,14 +1168,14 @@
           "fix": {
             "panel": "steps",
             "steps_ro": [
-              "Invită bloggerii din București care scriu despre afaceri să te viziteze.",
+              "Invită bloggerii din București care scriu despre cafenele să te viziteze.",
               "Roagă-ți partenerii și furnizorii să te menționeze pe site-ul lor."
             ],
             "deep_link": null,
             "deep_link_label_ro": null,
             "where_ro": null,
             "max_chars": null,
-            "evidence_ro": "Am găsit mențiuni pe listafirme.ro, freerider.ro și firme.ro."
+            "evidence_ro": "Am găsit mențiuni pe beanpassport.ro, europeancoffeetrip.com, mycoffee.guide și brewtifi.com."
           }
         },
         {
@@ -1150,7 +1212,7 @@
           "fix": {
             "panel": "steps",
             "steps_ro": [
-              "Răspunde când cineva cere recomandări de afaceri în Berceni.",
+              "Răspunde când cineva cere recomandări de cafenele în Domenii.",
               "Spune clar că ești proprietarul."
             ],
             "deep_link": null,
@@ -1161,7 +1223,14 @@
           }
         }
       ],
-      "solved": [],
+      "solved": [
+        {
+          "check_id": "M02",
+          "title_ro": "Apari în cel puțin un top",
+          "source": "passed",
+          "points": null
+        }
+      ],
       "unknown": []
     },
     {
@@ -1240,13 +1309,25 @@
       "name_ro": "Te cunoaște deja Gemini?",
       "intro_ro": "L-am întrebat pe Gemini despre tine fără să-l lăsăm să caute pe internet, ca să vedem ce știe deja. Crește pe măsură ce rezolvi restul.",
       "where_to_fix_ro": null,
-      "score": 20,
+      "score": 100,
       "weight": 0.05,
       "possible_points": 0,
       "overall_gain_if_all_fixed": 0,
       "has_fixes": false,
       "problems": [],
       "solved": [
+        {
+          "check_id": "K01",
+          "title_ro": "Gemini știe că exiști",
+          "source": "passed",
+          "points": null
+        },
+        {
+          "check_id": "K02",
+          "title_ro": "Gemini știe ce faci și unde ești",
+          "source": "passed",
+          "points": null
+        },
         {
           "check_id": "K03",
           "title_ro": "Gemini nu spune lucruri greșite despre tine",
@@ -1259,9 +1340,9 @@
   ],
   "comparison": {
     "me": {
-      "name": "Bike Explorer",
-      "place_id": "ChIJO0dkNFD-sUARiznQlhEdZcM",
-      "review_count": 195,
+      "name": "Cafetăria Miciurin - Specialty Coffee Shop",
+      "place_id": "ChIJvzgIZGgDskARq96996ZdIJg",
+      "review_count": 452,
       "rating": 5.0,
       "photo_count": 10,
       "photo_count_capped": true,
@@ -1269,35 +1350,35 @@
     },
     "rivals": [
       {
-        "name": "Fix Your Bike",
-        "place_id": "ChIJ8cR9Ou7_sUAR4CkH6dk3gEc",
-        "review_count": 91,
-        "rating": 4.6,
+        "name": "Saint Roastery Victoriei",
+        "place_id": "ChIJ0ZZGAPUBskARsLoyjmKLqaM",
+        "review_count": 1905,
+        "rating": 4.8,
         "photo_count": 10,
         "photo_count_capped": true,
         "hours_complete": true
       },
       {
-        "name": "COBI Custom Bicycle",
-        "place_id": "ChIJ60cEKnECskAR7yiChkma2a8",
-        "review_count": 217,
-        "rating": 4.7,
+        "name": "Mad Goat",
+        "place_id": "ChIJpz7PGZj_sUARwpwQqJJX31Y",
+        "review_count": 567,
+        "rating": 4.9,
         "photo_count": 10,
         "photo_count_capped": true,
         "hours_complete": true
       },
       {
-        "name": "Sir Fixalot - service mobil biciclete in Bucuresti si Ilfov",
-        "place_id": "ChIJxTBApiIBskARF4_ozClN1o0",
-        "review_count": 84,
-        "rating": 5.0,
+        "name": "MABO ONE - Specialty Coffee Shop",
+        "place_id": "ChIJyaR2ylQBskARlGmxnUtOwj4",
+        "review_count": 403,
+        "rating": 4.9,
         "photo_count": 10,
         "photo_count_capped": true,
         "hours_complete": true
       }
     ],
     "insights_ro": [
-      "Ai o notă mai bună decât ei."
+      "Ai o notă la fel de bună ca ei."
     ],
     "actions": []
   }

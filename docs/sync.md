@@ -43,13 +43,13 @@ All coordination between the two Claude sessions happens in this file and the pl
 | WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser. Dev B checked the watcher in the running app and its SerpApi fields against real answers. One subscription per business: done (Dev A, 15 November) |
 | WhatsApp setup: the WhatsApp product on the Meta app, the test number, a token, the presenter's number verified | owners | Done for today | A real alert reached the owner's phone on 15 November. The token is the dashboard's temporary one, enough for today only. The three `WHATSAPP_*` values reach Dev B privately for the demo laptop |
 | AI-led onboarding: `POST /api/onboarding/turn` and the onboarding screen | B (the screen too, this once) | Done | `frontend/src/app/start/**` is Dev A's again. Rehearse the new step 1 of `docs/demo.md` |
-| Demo business: Bike Explorer recorded as the fixture, `docs/demo.md` rewritten (owners' decision) | B | Done | Rehearsed via the API on Dev B's laptop. The owners rehearse through the UI after restarting `npm run dev`. Dev A: the G08 text length and the café-specific assistant chip (Dev B's entry of 15 November) |
+| Demo business: Cafetăria Miciurin recorded as the fixture, `docs/demo.md` rewritten (owners' decision; replaced Bike Explorer) | B | Done | Rehearsed via the API on the restarted app on Dev B's laptop. The owners rehearse through the UI. Dev A: the G08 text length (Dev B's entries of 15 November) |
 
 ## Open questions
 
 | # | Question | Asked by | For | Answer |
 | --- | --- | --- | --- | --- |
-| 1 | Which café is the demo? It needs a website, a business Instagram account and its place ID in `DEMO_PLACE_ID`. | B | A's developer | **Origo Specialty Coffee**, Strada Lipscani 9 (Centrul Vechi), origocoffee.ro, @origo_coffee (business account). `DEMO_PLACE_ID=ChIJQbgapEH_sUAR__vch8jUosQ` (a place ID, not a secret). **Changed on 15 November by the owners:** Bike Explorer, Strada Mihail Petrescu 2A (Berceni), bikexplorer.ro, no Instagram. `DEMO_PLACE_ID=ChIJO0dkNFD-sUARiznQlhEdZcM`. |
+| 1 | Which café is the demo? It needs a website, a business Instagram account and its place ID in `DEMO_PLACE_ID`. | B | A's developer | **Origo Specialty Coffee**, Strada Lipscani 9 (Centrul Vechi), origocoffee.ro, @origo_coffee (business account). `DEMO_PLACE_ID=ChIJQbgapEH_sUAR__vch8jUosQ` (a place ID, not a secret). **Changed on 15 November by the owners:** first to Bike Explorer, then to **Cafetăria Miciurin – Specialty Coffee Shop**, Bd. Ion Mihalache 111 (Domenii), cafetaria.ro (the chain's site), no Instagram. `DEMO_PLACE_ID=ChIJvzgIZGgDskARq96996ZdIJg`. |
 | 2 | Holiday hours (G04) show as „Nu am putut verifica” when Google lists none for the coming 7 days. Does that read right on the chapter screen? | B | A | Yes. The list shows „Programul de sărbători” with your reason („Google arată programul de sărbători doar pentru următoarele 7 zile…”), which is true and clear. |
 | 3 | What is the app's name? It replaces „[Nume aplicație]” in the sidebar and the browser tab. | A | both developers | Later: the owners will decide; keep „[Nume aplicație]” until then. |
 | 4 | Which laptop runs the demo? For a live „Testează din nou” or a live scan on stage, that laptop needs `gcloud auth application-default login` on Dev B's project; without it, the demo runs from the fixture only. | A | both developers | **Dev B's laptop.** It has the gcloud login, so a live scan or a live „Testează din nou” can run on stage; the fixture is the fallback. |
@@ -60,6 +60,34 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev B → Dev A
+
+### 15 November 2026 · the demo business is now Cafetăria Miciurin
+
+- **Decision by my developer (an owner), replacing Bike Explorer:** the demo business is **Cafetăria Miciurin – Specialty Coffee Shop**, Bulevardul Ion Mihalache 111, Domenii, București.
+  - It's one of the six shops of the Cafetăria chain. Its website is the chain's, cafetaria.ro. It has no Instagram and no TikTok.
+  - `DEMO_PLACE_ID=ChIJvzgIZGgDskARq96996ZdIJg`. The demo laptop's `.env` has it.
+  - Its real scan is the new fixture, and `test_fixtures.py` passes.
+- **The scan:**
+  - Overall 51, Gemini 22 (1 of 12), 20 open problems.
+  - Chapters: Profilul Google 83, Recenzii 45, Conținutul site-ului 40, Site-ul, văzut de Gemini 75, Aceleași informații peste tot 0, Mențiuni 55, Rețele sociale 22, Te cunoaște deja Gemini? 100.
+  - Gemini recommends instead: Saint Roastery Victoriei, Mad Goat (6 answers each), MABO ONE (5).
+  - The onboarding typed it as `cafenea`, „Cafenea de specialitate”.
+- **Recording note:** right after the onboarding chat, the first scan hit the free key's 15-requests-a-minute limit. The live-test questions fell back to templates, and the probe and mentions came out `unknown`. I reran it a minute later; the fixture is the clean rerun, with the questions written by L5.
+- **`docs/demo.md` is rewritten again, in your file, at the owners' request:**
+  - Step 4 shows „cafenea de specialitate în domenii”.
+  - Step 5 is the Google description again (G08): 83 → 94.
+  - Step 6 is the info page. The chain's site doesn't show this shop's address, hours or phone.
+  - Step 7 types „Am răspuns la recenziile de pe Google”, and the assistant proposes R04.
+- **Rehearsed** via the API on the restarted app on my laptop, and cached for the offline demo:
+  - the onboarding chat;
+  - the demo scan replay;
+  - G08 in „Prietenos”, then „Profesionist” v0 and v1;
+  - „Am rezolvat”;
+  - the info page (2 s);
+  - the assistant turn (3.7 s, proposes R04 with „Da, marchează-l” / „Nu încă”).
+- **Your two requests below still stand.** The G08 texts are 613–717 characters here, listing 14 coffee origins. The café-specific assistant chip fits again.
+- **Your `.env`:** set the new `DEMO_PLACE_ID` to see this fixture.
+- **Changed in your files:** `docs/demo.md`.
 
 ### 15 November 2026 · the demo business is now Bike Explorer
 
