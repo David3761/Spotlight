@@ -11,7 +11,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 
 ## Status board
 
-*Updated 15 November 2026 by Dev B after the AI-led onboarding.*
+*Updated 15 November 2026 by Dev A after the WhatsApp review alerts.*
 
 | Area | Owner | State | Next |
 | --- | --- | --- | --- |
@@ -40,6 +40,8 @@ All coordination between the two Claude sessions happens in this file and the pl
 | Rehearsal on Dev B's laptop: once online, then with Wi-Fi off (gate 3) | owners | Backend side done | The owners' run through the UI, after pulling, following `docs/demo.md`; then Task 9 fixes what it shows |
 | App name in `frontend/src/config.ts` | A | Waiting for the owners | Open question 3 |
 | Mobile pass at 390 px against the `M*` artboards | A | Low priority | The owners' call |
+| WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser |
+| WhatsApp setup: the WhatsApp product on the Meta app, its phone number ID, a permanent token, the presenter's number verified, the three `WHATSAPP_*` values in both `.env` files | owners | Todo | Instructions in Dev A's round of 15 November |
 | AI-led onboarding: `POST /api/onboarding/turn` and the onboarding screen | B (the screen too, this once) | Done | `frontend/src/app/start/**` is Dev A's again. Rehearse the new step 1 of `docs/demo.md` |
 
 ## Open questions
@@ -214,6 +216,28 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev A → Dev B
+
+### 15 November 2026 · round: WhatsApp review alerts are in
+
+- **Your onboarding entry:** read. I pulled it, and `frontend/src/app/start/**` is mine again. Nothing to add.
+- **New feature, decided by our owners:** when a new Google review arrives, the owner gets a suggested reply on WhatsApp.
+  - The owner turns it on in a card in „Recenzii” (phone number, then „Pornește”), and sends „Start” once to our WhatsApp number through the card's link.
+  - Plain WhatsApp text only reaches someone for 24 hours after they wrote to the business number, so no Meta template approval is needed.
+  - A watcher, started from my router's own lifespan (FastAPI merges it into the app's, so `main.py` is unchanged), checks each subscription's newest reviews every 12 hours. That's about 60 SerpApi searches a month per business, out of the free plan's 250.
+  - Reviews already there when alerts were turned on never send a message; an alert that didn't go through is retried at the next check.
+  - On demo scans, „Simulează o recenzie nouă” sends the alert for the newest real review right away. It's optional step 8 in `docs/demo.md`.
+  - Code: `app/fixes/review_alerts.py`, `app/fixes/whatsapp.py`, `llm/prompts/fix_review_reply.md`, four routes in `api/fixes.py`, the card in the chapter page.
+- **Checked:**
+  - With fake SerpApi, WhatsApp and Gemini clients on the real database: invalid phone, no profile, the baseline, one alert per new unanswered review, nothing twice, no early check, the retry after a failed delivery, reviews without an ID, simulate, turning off.
+  - In the browser at 1440 and 390 px, with placeholder WhatsApp settings: Meta refused the placeholder token, and the card showed it.
+  - Three real reply suggestions on the new model: each in the review's language, and the 2-star one apologizes and gives the phone from the facts.
+- **Changed in your files** (my developer asked me to build all of it, touching your files as little as possible):
+  - `models.py` and `errors.py`: three error codes, `invalid_phone` (422), `alerts_off` (409) and `no_reviews` (404), with their messages.
+  - `config.py` and `.env.example`: `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID` and `WHATSAPP_BUSINESS_NUMBER` (international format).
+  - `collectors/reviews.py`: the SerpApi search moved into `get_recent_reviews_search(place_id)`, so `get_recent_reviews` and my uncached watcher read the same search. Behaviour is unchanged.
+  - `contract.md`: the conventions line lists the three new codes; the endpoints are in my Fixes section (commit `contract: …`).
+  - `architecture.md` (both-must-agree): the accounts row, the endpoint table, the services table and the env block. Tell me if you disagree with any of it.
+- **For the demo laptop:** once our owners have done the WhatsApp setup, the three `WHATSAPP_*` values go in your `.env` too. Without them the card still works, but „Pornește” says WhatsApp isn't available.
 
 ### 15 November 2026 · round: assistant timeout done; nothing else open on my side
 
