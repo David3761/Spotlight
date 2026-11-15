@@ -11,7 +11,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 
 ## Status board
 
-*Updated 15 November 2026 by Dev A after the assistant timeout.*
+*Updated 15 November 2026 by Dev B after the AI-led onboarding.*
 
 | Area | Owner | State | Next |
 | --- | --- | --- | --- |
@@ -40,7 +40,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 | Rehearsal on Dev B's laptop: once online, then with Wi-Fi off (gate 3) | owners | Backend side done | The owners' run through the UI, after pulling, following `docs/demo.md`; then Task 9 fixes what it shows |
 | App name in `frontend/src/config.ts` | A | Waiting for the owners | Open question 3 |
 | Mobile pass at 390 px against the `M*` artboards | A | Low priority | The owners' call |
-| AI-led onboarding: `POST /api/onboarding/turn` and the onboarding screen | B (the screen too, this once) | In progress | Dev A: hands off `frontend/src/app/start/**` until Dev B hands it back |
+| AI-led onboarding: `POST /api/onboarding/turn` and the onboarding screen | B (the screen too, this once) | Done | `frontend/src/app/start/**` is Dev A's again. Rehearse the new step 1 of `docs/demo.md` |
 
 ## Open questions
 
@@ -57,6 +57,33 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev B → Dev A
+
+### 15 November 2026 · the AI-led onboarding is in; `frontend/src/app/start/**` is yours again
+
+- **What it is:** `POST /api/onboarding/turn` (in the contract).
+  - The frontend sends the whole chat and the answers so far.
+  - Gemini takes every fact the owner's message states, also facts for later questions, and writes the next question.
+  - The backend checks every value, decides what is still missing (`missing`, in asking order) and replaces a reply that asks out of order with a fixed question.
+  - The place search runs in the backend now; its cards come back as `candidates`.
+- **Checked:**
+  - 22 backend tests with fake Gemini and Places calls.
+  - Real chats on `gemini-3.5-flash-lite`, about 1–2 s per turn: the demo path, and a messy one („am o brutarie mica in cluj, pe strada horea”, „nu avem site, doar pagina de facebook”, „insta: brutaria.horea”). Facts landed in the right fields, out of order too, and a street wasn't taken for a neighbourhood.
+  - The UI driven with Playwright at 1440 px and 390 px, from `/start` to the loading page, with no console errors.
+  - The rehearsed demo chat replays from the cache with the internet cut (0.0 s per turn).
+- **Changed in your files** (my developer asked me to build the screen too):
+  - `app/start/_hooks/use-onboarding.ts`, `onboarding-model.ts` and `_components/Onboarding.tsx` are rewritten. The state is the contract's `OnboardingAnswers`, `messages` and `missing`.
+  - The step card is done when every answer of its step is in. The chips come from the question asked and send their label as the owner's message.
+  - A card click sets `google_choice: "place"` and `place` and sends „Asta sunt eu: …”. The platform chips and „Nu folosesc altele” stay local until „Gata, analizează afacerea”.
+  - `ChatBubble` has no link or skipped styles anymore.
+  - `PlaceCandidates` lost „Nu sunt aici · lipesc eu linkul”: the owner pastes the link in the text box, and its placeholder says so.
+  - `AnswerForm` caps a message at 2000 characters, the backend's limit.
+  - `LinkError.tsx` is deleted: an unreadable link is explained in the chat.
+  - `src/lib/api.ts`: `sendOnboardingMessage`; `getPlaceCandidates` and `getPlaceFromLink` are gone (nothing else used them).
+  - `src/lib/types.ts`: the five onboarding types; `PlaceSearchRequest` and `PlaceSearchResponse` are gone.
+  - `src/lib/api-types.ts`: regenerated.
+  - `docs/demo.md` step 1: the exact messages to type. Offline, only the rehearsed chat replays.
+- **`architecture.md`:** the endpoint table, the `/start` row and a new row in „Where the build differs from the design”. The greeting is now „Bună! Spune-mi pe scurt despre afacerea ta: cum se numește, ce fel de afacere e și unde te găsesc clienții.”. The places endpoints stay for scripts.
+- **One note for the demo:** the cached chat matches exact text, so type the step 1 messages as written. A typo still works, but goes to Gemini live.
 
 ### 15 November 2026 · heads-up: I'm taking the onboarding screen for an AI-led onboarding
 
