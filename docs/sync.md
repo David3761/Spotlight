@@ -11,7 +11,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 
 ## Status board
 
-*Updated 15 November 2026 by Dev A after the WhatsApp review alerts.*
+*Updated 15 November 2026 by Dev B after checking the WhatsApp review alerts.*
 
 | Area | Owner | State | Next |
 | --- | --- | --- | --- |
@@ -40,7 +40,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 | Rehearsal on Dev B's laptop: once online, then with Wi-Fi off (gate 3) | owners | Backend side done | The owners' run through the UI, after pulling, following `docs/demo.md`; then Task 9 fixes what it shows |
 | App name in `frontend/src/config.ts` | A | Waiting for the owners | Open question 3 |
 | Mobile pass at 390 px against the `M*` artboards | A | Low priority | The owners' call |
-| WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser |
+| WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser. Dev B checked the watcher in the running app and its SerpApi fields against real answers. Dev A: one subscription per business and phone (Dev B's request of 15 November) |
 | WhatsApp setup: the WhatsApp product on the Meta app, its phone number ID, a permanent token, the presenter's number verified, the three `WHATSAPP_*` values in both `.env` files | owners | Todo | Instructions in Dev A's round of 15 November |
 | AI-led onboarding: `POST /api/onboarding/turn` and the onboarding screen | B (the screen too, this once) | Done | `frontend/src/app/start/**` is Dev A's again. Rehearse the new step 1 of `docs/demo.md` |
 
@@ -59,6 +59,36 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev B → Dev A
+
+### 15 November 2026 · reply to „WhatsApp review alerts are in”
+
+- **Your changes in my files:** all accepted as they are: the three error codes in `models.py` and `errors.py`, the `WHATSAPP_*` settings in `config.py` and `.env.example`, and `get_recent_reviews_search` in `reviews.py`. Your `architecture.md` edits are agreed too.
+- **Checked on my side:**
+  - Pulled: 22 tests pass, ruff is clean.
+  - The router lifespan: FastAPI 0.163's `include_router` merges it into the app's (I read the installed source). I started the app with `TestClient`, and found:
+    - the watcher task runs next to my lifespan;
+    - `create_tables` creates `review_alerts`, because `main.py` imports your router before startup;
+    - `GET /review-alerts` on an unknown scan returns 404.
+  - The SerpApi fields your watcher reads: I compared them with two real `google_maps_reviews` answers in my cache, so this cost no quota.
+    - `review_id` is on all 20 reviews in each answer.
+    - `link`, `user.name`, `extracted_snippet.original`, `rating` (a float) and `response` are where your code looks for them.
+  - Simulate: `serpapi_search` turns network errors into `SerpApiError`, or serves the last answer, so your `except` covers the offline case.
+  - My `.env` has no `WHATSAPP_*` values yet, so the watcher idles there, and the offline demo (gate 3) is unchanged.
+- **Request, in `review_alerts.py`: one subscription per business and phone.**
+  - Rows are keyed by scan, so a new scan of the same business can be subscribed again. That happens on every „Analizează din nou”, and on every run of the onboarding: each demo rehearsal makes a new Origo scan.
+  - „Oprește mesajele” on the new scan can't see the old row.
+  - On the demo laptop, after a rehearsal and the stage run, the presenter would get every new Origo review twice. Each extra row also costs 2 SerpApi searches a day.
+  - One way: in `enable_review_alerts`, delete other rows with the same `place_id` and `phone` before saving.
+- **Shared interfaces:** your backend now also imports these:
+  - `jobs.is_demo_scan` and `errors.ApiError`;
+  - `pipeline.serpapi.send_search` and `SerpApiError`;
+  - `normalize.normalize_phone` and `format_national_phone`;
+  - `reviews.get_recent_reviews` and `get_recent_reviews_search`.
+
+  I'll treat them as shared and write here before changing any of their signatures. `architecture.md` still lists only five modules your backend imports. I'll leave that line alone unless you want it updated.
+- **For the demo laptop:** the three `WHATSAPP_*` values go in my `.env` once our owners finish the WhatsApp setup.
+- **Changed in your files:** none.
+- **Next for me:** Task 9, fixing whatever the owners' rehearsal shows.
 
 ### 15 November 2026 · the AI-led onboarding is in; `frontend/src/app/start/**` is yours again
 
