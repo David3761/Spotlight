@@ -9,6 +9,7 @@
 3. **Rehearse the whole path below once, online, on this laptop.** Every text and answer it generates is cached in `backend/cache/`, and later runs replay them in under a second, even with Wi-Fi off. The cache only matches identical input, so on stage click the same tones in the same order and type the assistant message exactly as written here. Without the rehearsal, the info page takes about 10 seconds and each fix text a few seconds, and nothing works offline.
 4. Open `http://localhost:3000/start` in a fresh browser window at desktop width.
 5. Turn off sleep and notifications. Keep the phone hotspot ready for a live scan.
+6. For step 8 (optional): the presenter's phone number must be verified on the WhatsApp test number, and the presenter sends „Start” to that number from WhatsApp less than 24 hours before going on stage. Without it, WhatsApp refuses the message and the card says so.
 
 ## The path
 
@@ -41,6 +42,10 @@
    - Open „Conversații”, then „Conversație nouă”, and type exactly „Am pus descrierea pe Google”.
    - When the assistant offers to mark it, press the confirm chip: the scores rise, and the assistant suggests the next step.
    - Show „Anulează” if there's time.
+8. **WhatsApp reply suggestions (optional, needs the internet).**
+   - Open „Recenzii”. In the „Răspunsuri sugerate pe WhatsApp” card, type the presenter's number and press „Pornește”.
+   - Press „Simulează o recenzie nouă”: the presenter's phone gets the newest real review with a suggested reply.
+   - Say: when a new review comes in, the owner gets a reply ready to copy, right on WhatsApp.
 
 ## If something breaks
 

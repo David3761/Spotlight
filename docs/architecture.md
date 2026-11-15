@@ -22,7 +22,7 @@ Companion documents:
 | | Dev A · screens + fix & assistant backend | Dev B · data pipeline |
 | --- | --- | --- |
 | Builds | All of `frontend/`; the backend for fix texts, the info page, the developer export and the assistant chat | The rest of `backend/`: API skeleton, places, scans, progress stream, all collectors, scoring, problem cards, demo mode |
-| Accounts (`.env` half) | Meta app for Instagram Business Discovery (`META_ACCESS_TOKEN`, `META_IG_USER_ID`); picks the demo café (`DEMO_PLACE_ID`, `DEMO_MODE`). Shared with Dev B. | Google Cloud project (Places API (New), PageSpeed Insights API), SerpApi, the Gemini key: `GEMINI_API_KEY` from an AI Studio project with no billing (free tier), shared with Dev A; and the Google Cloud free-trial project (Vertex AI) for grounded calls. |
+| Accounts (`.env` half) | Meta app for Instagram Business Discovery (`META_ACCESS_TOKEN`, `META_IG_USER_ID`) and the WhatsApp Cloud API for review alerts (`WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_BUSINESS_NUMBER` in international format); picks the demo café (`DEMO_PLACE_ID`, `DEMO_MODE`). Shared with Dev B. | Google Cloud project (Places API (New), PageSpeed Insights API), SerpApi, the Gemini key: `GEMINI_API_KEY` from an AI Studio project with no billing (free tier), shared with Dev A; and the Google Cloud free-trial project (Vertex AI) for grounded calls. |
 | Owns | `frontend/**`, root `package.json`, `backend/app/api/fixes.py`, `backend/app/api/chat.py`, `backend/app/fixes/**`, `backend/app/assistant/**`, `backend/app/llm/prompts/fix_*`, `backend/app/llm/prompts/assistant_*` | Everything else in `backend/**`, including `pyproject.toml`, `models.py`, `db.py`, `llm/client.py`, `services/resolution.py`, `fixtures/` |
 | Hands over | Meta token, IG user ID and demo place ID (hour 0); root `npm run dev` (hour 1); `api/fixes.py`, `api/chat.py`, `fixes/`, `assistant/` written against the contract (before gate 1), working end to end once Dev B's skeleton lands | Gemini, Places, PageSpeed and SerpApi keys (hour 0); skeleton serving the fixture, with `llm/client.py`, `services/resolution.py`, `db.py`, `cache.py` usable (hour 2, gate 1); real `resolve` (hour 5); a real report (hour 14, gate 2) |
 
@@ -155,6 +155,8 @@ Fully specified in [contract.md](contract.md). Summary:
 | `POST` | `/api/scans/{id}/fixes/{check_id}/generate` | 4 | A |
 | `GET` | `/api/scans/{id}/info-page` | 4 | A |
 | `GET` | `/api/scans/{id}/dev-export` | 4 | A |
+| `GET` / `PUT` / `DELETE` | `/api/scans/{id}/review-alerts` | 3 (`recenzii`) | A |
+| `POST` | `/api/scans/{id}/review-alerts/simulate` | 3 (`recenzii`) | A |
 | `GET` / `POST` | `/api/scans/{id}/conversations` | 6 | A |
 | `GET` | `/api/conversations/{cid}` | 6 | A |
 | `POST` | `/api/conversations/{cid}/messages` | 6 | A |
@@ -279,6 +281,7 @@ Set them up before the hackathon starts; billing and key restrictions are the us
 | PageSpeed Insights API | Dev B | T07 mobile speed | Same Google Cloud project; one run takes 15–30 s |
 | SerpApi | Dev B | Review dates and owner replies | Free plan ~250 searches/month: cache every response |
 | Instagram Graph API | Dev A | Bio, website, posts via Business Discovery | Free. Needs a Meta app with Facebook Login, your own Instagram professional account linked to a Facebook Page (setup only; the product never checks Facebook), and a long-lived user token (about 60 days). Only reads business/creator accounts. |
+| WhatsApp Cloud API | Dev A | Review alerts: a suggested reply to each new Google review, sent to the owner | The same Meta app with the WhatsApp product, its phone number ID and a permanent system-user token. Plain text only reaches an owner for 24 hours after they wrote to our number („Start”); a test number only sends to the numbers verified on it. |
 | Playwright for Python | Dev B | Fallback render | `uv run playwright install chromium` |
 
 `backend/.env` is shared by both devs' backend code and never committed. `backend/.env.example` holds the same names, with values only for non-secret settings. Copy it to `backend/.env` and paste the keys (shared privately):
@@ -294,6 +297,9 @@ PAGESPEED_API_KEY=
 SERPAPI_API_KEY=
 META_ACCESS_TOKEN=
 META_IG_USER_ID=
+WHATSAPP_ACCESS_TOKEN=
+WHATSAPP_PHONE_NUMBER_ID=
+WHATSAPP_BUSINESS_NUMBER=
 DEMO_MODE=off
 DEMO_PLACE_ID=
 FRONTEND_ORIGIN=http://localhost:3000
