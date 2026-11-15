@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import jobs
-from app.api import chat, fixes, places, scans
+from app.api import chat, fixes, onboarding, places, scans
 from app.config import get_settings
 from app.db import create_tables
 from app.errors import ApiError, handle_api_error
@@ -34,6 +34,7 @@ app.add_middleware(
 )
 app.add_exception_handler(ApiError, handle_api_error)
 app.include_router(places.router)
+app.include_router(onboarding.router)
 app.include_router(scans.router)
 app.include_router(fixes.router)
 app.include_router(chat.router)

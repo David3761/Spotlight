@@ -124,6 +124,69 @@ class ScanCreated(BaseModel):
     scan_id: str
 
 
+OnboardingField = Literal[
+    "business_name",
+    "business_type",
+    "city",
+    "neighborhood",
+    "website",
+    "google_profile",
+    "profile_claimed",
+    "has_google_description",
+    "last_google_post",
+    "social",
+    "last_social_post",
+    "platforms",
+]
+"""An answer the onboarding assistant collects, in the order it asks for them."""
+
+GoogleChoice = Literal["place", "none", "later"]
+"""How the owner answered the Google Maps step: a place picked or linked, no profile, or adding it later."""
+
+
+class OnboardingAnswers(BaseModel):
+    """What the onboarding has collected so far; `None` means not answered yet."""
+
+    business_name: str | None
+    business_type: BusinessType | None
+    business_type_label_ro: str | None
+    city: str | None
+    neighborhood: str | None
+    has_website: bool | None
+    website_url: str | None
+    google_choice: GoogleChoice | None
+    place: PlaceCandidate | None
+    maps_url: str | None
+    self_report: SelfReport
+    has_social: bool | None
+    instagram_url: str | None
+    tiktok_url: str | None
+    platforms: list[Platform] | None
+
+
+class OnboardingMessage(BaseModel):
+    """One message of the onboarding chat."""
+
+    role: Literal["assistant", "user"]
+    text: str = Field(max_length=2000)
+
+
+class OnboardingTurnRequest(BaseModel):
+    """The onboarding chat so far, the owner's newest message last, with the answers collected before it."""
+
+    messages: list[OnboardingMessage] = Field(min_length=1)
+    answers: OnboardingAnswers
+
+
+class OnboardingTurn(BaseModel):
+    """The assistant's next message, with the answers collected and still missing after the owner's newest message."""
+
+    reply_ro: str
+    answers: OnboardingAnswers
+    missing: list[OnboardingField]
+    candidates: list[PlaceCandidate]
+
+
 class StepEvent(BaseModel):
     """A progress step that started or finished."""
 

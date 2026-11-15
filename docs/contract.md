@@ -36,6 +36,54 @@ Chapter order (sidebar, dashboard, `chapters[]`): `profil`, `recenzii`, `continu
 
 ## Onboarding and places (owner: Dev B)
 
+### `POST /api/onboarding/turn`
+
+The onboarding chat that Gemini leads. The frontend sends the whole chat after each owner message, with the answers from the previous turn (plus a place picked on a card). Gemini takes every fact the message states, also facts for later questions, and asks for the first answer still missing; the backend checks every value and decides what is missing. Identical chats are answered from the cache, so a rehearsed demo replays offline.
+
+```ts
+interface OnboardingTurnRequest {
+  messages: OnboardingMessage[];    // the whole chat, starting with the frontend's greeting, the owner's newest message last; the prompt reads the latest 30
+  answers: OnboardingAnswers;       // the previous turn's answers; a card click sets google_choice "place" and place here
+}
+
+interface OnboardingMessage { role: "assistant" | "user"; text: string; }   // text: at most 2000 characters
+
+interface OnboardingAnswers {       // null: not answered yet
+  business_name: string | null;
+  business_type: BusinessType | null;
+  business_type_label_ro: string | null;   // the owner's words, e.g. "Cafenea de specialitate", "Brutărie"
+  city: string | null;
+  neighborhood: string | null;
+  has_website: boolean | null;
+  website_url: string | null;              // a full URL, never a social or Google page
+  google_choice: "place" | "none" | "later" | null;
+  place: PlaceCandidate | null;            // picked on a card or found from a pasted Maps link
+  maps_url: string | null;
+  self_report: SelfReport;
+  has_social: boolean | null;              // false: neither Instagram nor TikTok
+  instagram_url: string | null;            // https://www.instagram.com/<handle>
+  tiktok_url: string | null;               // https://www.tiktok.com/@<handle>
+  platforms: Platform[] | null;            // []: on none of them
+}
+
+type OnboardingField =
+  | "business_name" | "business_type" | "city" | "neighborhood" | "website" | "google_profile"
+  | "profile_claimed" | "has_google_description" | "last_google_post" | "social" | "last_social_post" | "platforms";
+
+interface OnboardingTurn {
+  reply_ro: string;                 // the assistant's next message
+  answers: OnboardingAnswers;
+  missing: OnboardingField[];       // in the order the assistant asks; the reply asks for the first; [] when done
+  candidates: PlaceCandidate[];     // Google Maps matches for the cards, while missing[0] is "google_profile"
+}
+```
+
+- Questions that no longer apply are never missing: no Google profile skips the three Google questions, no Instagram or TikTok skips `last_social_post`.
+- When Gemini's reply asks for anything but `missing[0]`, the backend replaces it with that answer's fixed question.
+- The owner can also name a card in words („da”, „primul”); a „Nu” to the cards asks for the link instead of meaning „no profile”.
+- Errors: `502 upstream_error` when Gemini fails. A pasted Maps link that gives no place (unreadable, or Google Maps down) isn't an error: the reply explains it and `google_profile` stays missing.
+- The frontend builds `ScanInputs` from the answers and starts the scan with `POST /api/scans` as before.
+
 ### `POST /api/places/search`
 
 Request:
@@ -357,7 +405,7 @@ Response `{ "conversations": ConversationSummary[] }`, newest first.
 
 ### `POST /api/scans/{scan_id}/conversations`
 
-Request `{ "kind": "onboarding" | "assistant", "chapter_id": ChapterId | null, "title": string | null, "messages": Message[] | null }`. The frontend creates the onboarding conversation once, right after `POST /api/scans`, with the scripted transcript in `messages`. Response `{ "cid": string }`.
+Request `{ "kind": "onboarding" | "assistant", "chapter_id": ChapterId | null, "title": string | null, "messages": Message[] | null }`. The frontend creates the onboarding conversation once, right after `POST /api/scans`, with the onboarding chat in `messages`. Response `{ "cid": string }`.
 
 ### `GET /api/conversations/{cid}`
 
