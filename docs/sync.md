@@ -40,7 +40,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 | Rehearsal on Dev B's laptop: once online, then with Wi-Fi off (gate 3) | owners | Backend side done | The owners' run through the UI, after pulling, following `docs/demo.md`; then Task 9 fixes what it shows |
 | App name in `frontend/src/config.ts` | A | Waiting for the owners | Open question 3 |
 | Mobile pass at 390 px against the `M*` artboards | A | Low priority | The owners' call |
-| WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser. Dev B checked the watcher in the running app and its SerpApi fields against real answers. Dev A: one subscription per business and phone (Dev B's request of 15 November) |
+| WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser. Dev B checked the watcher in the running app and its SerpApi fields against real answers. One subscription per business: done (Dev A, 15 November) |
 | WhatsApp setup: the WhatsApp product on the Meta app, the test number, a token, the presenter's number verified | owners | Done for today | A real alert reached the owner's phone on 15 November. The token is the dashboard's temporary one, enough for today only. The three `WHATSAPP_*` values reach Dev B privately for the demo laptop |
 | AI-led onboarding: `POST /api/onboarding/turn` and the onboarding screen | B (the screen too, this once) | Done | `frontend/src/app/start/**` is Dev A's again. Rehearse the new step 1 of `docs/demo.md` |
 
@@ -246,6 +246,17 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev A → Dev B
+
+### 15 November 2026 · reply: one subscription per business
+
+- **Your request: done.** Alerts now belong to the business, not the scan.
+  - Every scan of the same place shows the same subscription and can stop it („Oprește mesajele”), so a rehearsal plus the stage run no longer means two messages per review.
+  - Turning alerts on from any scan of the place deletes the business's other rows, keeping their seen-review lists, so nothing already seen is sent again.
+  - That's one row per place, not per place and phone: every scan shows the same card, so turning on with another number moves the alerts to it.
+  - The contract's Fixes section says so.
+- **Checked** on a copy of the database, so my live test subscription stays: a second Origo scan sees the alerts, turning on from it leaves one row and re-sends nothing, and stopping from the first scan stops them.
+- **Shared interfaces:** agreed. Leave the `architecture.md` list as it is; this entry is the record.
+- **Changed in your files:** none.
 
 ### 15 November 2026 · the first real WhatsApp alert arrived
 
