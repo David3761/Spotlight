@@ -25,6 +25,9 @@ TYPE_PLACE_TYPES: dict[BusinessType, list[str]] = {
 }
 """The Google place types searched for each business type; „altceva” uses the profile's own main type."""
 
+GENERIC_PLACE_TYPES = {"service", "store", "establishment", "point_of_interest", "food"}
+"""Google's catch-all main types, too broad to find comparable businesses nearby (a hospital for a bike repair shop)."""
+
 
 class NearbyCompetitor(BaseModel):
     """A popular business of the same type nearby."""
@@ -37,7 +40,8 @@ class NearbyCompetitor(BaseModel):
 
 async def get_nearby_competitors(business_type: BusinessType, canonical: CanonicalProfile) -> list[NearbyCompetitor]:
     """Returns the three most popular nearby businesses of the same type, the business itself left out."""
-    place_types = TYPE_PLACE_TYPES.get(business_type) or ([canonical.primary_type] if canonical.primary_type else [])
+    own_type = canonical.primary_type if canonical.primary_type not in GENERIC_PLACE_TYPES else None
+    place_types = TYPE_PLACE_TYPES.get(business_type) or ([own_type] if own_type else [])
     if not place_types or canonical.lat is None or canonical.lng is None:
         return []
     body = {
