@@ -68,6 +68,10 @@ export type FaqEntry = Schemas["FaqItem"];
 export type InfoPage = Schemas["InfoPage"];
 /** The developer instructions export. */
 export type DevExport = Schemas["DevExport"];
+/** The WhatsApp review alerts of a scan's business. */
+export type ReviewAlerts = Schemas["ReviewAlerts"];
+/** The review a WhatsApp alert was just sent for, with the suggested reply. */
+export type ReviewAlertSent = Schemas["ReviewAlertSent"];
 /** A conversation in the list. */
 export type ConversationSummary = Schemas["ConversationSummary"];
 /** The response of `GET /api/scans/{scan_id}/conversations`. */

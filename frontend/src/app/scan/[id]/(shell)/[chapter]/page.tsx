@@ -12,6 +12,7 @@ import { ChapterDone } from "./_components/ChapterDone";
 import { ChapterHeader } from "./_components/ChapterHeader";
 import { FixPanel } from "./_components/FixPanel";
 import { ProblemCard } from "./_components/ProblemCard";
+import { ReviewAlertsCard } from "./_components/ReviewAlertsCard";
 import { AllFixedBox, WhereToFixBox } from "./_components/SideBoxes";
 import { SolvedList } from "./_components/SolvedList";
 import { UnknownList } from "./_components/UnknownList";
@@ -45,6 +46,7 @@ export default function ChapterPage() {
   const openProblem = chapter.problems.find((problem) => problem.check_id === fixPanel.checkId) ?? null;
   const isDone = isChapterSolved(chapter);
   const hasProblems = chapter.problems.length > 0;
+  const showsReviewAlerts = chapter.id === "recenzii" && report.business.place_id !== null;
   const overallGain = chapter.overall_gain_if_all_fixed;
 
   return (
@@ -84,7 +86,7 @@ export default function ChapterPage() {
           {chapter.unknown.length > 0 && <UnknownList items={chapter.unknown} />}
         </div>
 
-        {(hasProblems || chapter.where_to_fix_ro) && (
+        {(hasProblems || chapter.where_to_fix_ro || showsReviewAlerts) && (
           <aside className="flex flex-col gap-4 lg:max-w-95 lg:flex-[1_1_300px]">
             {hasProblems && (
               <AllFixedBox
@@ -95,6 +97,7 @@ export default function ChapterPage() {
               />
             )}
             {chapter.where_to_fix_ro && <WhereToFixBox text={chapter.where_to_fix_ro} />}
+            {showsReviewAlerts && <ReviewAlertsCard scanId={scanId} />}
           </aside>
         )}
       </div>

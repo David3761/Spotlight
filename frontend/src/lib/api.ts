@@ -13,6 +13,8 @@ import type {
   OnboardingTurn,
   OnboardingTurnRequest,
   Report,
+  ReviewAlerts,
+  ReviewAlertSent,
   ScanEnvelope,
   ScanEvent,
   ScanInputs,
@@ -105,6 +107,26 @@ export function getInfoPage(scanId: string): Promise<InfoPage> {
 /** Returns the instructions for the web developer. */
 export function getDevExport(scanId: string): Promise<DevExport> {
   return request(`/api/scans/${scanId}/dev-export`);
+}
+
+/** Returns the scan's WhatsApp review alerts. */
+export function getReviewAlerts(scanId: string): Promise<ReviewAlerts> {
+  return request(`/api/scans/${scanId}/review-alerts`);
+}
+
+/** Turns on WhatsApp review alerts for the owner's phone number. */
+export function enableReviewAlerts(scanId: string, phone: string): Promise<ReviewAlerts> {
+  return request(`/api/scans/${scanId}/review-alerts`, { method: "PUT", body: JSON.stringify({ phone }) });
+}
+
+/** Turns off the scan's WhatsApp review alerts. */
+export function disableReviewAlerts(scanId: string): Promise<ReviewAlerts> {
+  return request(`/api/scans/${scanId}/review-alerts`, { method: "DELETE" });
+}
+
+/** Sends the WhatsApp alert for the newest review now, as if it had just arrived. */
+export function simulateReviewAlert(scanId: string): Promise<ReviewAlertSent> {
+  return post(`/api/scans/${scanId}/review-alerts/simulate`);
 }
 
 /** Returns a scan's conversations, newest first. */
