@@ -2,18 +2,18 @@
   {
     "check_id": "G02",
     "chapter_id": "profil",
-    "status": "pass",
-    "points_earned": 10.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 10.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "cafe",
-      "expected": "cafenea",
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "found": "service",
+      "expected": "altceva",
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {
-      "category": "Cafenea"
+      "category": "Servicii"
     },
     "reason_ro": null
   },
@@ -28,7 +28,7 @@
     "evidence": {
       "found": "7/7",
       "expected": "7/7",
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {
       "days": "7"
@@ -46,7 +46,7 @@
     "evidence": {
       "found": null,
       "expected": null,
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {},
     "reason_ro": "Google arată programul de sărbători doar pentru următoarele 7 zile, așa că nu îl putem verifica dinainte."
@@ -62,7 +62,7 @@
     "evidence": {
       "found": "10",
       "expected": "5",
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {
       "photos": "10 fotografii"
@@ -78,9 +78,9 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "https://origocoffee.ro/",
+      "found": "http://www.bikexplorer.ro/",
       "expected": null,
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {},
     "reason_ro": null
@@ -94,9 +94,9 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "0757 086 689",
+      "found": "0745 776 176",
       "expected": null,
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {},
     "reason_ro": null
@@ -138,33 +138,33 @@
   {
     "check_id": "G10",
     "chapter_id": "profil",
-    "status": "pass",
-    "points_earned": 5.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 5.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "acceptsCashOnly, acceptsCreditCards, acceptsDebitCards, acceptsNfc, allowsDogs, delivery, dineIn, goodForGroups, outdoorSeating, servesBreakfast, servesCoffee, takeout, wheelchairAccessibleParking, wheelchairAccessibleSeating",
-      "expected": "dineIn, takeout, outdoorSeating, servesCoffee, acceptsCreditCards",
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "found": "wheelchairAccessibleRestroom, wheelchairAccessibleSeating",
+      "expected": "acceptsCreditCards, wheelchairAccessibleEntrance",
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {
-      "missing": ""
+      "missing": "plata cu cardul și intrare accesibilă cu scaunul cu rotile"
     },
     "reason_ro": null
   },
   {
     "check_id": "G11",
     "chapter_id": "profil",
-    "status": "pass",
-    "points_earned": 5.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 5.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "PRICE_LEVEL_MODERATE",
+      "found": null,
       "expected": null,
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {},
     "reason_ro": null
@@ -188,21 +188,18 @@
   {
     "check_id": "R01",
     "chapter_id": "recenzii",
-    "status": "fail",
+    "status": "unknown",
     "points_earned": 0.0,
     "points_max": 30.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "5098",
-      "expected": "25619",
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "found": null,
+      "expected": null,
+      "url": null
     },
-    "params": {
-      "reviews": "5098 de recenzii",
-      "median": "25619"
-    },
-    "reason_ro": null
+    "params": {},
+    "reason_ro": "Nu am găsit afaceri în apropiere cu care să te comparăm."
   },
   {
     "check_id": "R02",
@@ -213,12 +210,12 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "4.7",
+      "found": "5.0",
       "expected": "4.6",
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {
-      "rating": "4,7"
+      "rating": "5,0"
     },
     "reason_ro": null
   },
@@ -233,7 +230,7 @@
     "evidence": {
       "found": "2026-11-10",
       "expected": null,
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {
       "days": "4 zile"
@@ -243,37 +240,19 @@
   {
     "check_id": "R04",
     "chapter_id": "recenzii",
-    "status": "fail",
-    "points_earned": 0.0,
+    "status": "pass",
+    "points_earned": 15.0,
     "points_max": 15.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "0/20",
+      "found": "19/20",
       "expected": "80%",
-      "url": "https://maps.google.com/?cid=14169121335398956031&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
+      "url": "https://maps.google.com/?cid=14079691771425601931&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA"
     },
     "params": {
-      "unanswered": "20",
+      "unanswered": "1",
       "recent": "20 de recenzii"
-    },
-    "reason_ro": null
-  },
-  {
-    "check_id": "R05",
-    "chapter_id": "recenzii",
-    "status": "pass",
-    "points_earned": 10.0,
-    "points_max": 10.0,
-    "claimed_fixed": false,
-    "gate": false,
-    "evidence": {
-      "found": "glovo, tripadvisor",
-      "expected": "tripadvisor",
-      "url": null
-    },
-    "params": {
-      "platform": "TripAdvisor"
     },
     "reason_ro": null
   },
@@ -286,9 +265,9 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "pioneering specialty coffee since 2013",
+      "found": "service de biciclete și magazin fizic cu piese și accesorii",
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -302,9 +281,9 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Strada Lipscani nr 9, Sector 5, Bucuresti",
-      "expected": "Strada Lipscani 9, 050971 București",
-      "url": "https://origocoffee.ro/"
+      "found": "Str. Mihail Petrescu 2A, Sect. 4, Bucuresti",
+      "expected": "Strada Mihail Petrescu 2A, 041274 București",
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -312,15 +291,15 @@
   {
     "check_id": "C03",
     "chapter_id": "continut",
-    "status": "pass",
-    "points_earned": 15.0,
+    "status": "partial",
+    "points_earned": 7.5,
     "points_max": 15.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Luni : 07.30 - 20:00 Marți - Vineri: 07.30 - 00:00 Sambata - Duminica: 8.00 - 00:00",
-      "expected": "Luni: 07:30–20:00; Marți: 07:30–00:00; Miercuri: 07:30–00:00; Joi: 07:30–00:00; Vineri: 07:30–00:00; Sâmbătă: 08:00–00:00; Duminică: 08:00–00:00",
-      "url": "https://origocoffee.ro/"
+      "found": "LUNI: Deschis doar pt. programari prestabilite MARTI-VINERI: 13:00-19:00 SAMBATA-DUMINICA: Inchis",
+      "expected": "Luni: Închis; Marți: 13:00–19:00; Miercuri: 13:00–19:00; Joi: 13:00–19:00; Vineri: 13:00–19:00; Sâmbătă: Închis; Duminică: Închis",
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -334,9 +313,9 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "+40747248184, +40747248187, +40756015599, +40756017370, +40757086689, +40759637564",
-      "expected": "+40757086689",
-      "url": "https://origocoffee.ro/"
+      "found": "+40745776176",
+      "expected": "+40745776176",
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -344,15 +323,15 @@
   {
     "check_id": "C05",
     "chapter_id": "continut",
-    "status": "partial",
-    "points_earned": 7.5,
+    "status": "pass",
+    "points_earned": 15.0,
     "points_max": 15.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Nu am găsit prețuri lângă produse.",
+      "found": "Reglaj cuvete direcție, Service cuvete direcție, Înlocuit cuvete, Înlocuit furcă față N1-N2, Înlocuit amortizor spate",
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -360,15 +339,15 @@
   {
     "check_id": "C06",
     "chapter_id": "continut",
-    "status": "pass",
-    "points_earned": 10.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 10.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
       "found": null,
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -384,7 +363,7 @@
     "evidence": {
       "found": "Am găsit răspuns la 0 din 5 întrebări obișnuite.",
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -400,7 +379,7 @@
     "evidence": {
       "found": "ro",
       "expected": "ro",
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -416,7 +395,7 @@
     "evidence": {
       "found": null,
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -432,7 +411,7 @@
     "evidence": {
       "found": null,
       "expected": null,
-      "url": "https://origocoffee.ro/robots.txt"
+      "url": "https://bikexplorer.ro/robots.txt"
     },
     "params": {},
     "reason_ro": null
@@ -448,7 +427,7 @@
     "evidence": {
       "found": null,
       "expected": null,
-      "url": "https://origocoffee.ro/robots.txt"
+      "url": "https://bikexplorer.ro/robots.txt"
     },
     "params": {},
     "reason_ro": null
@@ -464,7 +443,7 @@
     "evidence": {
       "found": null,
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -478,9 +457,9 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "6 pagini",
+      "found": "1 pagini",
       "expected": null,
-      "url": "https://origocoffee.ro/sitemap.xml"
+      "url": "https://bikexplorer.ro/sitemap.xml"
     },
     "params": {},
     "reason_ro": null
@@ -496,7 +475,7 @@
     "evidence": {
       "found": "Nu am găsit date structurate de tip LocalBusiness pe site.",
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -510,9 +489,9 @@
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Scorul de viteză pe telefon e 68 din 100.",
+      "found": "Scorul de viteză pe telefon e 64 din 100.",
       "expected": "90",
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -528,7 +507,7 @@
     "evidence": {
       "found": null,
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -544,7 +523,7 @@
     "evidence": {
       "found": null,
       "expected": null,
-      "url": "https://origocoffee.ro/"
+      "url": "https://bikexplorer.ro/"
     },
     "params": {},
     "reason_ro": null
@@ -552,8 +531,8 @@
   {
     "check_id": "L01",
     "chapter_id": "info",
-    "status": "pass",
-    "points_earned": 30.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 30.0,
     "claimed_fixed": false,
     "gate": false,
@@ -563,9 +542,9 @@
       "url": null
     },
     "params": {
-      "missing": "",
-      "present": "2",
-      "expected": "2"
+      "missing": "Instagram",
+      "present": "0",
+      "expected": "1"
     },
     "reason_ro": null
   },
@@ -588,13 +567,13 @@
   {
     "check_id": "M01",
     "chapter_id": "mentiuni",
-    "status": "pass",
-    "points_earned": 45.0,
+    "status": "partial",
+    "points_earned": 30.0,
     "points_max": 45.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Am găsit mențiuni pe atlascoffee.es, day9.coffee, spottedbylocals.com, dezeen.com, visitbucharest.today, archdaily.com, bucharest.ro, artofmanslife.com, freshcup.com, timeoutbucuresti.ro, nwradu.ro, myartguides.com, koffie.work, 2foodtrippers.com, discoverkava.com și unboundtraveler.com.",
+      "found": "Am găsit mențiuni pe listafirme.ro, freerider.ro și firme.ro.",
       "expected": null,
       "url": null
     },
@@ -620,15 +599,15 @@
   {
     "check_id": "M03",
     "chapter_id": "mentiuni",
-    "status": "pass",
-    "points_earned": 15.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 15.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "dezeen.com",
+      "found": null,
       "expected": null,
-      "url": "https://www.dezeen.com/2013/06/01/origo-coffee-shop-by-lama-architectura/"
+      "url": null
     },
     "params": {},
     "reason_ro": null
@@ -652,15 +631,15 @@
   {
     "check_id": "S02",
     "chapter_id": "social",
-    "status": "pass",
-    "points_earned": 25.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 25.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": null,
+      "found": "Nu ai dat un link de Instagram și nu am găsit niciunul pe site.",
       "expected": null,
-      "url": "https://instagram.com/origo_coffee"
+      "url": null
     },
     "params": {},
     "reason_ro": null
@@ -668,24 +647,24 @@
   {
     "check_id": "S03",
     "chapter_id": "social",
-    "status": "pass",
-    "points_earned": 30.0,
+    "status": "unknown",
+    "points_earned": 0.0,
     "points_max": 30.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Ultima postare pe Instagram e de acum 8 zile.",
+      "found": null,
       "expected": null,
-      "url": "https://instagram.com/origo_coffee"
+      "url": null
     },
     "params": {},
-    "reason_ro": null
+    "reason_ro": "Nu am putut vedea postările de pe Instagram."
   },
   {
     "check_id": "S04",
     "chapter_id": "social",
-    "status": "pass",
-    "points_earned": 20.0,
+    "status": "partial",
+    "points_earned": 10.0,
     "points_max": 20.0,
     "claimed_fixed": false,
     "gate": false,
@@ -695,36 +674,36 @@
       "url": null
     },
     "params": {
-      "missing": ""
+      "missing": "linkul către Instagram pe site"
     },
     "reason_ro": null
   },
   {
     "check_id": "S05",
     "chapter_id": "social",
-    "status": "fail",
+    "status": "unknown",
     "points_earned": 0.0,
     "points_max": 25.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Pioneering specialty coffee since 2013 \n#PeopleOfSpecialty™ \n@peopleofspecialty \nCoffee at your door 🚚 🇷🇴 👇",
+      "found": null,
       "expected": null,
-      "url": "https://instagram.com/origo_coffee"
+      "url": null
     },
     "params": {},
-    "reason_ro": null
+    "reason_ro": "Nu am putut citi descrierea de pe Instagram."
   },
   {
     "check_id": "K01",
     "chapter_id": "cunoaste",
-    "status": "pass",
-    "points_earned": 50.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 50.0,
     "claimed_fixed": false,
     "gate": false,
     "evidence": {
-      "found": "Te descrie în 3 din 3 răspunsuri și te recomandă când întrebăm de locuri din cartier.",
+      "found": "Te descrie în 0 din 3 răspunsuri.",
       "expected": null,
       "url": null
     },
@@ -734,8 +713,8 @@
   {
     "check_id": "K02",
     "chapter_id": "cunoaste",
-    "status": "pass",
-    "points_earned": 30.0,
+    "status": "fail",
+    "points_earned": 0.0,
     "points_max": 30.0,
     "claimed_fixed": false,
     "gate": false,

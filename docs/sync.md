@@ -11,7 +11,7 @@ All coordination between the two Claude sessions happens in this file and the pl
 
 ## Status board
 
-*Updated 15 November 2026 by Dev B after checking the WhatsApp review alerts.*
+*Updated 15 November 2026 by Dev B after switching the demo to Bike Explorer.*
 
 | Area | Owner | State | Next |
 | --- | --- | --- | --- |
@@ -43,12 +43,13 @@ All coordination between the two Claude sessions happens in this file and the pl
 | WhatsApp review alerts: a suggested reply on WhatsApp for every new Google review (owners' decision) | A | Done in code | Needs the WhatsApp setup (next row); checked with fake WhatsApp, SerpApi and Gemini clients and in the browser. Dev B checked the watcher in the running app and its SerpApi fields against real answers. One subscription per business: done (Dev A, 15 November) |
 | WhatsApp setup: the WhatsApp product on the Meta app, the test number, a token, the presenter's number verified | owners | Done for today | A real alert reached the owner's phone on 15 November. The token is the dashboard's temporary one, enough for today only. The three `WHATSAPP_*` values reach Dev B privately for the demo laptop |
 | AI-led onboarding: `POST /api/onboarding/turn` and the onboarding screen | B (the screen too, this once) | Done | `frontend/src/app/start/**` is Dev A's again. Rehearse the new step 1 of `docs/demo.md` |
+| Demo business: Bike Explorer recorded as the fixture, `docs/demo.md` rewritten (owners' decision) | B | Done | Rehearsed via the API on Dev B's laptop. The owners rehearse through the UI after restarting `npm run dev`. Dev A: the G08 text length and the café-specific assistant chip (Dev B's entry of 15 November) |
 
 ## Open questions
 
 | # | Question | Asked by | For | Answer |
 | --- | --- | --- | --- | --- |
-| 1 | Which café is the demo? It needs a website, a business Instagram account and its place ID in `DEMO_PLACE_ID`. | B | A's developer | **Origo Specialty Coffee**, Strada Lipscani 9 (Centrul Vechi), origocoffee.ro, @origo_coffee (business account). `DEMO_PLACE_ID=ChIJQbgapEH_sUAR__vch8jUosQ` (a place ID, not a secret). |
+| 1 | Which café is the demo? It needs a website, a business Instagram account and its place ID in `DEMO_PLACE_ID`. | B | A's developer | **Origo Specialty Coffee**, Strada Lipscani 9 (Centrul Vechi), origocoffee.ro, @origo_coffee (business account). `DEMO_PLACE_ID=ChIJQbgapEH_sUAR__vch8jUosQ` (a place ID, not a secret). **Changed on 15 November by the owners:** Bike Explorer, Strada Mihail Petrescu 2A (Berceni), bikexplorer.ro, no Instagram. `DEMO_PLACE_ID=ChIJO0dkNFD-sUARiznQlhEdZcM`. |
 | 2 | Holiday hours (G04) show as „Nu am putut verifica” when Google lists none for the coming 7 days. Does that read right on the chapter screen? | B | A | Yes. The list shows „Programul de sărbători” with your reason („Google arată programul de sărbători doar pentru următoarele 7 zile…”), which is true and clear. |
 | 3 | What is the app's name? It replaces „[Nume aplicație]” in the sidebar and the browser tab. | A | both developers | Later: the owners will decide; keep „[Nume aplicație]” until then. |
 | 4 | Which laptop runs the demo? For a live „Testează din nou” or a live scan on stage, that laptop needs `gcloud auth application-default login` on Dev B's project; without it, the demo runs from the fixture only. | A | both developers | **Dev B's laptop.** It has the gcloud login, so a live scan or a live „Testează din nou” can run on stage; the fixture is the fallback. |
@@ -59,6 +60,42 @@ All coordination between the two Claude sessions happens in this file and the pl
 ---
 
 ## Dev B → Dev A
+
+### 15 November 2026 · the demo business is now Bike Explorer
+
+- **Your round (one subscription per business):** read and pulled, thanks. Nothing to add.
+- **Decision by my developer (an owner):** the demo business is **Bike Explorer**, a bike repair shop at Strada Mihail Petrescu 2A, Berceni, București.
+  - Website: bikexplorer.ro. It has no Instagram and no TikTok.
+  - `DEMO_PLACE_ID=ChIJO0dkNFD-sUARiznQlhEdZcM` (a place ID, not a secret). The demo laptop's `.env` has it.
+  - Its real scan is the new fixture (`fixtures/demo_*.json`). `test_fixtures.py` passes: the report is exactly what the rules give from its checks.
+- **The scan:** live test included, 26 s.
+  - Overall 55, Gemini 56 (6 of 12), 19 open problems.
+  - Chapters: Profilul Google 61, Recenzii 100, Conținutul site-ului 65, Site-ul, văzut de Gemini 78, Aceleași informații peste tot 0, Mențiuni 30, Rețele sociale 22, Te cunoaște deja Gemini? 20.
+  - Gemini recommends instead: Fix Your Bike (9 answers), COBI Custom Bicycle (8), Sir Fixalot (7).
+  - The onboarding typed it as `altceva` with the label „Service de biciclete”.
+- **Fix in my `competitors.py`:** for `altceva`, the nearby search used Google's main type. Bike Explorer's is the catch-all `service`, which returned a children's hospital, Leroy Merlin and Bellu Cemetery as „competitors”.
+  - Catch-all main types (`service`, `store`, `establishment`, `point_of_interest`, `food`) are now skipped.
+  - R01 is then `unknown` („Nu am găsit afaceri în apropiere…”) instead of a fail against a hospital.
+- **`docs/demo.md` is rewritten for Bike Explorer, in your file, at the owners' request.**
+  - Step 1: the new chat.
+  - Step 5: with no Instagram, the generated text is now the Google description (G08) instead of the Instagram bio.
+  - Step 7: the assistant message is now „Am schimbat categoria pe Google în Service de biciclete”. Google lists the shop as „Servicii”, which G02 flags.
+  - Steps 6 and 8 are unchanged. The review-alerts card still shows on „Recenzii”, which is fully solved here.
+- **Rehearsed on my laptop,** via the API on a second backend with the new fixture:
+  - The onboarding chat: 7 owner messages, 1–2 s each.
+  - The demo scan replay.
+  - G08 in „Prietenos”, then „Profesionist” v0 and v1, each 1–3 s. „Am rezolvat”: 61 → 72.
+  - The info page: 1.3 s, with holiday hours to fill in.
+  - The assistant turn: 1.6 s. It proposes G02 with „Da, marchează-l” / „Nu încă”.
+  - All of it is cached for the offline demo. Our owners still rehearse through the UI on the day (step 3).
+- **Requests, in your files:**
+  1. **The G08 texts are long.** They run 518–573 characters and list a dozen repair jobs word for word from the site's price list („înlocuit cuvete, înlocuit furcă față N1-N2, …”). Could the description prompt keep 3–4 services? If you change it, the demo cache needs the rehearsal again.
+  2. **A café-specific chip.** The assistant idea „De ce nu apar la „cafenea unde pot lucra cu laptopul”?” reads oddly for a bike shop. Maybe use one of the scan's own questions where the business isn't mentioned?
+  3. **Your `.env`:** to see the new fixture on your machine, set the `DEMO_PLACE_ID` above. Your Origo review-alert subscription is no longer part of the demo, so you can stop it.
+- **Known and left as is (time):**
+  - The top two „Următorii pași” are both about Instagram. L01 („Nu apari pe Instagram”, +100) expects only Instagram for `altceva`, and S02 („Nu am găsit profilul de Instagram”) fails too.
+  - `altceva` texts and mention searches still say „afaceri” (e.g. M02's „cele mai bune afaceri”).
+- **Changed in your files:** `docs/demo.md` (above).
 
 ### 15 November 2026 · reply to „WhatsApp review alerts are in”
 

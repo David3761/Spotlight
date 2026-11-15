@@ -22,7 +22,7 @@ Companion documents:
 | | Dev A · screens + fix & assistant backend | Dev B · data pipeline |
 | --- | --- | --- |
 | Builds | All of `frontend/`; the backend for fix texts, the info page, the developer export and the assistant chat | The rest of `backend/`: API skeleton, places, scans, progress stream, all collectors, scoring, problem cards, demo mode |
-| Accounts (`.env` half) | Meta app for Instagram Business Discovery (`META_ACCESS_TOKEN`, `META_IG_USER_ID`) and the WhatsApp Cloud API for review alerts (`WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_BUSINESS_NUMBER` in international format); picks the demo café (`DEMO_PLACE_ID`, `DEMO_MODE`). Shared with Dev B. | Google Cloud project (Places API (New), PageSpeed Insights API), SerpApi, the Gemini key: `GEMINI_API_KEY` from an AI Studio project with no billing (free tier), shared with Dev A; and the Google Cloud free-trial project (Vertex AI) for grounded calls. |
+| Accounts (`.env` half) | Meta app for Instagram Business Discovery (`META_ACCESS_TOKEN`, `META_IG_USER_ID`) and the WhatsApp Cloud API for review alerts (`WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_BUSINESS_NUMBER` in international format); picks the demo business (`DEMO_PLACE_ID`, `DEMO_MODE`). Shared with Dev B. | Google Cloud project (Places API (New), PageSpeed Insights API), SerpApi, the Gemini key: `GEMINI_API_KEY` from an AI Studio project with no billing (free tier), shared with Dev A; and the Google Cloud free-trial project (Vertex AI) for grounded calls. |
 | Owns | `frontend/**`, root `package.json`, `backend/app/api/fixes.py`, `backend/app/api/chat.py`, `backend/app/fixes/**`, `backend/app/assistant/**`, `backend/app/llm/prompts/fix_*`, `backend/app/llm/prompts/assistant_*` | Everything else in `backend/**`, including `pyproject.toml`, `models.py`, `db.py`, `llm/client.py`, `services/resolution.py`, `fixtures/` |
 | Hands over | Meta token, IG user ID and demo place ID (hour 0); root `npm run dev` (hour 1); `api/fixes.py`, `api/chat.py`, `fixes/`, `assistant/` written against the contract (before gate 1), working end to end once Dev B's skeleton lands | Gemini, Places, PageSpeed and SerpApi keys (hour 0); skeleton serving the fixture, with `llm/client.py`, `services/resolution.py`, `db.py`, `cache.py` usable (hour 2, gate 1); real `resolve` (hour 5); a real report (hour 14, gate 2) |
 
@@ -263,7 +263,7 @@ The fast and smart tiers use the free-tier `GEMINI_API_KEY`. Romanian Maps-groun
 | `scans` table | `id`, `created_at`, `status`, `inputs` (JSON), `internal` (JSON: canonical, website facts, check results), `report` (JSON), `error` | Resolving recomputes scores from `internal` and rewrites `report` |
 | `conversations` table | `id`, `scan_id`, `kind`, `title`, `chapter_id`, `messages` (JSON), `pending_actions` (JSON), `created_at`, `updated_at` | Screen 6 |
 | `cache/` | fetched HTML, API responses, LLM answers, keyed by request hash | Saves money while developing; lets a scan replay offline |
-| `fixtures/demo_report.json`, `demo_checks.json`, `demo_facts.json` | The recorded real scan of the demo café (Origo, Lipscani): its report, the checks it was scored from, and its facts | Demo mode |
+| `fixtures/demo_report.json`, `demo_checks.json`, `demo_facts.json` | The recorded real scan of the demo business (Bike Explorer, a bike repair shop in Berceni): its report, the checks it was scored from, and its facts | Demo mode |
 
 Place IDs can be stored freely; check the Google Maps Platform terms before keeping other Places content beyond the hackathon.
 
@@ -330,7 +330,7 @@ FRONTEND_ORIGIN=http://localhost:3000
 
 **Gates:** hour 2 contract frozen · hour 14 first real scan end to end · hour 20 feature freeze. If time runs short, cut polish first; gate 2 is the one that matters.
 
-**Fallbacks:** if the assistant backend isn't working at hour 17, Dev A replaces it with a scripted demo conversation for the demo café. If a collector isn't ready by hour 18, its checks stay `unknown`.
+**Fallbacks:** if the assistant backend isn't working at hour 17, Dev A replaces it with a scripted demo conversation for the demo business. If a collector isn't ready by hour 18, its checks stay `unknown`.
 
 ---
 
@@ -343,7 +343,7 @@ FRONTEND_ORIGIN=http://localhost:3000
 - **One command starts both servers:** `npm run dev` at the repo root.
 - **Laptop:** disable sleep, keep a phone hotspot ready, open the dashboard tab before you present.
 
-Still to pick before recording: the real demo café (needs a website and a business Instagram account) and the app name.
+Still to pick: the app name.
 
 ---
 
