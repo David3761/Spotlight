@@ -382,7 +382,7 @@ One Markdown document with every `dev_export` problem: what's wrong, evidence, e
 
 ### WhatsApp review alerts
 
-When a new Google review arrives, the owner gets a suggested reply on WhatsApp. A watcher checks each subscribed business's newest reviews on SerpApi every twelve hours; reviews already there when alerts were turned on never send a message, and an alert that didn't go through is tried again at the next check. Plain WhatsApp text reaches the owner only for 24 hours after they last wrote to our number, so the owner sends „Start” once through `whatsapp_link`.
+When a new Google review arrives, the owner gets a suggested reply on WhatsApp. A watcher checks each subscribed business's newest reviews on SerpApi every twelve hours; reviews already there when alerts were turned on never send a message, and an alert that didn't go through is tried again at the next check. Alerts belong to the business: every scan of the same place (each rescan or onboarding run makes a new one) shows and stops the same subscription, and turning them on again replaces it. Plain WhatsApp text reaches the owner only for 24 hours after they last wrote to our number, so the owner sends „Start” once through `whatsapp_link`.
 
 ```ts
 interface ReviewAlerts {

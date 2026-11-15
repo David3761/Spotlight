@@ -2,7 +2,8 @@
 
 A watcher checks every subscribed business's newest reviews on SerpApi every twelve hours (about 60 of the free
 plan's 250 monthly searches per business). Reviews already there when alerts were turned on never trigger a message;
-a review whose alert didn't go through is tried again at the next check.
+a review whose alert didn't go through is tried again at the next check. A subscription belongs to the business:
+every scan of it (each rescan or onboarding run makes a new one) shows and stops the same alerts.
 """
 
 import asyncio
@@ -61,10 +62,9 @@ class ReviewAlertRow(SQLModel, table=True):
 
 
 def get_review_alerts(scan_id: str) -> ReviewAlerts:
-    """Returns the scan's review alerts: on or off, the phone, the link that opens the 24-hour window, the last delivery."""
+    """Returns the business's review alerts: on or off, the phone, the link that opens the 24-hour window, the last delivery."""
     can_simulate = is_demo_scan(load_inputs(scan_id))
-    with get_session() as session:
-        row = session.get(ReviewAlertRow, scan_id)
+    row = find_subscription(scan_id)
     return ReviewAlerts(
         enabled=row is not None,
         phone=format_national_phone(row.phone) if row else None,
@@ -96,8 +96,13 @@ async def enable_review_alerts(scan_id: str, phone: str) -> ReviewAlerts:
         row = session.get(ReviewAlertRow, scan_id) or ReviewAlertRow(
             scan_id=scan_id, place_id=place_id, phone=phone_e164, checked_at=datetime.now(UTC)
         )
+        seen = set(json.loads(row.seen_review_ids)) | get_review_ids(reviews)
+        same_business = select(ReviewAlertRow).where(ReviewAlertRow.place_id == place_id, ReviewAlertRow.scan_id != scan_id)
+        for duplicate in session.exec(same_business).all():
+            seen |= set(json.loads(duplicate.seen_review_ids))
+            session.delete(duplicate)
         row.phone = phone_e164
-        row.seen_review_ids = json.dumps(sorted(set(json.loads(row.seen_review_ids)) | get_review_ids(reviews)))
+        row.seen_review_ids = json.dumps(sorted(seen))
         row.delivery_failed = False
         session.add(row)
         session.commit()
@@ -105,19 +110,20 @@ async def enable_review_alerts(scan_id: str, phone: str) -> ReviewAlerts:
 
 
 def disable_review_alerts(scan_id: str) -> ReviewAlerts:
-    """Turns off the scan's review alerts."""
-    with get_session() as session:
-        row = session.get(ReviewAlertRow, scan_id)
-        if row is not None:
-            session.delete(row)
-            session.commit()
+    """Turns off the business's review alerts, whichever of its scans turned them on."""
+    row = find_subscription(scan_id)
+    if row is not None:
+        with get_session() as session:
+            stored = session.get(ReviewAlertRow, row.scan_id)
+            if stored is not None:
+                session.delete(stored)
+                session.commit()
     return get_review_alerts(scan_id)
 
 
 async def simulate_review_alert(scan_id: str) -> ReviewAlertSent:
     """Sends the alert for the newest review right away, as if it had just arrived: the demo's „Simulează o recenzie nouă”."""
-    with get_session() as session:
-        row = session.get(ReviewAlertRow, scan_id)
+    row = find_subscription(scan_id)
     if row is None:
         raise ApiError("alerts_off")
     try:
@@ -131,6 +137,19 @@ async def simulate_review_alert(scan_id: str) -> ReviewAlertSent:
     if not await send_review_alert(row.scan_id, row.phone, review, reply):
         raise ApiError("upstream_error", DELIVERY_FAILED_RO)
     return ReviewAlertSent(author=get_author(review), rating=get_rating(review), reply_ro=reply)
+
+
+def find_subscription(scan_id: str) -> ReviewAlertRow | None:
+    """Returns the subscription of the scan's business, turned on from this scan or from another scan of the same place."""
+    with get_session() as session:
+        row = session.get(ReviewAlertRow, scan_id)
+        if row is not None:
+            return row
+    place_id = load_report(scan_id).business.place_id
+    if place_id is None:
+        return None
+    with get_session() as session:
+        return session.exec(select(ReviewAlertRow).where(ReviewAlertRow.place_id == place_id)).first()
 
 
 async def watch_reviews() -> None:
