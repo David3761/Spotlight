@@ -41,7 +41,7 @@ Rules for working on one repo in parallel:
 
 ```mermaid
 flowchart TB
-    FE["Next.js frontend · localhost:3000<br/>Screens 1–6, scripted onboarding chat"]
+    FE["Next.js frontend · localhost:3000<br/>Screens 1–6, onboarding chat led by Gemini"]
     subgraph BE["FastAPI backend · localhost:8000"]
         API["API routes<br/>places, scans (Dev B) · fixes, chat (Dev A)"]
         BUS["Progress bus<br/>asyncio queue per scan → SSE"]
@@ -127,6 +127,7 @@ The design's mock numbers (Boema: overall 42, Gemini 2/12, chapters 65/50/35/50/
 | Gemini screen without sources | Each prompt shows its sources under the result, with „Surse: Google Maps” attribution (required by Maps grounding) |
 | Photo counts 64/41/28 | „10+” when the API cap is hit |
 | Only the Instagram and info-page panels are designed | A generic panel (steps + deep link + „Am rezolvat”) and a dev-export panel in the same style |
+| A fixed question per step, with its own inputs (two boxes for city and neighbourhood, two for the social links) | Gemini leads the chat. It opens with „Bună! Spune-mi pe scurt despre afacerea ta: cum se numește, ce fel de afacere e și unde te găsesc clienții.”, asks its own follow-ups and fills several card fields from one answer. One text box, with chips under each question as shortcuts. Place cards as designed, without „Nu sunt aici · lipesc eu linkul”: the owner pastes the link in the text box. An unreadable link is explained in the chat instead of the `Eroare` card. |
 | No self-report questions in the onboarding | Quick-reply chips inside step 5 (after the place is picked: profile claimed? description? last Google post?) and step 6 (last social post?). Still 7 steps. |
 | `[Nume aplicație]` | `APP_NAME` in `frontend/src/config.ts` until the name is chosen |
 | „Începe de aici” markers and the „Începe cu …” button | Removed: no start-here chapter anywhere (no `start_here` in the contract) |
@@ -142,8 +143,9 @@ Fully specified in [contract.md](contract.md). Summary:
 
 | Method | Path | Screen | Owner |
 | --- | --- | --- | --- |
-| `POST` | `/api/places/search` | 1 | B |
-| `POST` | `/api/places/resolve-link` | 1, `Eroare` | B |
+| `POST` | `/api/onboarding/turn` | 1 | B |
+| `POST` | `/api/places/search` | — (kept for scripts) | B |
+| `POST` | `/api/places/resolve-link` | — (kept for scripts) | B |
 | `POST` | `/api/scans` | 1 | B |
 | `GET` | `/api/scans/{id}/events` (SSE) | loading | B |
 | `GET` | `/api/scans/{id}` | 2, 3, 5 | B |
@@ -165,7 +167,7 @@ Fully specified in [contract.md](contract.md). Summary:
 | Route | Screen | Talks to |
 | --- | --- | --- |
 | `/` | Redirects to `/start` | — |
-| `/start` | 1 — scripted chat onboarding + business card | `places/search`, `places/resolve-link`, `POST scans`, `POST conversations` (onboarding transcript) |
+| `/start` | 1 — onboarding chat led by Gemini + business card | `POST onboarding/turn`, `POST scans`, `POST conversations` (onboarding transcript) |
 | `/scan/[id]/loading` | Loading steps | SSE `events`; „Vezi rezultatele” on mobile, auto-redirect on desktop when complete |
 | `/scan/[id]` | 2 — dashboard | `GET scans/{id}`, `rescan` |
 | `/scan/[id]/[chapter]` | 3 — chapter; 4 opens as a side panel / bottom sheet via `?fix=` | `resolve`, `generate`, `info-page`, `dev-export` |
@@ -177,7 +179,7 @@ Key components: `ScoreRing`, `Sidebar`, `TabBar`, `ChapterCard`, `ProblemCard`, 
 
 - **Data:** plain `fetch` to `NEXT_PUBLIC_API_URL`; types from `npm run gen:api`.
 - **„Am rezolvat”:** update the score in local state first so the ring animates at once, then call `resolve` and replace local state with `ScoreUpdate.report`.
-- **Onboarding chat** is scripted in the browser: fixed questions, no LLM.
+- **Onboarding chat** is led by Gemini through `POST /api/onboarding/turn`: the owner types freely, chips are shortcuts for the question asked, and the backend checks every answer.
 
 ---
 
@@ -228,7 +230,7 @@ The LLM reads and writes; code decides. Scores never come from the LLM.
 
 | Step | Who does it | What the LLM does |
 | --- | --- | --- |
-| Onboarding chat | Scripted flow in the frontend | — |
+| Onboarding chat | The backend checks every answer and decides what is still missing | Takes the facts out of each owner message and writes the next question (`onboarding_*` prompts) |
 | Finding problems | Code checks (Dev B) | Reads messy pages into JSON, judges category and Instagram bio, classifies mentions |
 | Scoring and ranking | Code only (`scoring.py`) | — |
 | Live test | Code + Gemini with Maps grounding | Answers the customer's question; nothing else is sent |

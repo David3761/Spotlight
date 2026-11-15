@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { getInitials, stepCount, type Answers, type CardField } from "@/app/start/_hooks/onboarding-model";
+import { getInitials, getSubtitle, stepCount, type CardField } from "@/app/start/_hooks/onboarding-model";
 import { Icon, iconPath } from "@/components/Icon";
+import type { OnboardingAnswers } from "@/lib/types";
 
 /** The text colour of a card field's value for each status. */
 const valueTone: Record<CardField["status"], string> = {
@@ -11,19 +12,13 @@ const valueTone: Record<CardField["status"], string> = {
   pending: "text-faint",
 };
 
-/** Returns the line under the business name, e.g. "Cafenea · Cotroceni, București". */
-function getSubtitle(answers: Answers): string {
-  const location = [answers.neighborhood, answers.city].filter(Boolean).join(", ");
-  return [answers.typeLabel, location].filter(Boolean).join(" · ");
-}
-
 /** A component that shows the business card beside the chat on desktop, filling in as the owner answers. */
 export function BusinessCard({
   answers,
   fields,
   doneCount,
 }: {
-  answers: Answers;
+  answers: OnboardingAnswers;
   fields: CardField[];
   doneCount: number;
 }) {
@@ -36,11 +31,11 @@ export function BusinessCard({
         </div>
         <div className="flex items-center gap-3.5">
           <div className="flex size-14 shrink-0 items-center justify-center rounded-[18px] bg-accent-soft text-[19px] font-extrabold text-accent-strong">
-            {getInitials(answers.businessName) || "?"}
+            {getInitials(answers.business_name) || "?"}
           </div>
           <div className="flex min-w-0 flex-col gap-0.75">
             <span className="text-xl font-extrabold tracking-[-0.01em] wrap-break-word">
-              {answers.businessName || "Afacerea ta"}
+              {answers.business_name || "Afacerea ta"}
             </span>
             <span className="text-sm text-muted">{getSubtitle(answers) || "Urmează"}</span>
           </div>
@@ -100,7 +95,7 @@ export function MobileBusinessCard({
   fields,
   doneCount,
 }: {
-  answers: Answers;
+  answers: OnboardingAnswers;
   fields: CardField[];
   doneCount: number;
 }) {
@@ -115,7 +110,7 @@ export function MobileBusinessCard({
           className="flex min-h-15 w-full cursor-pointer items-center gap-3 px-3.5 py-2.5 text-start"
         >
           <span className="flex size-10 shrink-0 items-center justify-center rounded-[13px] bg-accent-soft text-sm font-extrabold text-accent-strong">
-            {getInitials(answers.businessName) || "?"}
+            {getInitials(answers.business_name) || "?"}
           </span>
           <span className="flex min-w-0 flex-1 flex-col gap-0.5">
             <span className="text-sm font-bold">Cartea de vizită</span>

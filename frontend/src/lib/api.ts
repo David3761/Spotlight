@@ -10,9 +10,8 @@ import type {
   GeneratedText,
   InfoPage,
   MessageReply,
-  PlaceCandidate,
-  PlaceSearchRequest,
-  PlaceSearchResponse,
+  OnboardingTurn,
+  OnboardingTurnRequest,
   Report,
   ScanEnvelope,
   ScanEvent,
@@ -63,14 +62,9 @@ function post<T>(path: string, body?: unknown): Promise<T> {
   return request<T>(path, { method: "POST", body: body === undefined ? undefined : JSON.stringify(body) });
 }
 
-/** Returns up to 5 Google places matching the business. */
-export function getPlaceCandidates(search: PlaceSearchRequest): Promise<PlaceSearchResponse> {
-  return post("/api/places/search", search);
-}
-
-/** Returns the Google place a Maps link points to. */
-export function getPlaceFromLink(url: string): Promise<PlaceCandidate> {
-  return post("/api/places/resolve-link", { url });
+/** Returns the onboarding assistant's reply to the owner's newest message, with the answers collected so far. */
+export function sendOnboardingMessage(turn: OnboardingTurnRequest): Promise<OnboardingTurn> {
+  return post("/api/onboarding/turn", turn);
 }
 
 /** Starts a scan from the onboarding answers. */

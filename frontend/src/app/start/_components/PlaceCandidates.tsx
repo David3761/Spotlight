@@ -4,20 +4,18 @@ import { buttonVariant } from "@/components/button-styles";
 import { chapterIconPath, Icon } from "@/components/Icon";
 import type { PlaceCandidate } from "@/lib/types";
 
-/** A component that shows the Google places found for the business, to pick one or paste a link instead. */
+/** A component that shows the Google places found for the business, to pick one. */
 export function PlaceCandidates({
   candidates,
   isDisabled,
   onPick,
-  onPasteLink,
 }: {
   candidates: PlaceCandidate[];
   isDisabled: boolean;
   onPick: (candidate: PlaceCandidate) => void;
-  onPasteLink: () => void;
 }) {
   return (
-    <div className={`flex flex-col gap-3 ${replyIndent}`}>
+    <div className={replyIndent}>
       <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-3 p-0">
         {candidates.map((candidate) => (
           <li
@@ -50,14 +48,6 @@ export function PlaceCandidates({
           </li>
         ))}
       </ul>
-      <button
-        type="button"
-        disabled={isDisabled}
-        onClick={onPasteLink}
-        className="h-11 cursor-pointer self-start px-1 text-start text-sm font-bold text-accent-hover disabled:cursor-default disabled:opacity-60"
-      >
-        Nu sunt aici · lipesc eu linkul
-      </button>
     </div>
   );
 }

@@ -44,6 +44,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/onboarding/turn": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Post Turn
+         * @description Returns the assistant's next onboarding message and the answers collected so far.
+         */
+        post: operations["post_turn_api_onboarding_turn_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/scans": {
         parameters: {
             query?: never;
@@ -797,6 +817,75 @@ export interface components {
             chips?: string[];
         };
         /**
+         * OnboardingAnswers
+         * @description What the onboarding has collected so far; `None` means not answered yet.
+         */
+        OnboardingAnswers: {
+            /** Business Name */
+            business_name: string | null;
+            /** Business Type */
+            business_type: ("cafenea" | "restaurant" | "bar" | "salon" | "hotel" | "magazin" | "altceva") | null;
+            /** Business Type Label Ro */
+            business_type_label_ro: string | null;
+            /** City */
+            city: string | null;
+            /** Neighborhood */
+            neighborhood: string | null;
+            /** Has Website */
+            has_website: boolean | null;
+            /** Website Url */
+            website_url: string | null;
+            /** Google Choice */
+            google_choice: ("place" | "none" | "later") | null;
+            place: components["schemas"]["PlaceCandidate"] | null;
+            /** Maps Url */
+            maps_url: string | null;
+            self_report: components["schemas"]["SelfReport"];
+            /** Has Social */
+            has_social: boolean | null;
+            /** Instagram Url */
+            instagram_url: string | null;
+            /** Tiktok Url */
+            tiktok_url: string | null;
+            /** Platforms */
+            platforms: ("tripadvisor" | "glovo" | "wolt" | "bolt_food" | "booking" | "booksy")[] | null;
+        };
+        /**
+         * OnboardingMessage
+         * @description One message of the onboarding chat.
+         */
+        OnboardingMessage: {
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "assistant" | "user";
+            /** Text */
+            text: string;
+        };
+        /**
+         * OnboardingTurn
+         * @description The assistant's next message, with the answers collected and still missing after the owner's newest message.
+         */
+        OnboardingTurn: {
+            /** Reply Ro */
+            reply_ro: string;
+            answers: components["schemas"]["OnboardingAnswers"];
+            /** Missing */
+            missing: ("business_name" | "business_type" | "city" | "neighborhood" | "website" | "google_profile" | "profile_claimed" | "has_google_description" | "last_google_post" | "social" | "last_social_post" | "platforms")[];
+            /** Candidates */
+            candidates: components["schemas"]["PlaceCandidate"][];
+        };
+        /**
+         * OnboardingTurnRequest
+         * @description The onboarding chat so far, the owner's newest message last, with the answers collected before it.
+         */
+        OnboardingTurnRequest: {
+            /** Messages */
+            messages: components["schemas"]["OnboardingMessage"][];
+            answers: components["schemas"]["OnboardingAnswers"];
+        };
+        /**
          * PlaceCandidate
          * @description A Google place that may be the owner's business.
          */
@@ -1233,6 +1322,66 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PlaceCandidate"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Bad Gateway */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    post_turn_api_onboarding_turn_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OnboardingTurnRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OnboardingTurn"];
                 };
             };
             /** @description Not Found */

@@ -12,18 +12,14 @@
 
 ## The path
 
-1. **Onboarding (`/start`).**
-   - Answers:
-     - Name „Origo”.
-     - Type „Cafenea”.
-     - City „București”, neighbourhood „Centrul Vechi”.
-     - Website: „Da”, then `origocoffee.ro`.
-     - Google Maps: „Caută-mă pe Google”, then „Asta sunt eu” on the first card.
-     - Quick questions: claimed „Da”, description „Nu” (this keeps G08 open for step 7), last post „Mai demult”.
-     - Instagram `instagram.com/origo_coffee`; skip TikTok.
-     - Last social post „Luna asta”, then „Nu folosesc altele”.
-   - Press „Gata, analizează afacerea”.
-   - Say: the onboarding is a short chat, and the card on the right fills in as you answer.
+1. **Onboarding (`/start`).** Gemini leads the chat. Type and click exactly this, in this order: offline, only the rehearsed chat replays.
+   - Type „Origo, o cafenea de specialitate în Centrul Vechi, București”. Name, type and location fill in on the card at once.
+   - Type „da, origocoffee.ro”.
+   - Press „Asta sunt eu” on the Origo card.
+   - Chips: „Da” (claimed), „Nu” (description: this keeps G08 open for step 7), „Mai demult” (last Google post).
+   - Type „pe insta suntem @origo_coffee, tiktok n-avem”.
+   - Chip „Luna asta”, then „Nu folosesc altele”, then „Gata, analizează afacerea”.
+   - Say: you just talk to it like to a person. Gemini understands loose answers, asks only what's missing, and the card on the right fills in as you go.
 2. **Loading.** The five steps tick off in about 8 seconds (Google, Recenzii, Website, Rețele sociale, Gemini).
    - Say: we read the Google profile, the reviews, the website and Instagram, and we ask Gemini 12 questions a customer would ask.
 3. **Dashboard.** Point at:

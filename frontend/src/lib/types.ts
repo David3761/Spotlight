@@ -6,12 +6,18 @@ type Schemas = components["schemas"];
 
 /** The body of every error response. */
 export type ApiErrorBody = Schemas["ErrorResponse"];
-/** The request for `POST /api/places/search`. */
-export type PlaceSearchRequest = Schemas["PlaceSearchRequest"];
 /** A Google place the owner can pick. */
 export type PlaceCandidate = Schemas["PlaceCandidate"];
-/** The response of `POST /api/places/search`. */
-export type PlaceSearchResponse = Schemas["PlaceSearchResponse"];
+/** What the onboarding has collected so far. */
+export type OnboardingAnswers = Schemas["OnboardingAnswers"];
+/** One message of the onboarding chat. */
+export type OnboardingMessage = Schemas["OnboardingMessage"];
+/** The request for `POST /api/onboarding/turn`. */
+export type OnboardingTurnRequest = Schemas["OnboardingTurnRequest"];
+/** The response of `POST /api/onboarding/turn`. */
+export type OnboardingTurn = Schemas["OnboardingTurn"];
+/** An answer the onboarding assistant asks for. */
+export type OnboardingField = OnboardingTurn["missing"][number];
 /** The self-reported onboarding answers. */
 export type SelfReport = Schemas["SelfReport"];
 /** The onboarding answers that start a scan. */

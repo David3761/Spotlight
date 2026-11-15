@@ -3,6 +3,9 @@
 import { useState, type FormEvent } from "react";
 import { Icon, iconPath } from "@/components/Icon";
 
+/** The longest message the backend accepts. */
+const maxMessageLength = 2000;
+
 /** One text input of an answer form. */
 export interface AnswerField {
   /** The input's accessible label. */
@@ -53,6 +56,7 @@ export function AnswerForm({
               type="text"
               inputMode={field.inputMode}
               value={values[index]}
+              maxLength={maxMessageLength}
               placeholder={field.placeholder}
               disabled={isDisabled}
               autoFocus={index === 0}

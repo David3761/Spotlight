@@ -1,23 +1,22 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AnswerForm, type AnswerField } from "@/app/start/_components/AnswerForm";
+import { AnswerForm } from "@/app/start/_components/AnswerForm";
 import { BusinessCard, MobileBusinessCard } from "@/app/start/_components/BusinessCard";
 import { ChatBubble } from "@/app/start/_components/ChatBubble";
-import { LinkError } from "@/app/start/_components/LinkError";
 import { PlaceCandidates } from "@/app/start/_components/PlaceCandidates";
 import { QuickReplies, ToggleReplies } from "@/app/start/_components/QuickReplies";
 import {
-  businessTypeOptions,
   getCardFields,
+  getDoneCount,
+  getPlaceholder,
   getPlatformsCtaLabel,
-  isSelfReportPhase,
-  linkIcon,
+  getQuickReplies,
+  isAtLastStep,
   platformOptions,
-  selfReportSteps,
   stepCount,
   stepNames,
-  type Phase,
+  usesNoOtherPlatforms,
 } from "@/app/start/_hooks/onboarding-model";
 import { useOnboarding, type Onboarding as OnboardingState } from "@/app/start/_hooks/use-onboarding";
 import { AppLogo } from "@/components/AppLogo";
@@ -26,53 +25,17 @@ import { TypingIndicator } from "@/components/chat/TypingIndicator";
 import { buttonVariant, chipVariant } from "@/components/button-styles";
 import { ErrorState } from "@/components/ErrorState";
 
-/** The yes and no chips of the website question. */
-const websiteOptions = [
-  { label: "Da", value: true },
-  { label: "Nu", value: false },
-];
-
-/** The two ways to continue from the Google Maps question besides pasting a link. */
-const mapsOptions = [
-  { label: "Caută-mă pe Google", id: "search" },
-  { label: "Nu am profil Google", id: "none" },
-];
-
-/** The inputs of the answer bar for each phase that takes typed text. */
-const answerFields: Partial<Record<Phase, AnswerField[]>> = {
-  name: [{ label: "Numele afacerii", placeholder: "Numele afacerii tale…", inputMode: "text" }],
-  typeOther: [{ label: "Tipul afacerii", placeholder: "Ce fel de afacere ai?", inputMode: "text" }],
-  location: [
-    { label: "Orașul", placeholder: "Orașul…", inputMode: "text" },
-    { label: "Cartierul", placeholder: "Cartierul…", inputMode: "text" },
-  ],
-  websiteUrl: [{ label: "Adresa site-ului", placeholder: "Adresa site-ului tău…", inputMode: "url" }],
-  maps: [
-    {
-      label: "Linkul de pe Google Maps",
-      placeholder: "Sau lipește aici linkul de pe Google Maps…",
-      inputMode: "url",
-      icon: linkIcon,
-    },
-  ],
-  mapsError: [{ label: "Linkul de pe Google Maps", placeholder: "Lipește alt link…", inputMode: "url", icon: linkIcon }],
-  social: [
-    { label: "Linkul de Instagram", placeholder: "Instagram · instagram.com/…", inputMode: "url", isOptional: true },
-    { label: "Linkul de TikTok", placeholder: "TikTok · tiktok.com/@…", inputMode: "url", isOptional: true },
-  ],
-};
-
-/** A component that runs the onboarding: the scripted chat, its answer bar and the business card. */
+/** A component that runs the onboarding: the chat the assistant leads, its answer bar and the business card. */
 export function Onboarding() {
   const onboarding = useOnboarding();
-  const { answers, phase, stepNumber, turns, failure, isBusy } = onboarding;
-  const fields = getCardFields(answers, stepNumber);
-  const doneCount = stepNumber - 1;
+  const { answers, missing, stepNumber, messages, failure, isBusy } = onboarding;
+  const fields = getCardFields(answers, missing);
+  const doneCount = getDoneCount(missing);
   const chatEnd = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     chatEnd.current?.scrollIntoView({ block: "end" });
-  }, [turns.length, phase, failure, isBusy]);
+  }, [messages.length, missing, failure, isBusy]);
 
   return (
     <div className="flex h-dvh flex-col bg-surface text-ink lg:h-auto lg:min-h-screen lg:bg-page">
@@ -95,16 +58,15 @@ export function Onboarding() {
             className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto p-4 lg:gap-3.5 lg:px-7 lg:py-6"
           >
             <div className="mt-auto flex flex-col gap-2.5 lg:gap-3.5">
-              {turns.map((turn, index) => (
-                <ChatBubble key={index} turn={turn} />
+              {messages.map((message, index) => (
+                <ChatBubble key={index} message={message} />
               ))}
-              {isBusy && phase !== "mapsError" ? <TypingIndicator /> : null}
-              <PhaseReplies onboarding={onboarding} />
+              {onboarding.isReplying ? <TypingIndicator /> : <Replies onboarding={onboarding} />}
               {failure ? <ErrorState error={failure.error} onRetry={onboarding.retry} /> : null}
               <div ref={chatEnd} />
             </div>
           </div>
-          <PhaseFooter onboarding={onboarding} />
+          <Footer onboarding={onboarding} />
         </section>
         <BusinessCard answers={answers} fields={fields} doneCount={doneCount} />
       </main>
@@ -167,87 +129,42 @@ function Header({ stepNumber }: { stepNumber: number }) {
   );
 }
 
-/** A component that shows the answers to pick from, inside the chat, for the current phase. */
-function PhaseReplies({ onboarding }: { onboarding: OnboardingState }) {
-  const { phase, answers, candidates, failedLink, isBusy } = onboarding;
-  if (phase === "type") {
-    return (
-      <QuickReplies
-        groupLabel="Tipul afacerii"
-        options={businessTypeOptions}
-        isDisabled={isBusy}
-        onSelect={onboarding.pickType}
-      />
-    );
-  }
-  if (phase === "website") {
-    return (
-      <QuickReplies
-        groupLabel="Ai un site web?"
-        options={websiteOptions}
-        isDisabled={isBusy}
-        onSelect={(option) => onboarding.answerWebsite(option.value)}
-      />
-    );
-  }
-  if (phase === "maps") {
-    return (
-      <QuickReplies
-        groupLabel="Google Maps"
-        options={mapsOptions}
-        isDisabled={isBusy}
-        onSelect={(option) => (option.id === "search" ? onboarding.chooseSearch() : onboarding.chooseNoGoogleProfile())}
-      />
-    );
-  }
-  if (phase === "candidates") {
-    return (
-      <PlaceCandidates
-        candidates={candidates}
-        isDisabled={isBusy}
-        onPick={onboarding.pickCandidate}
-        onPasteLink={onboarding.pasteLinkInstead}
-      />
-    );
-  }
-  if (phase === "mapsError" && failedLink !== null) {
-    return (
-      <LinkError
-        isDisabled={isBusy}
-        onSearch={onboarding.chooseSearch}
-        onPasteLink={onboarding.pasteLinkInstead}
-        onSkip={onboarding.skipGoogleProfile}
-      />
-    );
-  }
-  if (isSelfReportPhase(phase)) {
-    return (
-      <QuickReplies
-        groupLabel="Răspunsuri"
-        options={selfReportSteps[phase].options}
-        isDisabled={isBusy}
-        onSelect={onboarding.answerSelfReport}
-      />
-    );
-  }
-  if (phase === "platforms") {
+/** A component that shows, inside the chat, the answers to pick for the question being asked. */
+function Replies({ onboarding }: { onboarding: OnboardingState }) {
+  const { asks, answers, candidates, isBusy } = onboarding;
+  if (isAtLastStep(asks)) {
     return (
       <ToggleReplies
         groupLabel="Alte platforme"
         options={platformOptions}
-        chosen={answers.platforms}
+        chosen={answers.platforms ?? []}
         isDisabled={isBusy}
         onToggle={onboarding.togglePlatform}
       />
     );
   }
-  return null;
+  const replies = getQuickReplies(asks).map((label) => ({ label }));
+  return (
+    <>
+      {asks === "google_profile" && candidates.length > 0 ? (
+        <PlaceCandidates candidates={candidates} isDisabled={isBusy} onPick={onboarding.pickCandidate} />
+      ) : null}
+      {replies.length > 0 ? (
+        <QuickReplies
+          groupLabel="Răspunsuri rapide"
+          options={replies}
+          isDisabled={isBusy}
+          onSelect={(reply) => onboarding.send(reply.label)}
+        />
+      ) : null}
+    </>
+  );
 }
 
-/** A component that shows the bar under the chat: the text inputs of the phase, or the final button. */
-function PhaseFooter({ onboarding }: { onboarding: OnboardingState }) {
-  const { phase, answers, isBusy } = onboarding;
-  if (phase === "platforms") {
+/** A component that shows the bar under the chat: the text box, or the button that starts the analysis at the end. */
+function Footer({ onboarding }: { onboarding: OnboardingState }) {
+  const { asks, answers, messages, isBusy } = onboarding;
+  if (isAtLastStep(asks)) {
     return (
       <div className="flex flex-col gap-1.5 border-t border-divider px-4 pt-3 pb-7 lg:px-6 lg:pb-4">
         <button
@@ -256,51 +173,26 @@ function PhaseFooter({ onboarding }: { onboarding: OnboardingState }) {
           onClick={onboarding.submit}
           className={`${buttonVariant.primary} h-13 cursor-pointer text-[15px] disabled:cursor-default disabled:opacity-60`}
         >
-          {getPlatformsCtaLabel(answers.platforms.length)}
+          {getPlatformsCtaLabel(answers.platforms?.length ?? 0)}
         </button>
         <button
           type="button"
-          aria-pressed={answers.usesNoOtherPlatforms}
+          aria-pressed={usesNoOtherPlatforms(answers)}
           disabled={isBusy}
           onClick={onboarding.toggleNoOtherPlatforms}
-          className={`${answers.usesNoOtherPlatforms ? chipVariant.pressed : ""} h-11 cursor-pointer text-sm font-semibold text-subtle disabled:cursor-default disabled:opacity-60`}
+          className={`${usesNoOtherPlatforms(answers) ? chipVariant.pressed : ""} h-11 cursor-pointer text-sm font-semibold text-subtle disabled:cursor-default disabled:opacity-60`}
         >
           Nu folosesc altele
         </button>
       </div>
     );
   }
-  const fields = answerFields[phase];
-  if (!fields) {
-    return null;
-  }
-  return <AnswerForm key={phase} fields={fields} isDisabled={isBusy} onSubmit={(values) => submitAnswer(onboarding, values)} />;
-}
-
-/** Sends the typed values of the current phase to the matching action. */
-function submitAnswer(onboarding: OnboardingState, values: string[]) {
-  const [first, second] = values;
-  switch (onboarding.phase) {
-    case "name":
-      onboarding.submitName(first);
-      return;
-    case "typeOther":
-      onboarding.submitOtherType(first);
-      return;
-    case "location":
-      onboarding.submitLocation(first, second);
-      return;
-    case "websiteUrl":
-      onboarding.submitWebsiteUrl(first);
-      return;
-    case "maps":
-    case "mapsError":
-      onboarding.submitLink(first);
-      return;
-    case "social":
-      onboarding.submitSocial(first, second);
-      return;
-    default:
-      return;
-  }
+  return (
+    <AnswerForm
+      key={messages.length}
+      fields={[{ label: "Răspunsul tău", placeholder: getPlaceholder(asks), inputMode: "text" }]}
+      isDisabled={isBusy}
+      onSubmit={(values) => onboarding.send(values[0])}
+    />
+  );
 }
