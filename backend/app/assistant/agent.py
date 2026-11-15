@@ -18,7 +18,7 @@ from app.assistant.schemas import (
 from app.fixes.generate import get_generated_text, get_open_problems
 from app.fixes.schemas import Tone
 from app.jobs import is_demo_scan
-from app.llm.client import PROMPTS_DIR, get_client, get_model
+from app.llm.client import PROMPTS_DIR, REQUEST_OPTIONS, get_client, get_model
 from app.models import Problem, Report
 from app.services.resolution import load_inputs, load_report, mark_resolved, unmark_resolved
 
@@ -151,10 +151,12 @@ async def get_model_response(
     replays offline, while real owners always get a fresh answer.
 
     Function results carry no IDs or timestamps, so the same messages on the same report give the same key. Only turns with
-    text or a function call are cached, so an empty or blocked answer is never replayed.
+    text or a function call are cached, so an empty or blocked answer is never replayed. Each request gets the shared 45 s
+    timeout, which stays out of the key.
     """
+    request_config = config.model_copy(update={"http_options": REQUEST_OPTIONS})
     if not is_demo:
-        return await get_client().aio.models.generate_content(model=model, contents=contents, config=config)
+        return await get_client().aio.models.generate_content(model=model, contents=contents, config=request_config)
     key = [
         "assistant_turn",
         model,
@@ -164,7 +166,7 @@ async def get_model_response(
     cached = cache.get(key)
     if cached is not None:
         return types.GenerateContentResponse(candidates=[types.Candidate(content=types.Content.model_validate(cached))])
-    response = await get_client().aio.models.generate_content(model=model, contents=contents, config=config)
+    response = await get_client().aio.models.generate_content(model=model, contents=contents, config=request_config)
     content = response.candidates[0].content if response.candidates else None
     if content is not None and (response.function_calls or response.text):
         cache.set(key, content.model_dump(mode="json", exclude_none=True))
